@@ -67,7 +67,7 @@ export default async function ClassroomDetailPage({ params }: { params: Promise<
  <BookOpen className="w-4 h-4" />
  Assignments
  {pendingCount > 0 && (
- <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-black text-foreground border-2 border-gray-200 text-[10px] font-black flex items-center justify-center">
+ <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-primary text-primary-foreground border-2 border-gray-200 text-[10px] font-black flex items-center justify-center">
  {pendingCount}
  </span>
  )}
@@ -163,7 +163,7 @@ export default async function ClassroomDetailPage({ params }: { params: Promise<
  {cls.assignments.map((a) => (
  <Card key={a.id} className={cn(' shadow-sm rounded-xl transition-all hover:bg-secondary/50', a.status === 'completed' ? 'border-border bg-secondary/50' : 'border-border bg-card')}>
  <CardContent className="p-5 flex items-center gap-5">
- <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${a.status === 'completed' ? 'bg-secondary border border-border' : 'bg-black border border-border'}`}>
+ <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${a.status === 'completed' ? 'bg-secondary border border-border' : 'bg-primary border border-border'}`}>
  {a.status === 'completed' ? (
  <CheckCircle className="w-5 h-5 text-foreground" />
  ) : (
@@ -204,11 +204,11 @@ export default async function ClassroomDetailPage({ params }: { params: Promise<
  <div className="space-y-2">
  {cls.leaderboard.map((entry) => (
  <div key={entry.rank} className={cn('flex items-center gap-4 p-4 rounded-xl transition-all', (entry as any).isMe ? 'bg-white ' : 'border border-transparent hover:border-border hover:bg-secondary/50')}>
- <div className={cn('w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black ', (entry as any).isMe ? 'bg-black/10' : 'bg-secondary/50 border border-border text-muted-foreground')}>
+ <div className={cn('w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black ', (entry as any).isMe ? 'bg-secondary' : 'bg-secondary/50 border border-border text-muted-foreground')}>
  {entry.rank}
  </div>
  <Avatar className="w-10 h-10 border border-border">
- <AvatarFallback className="text-xs bg-black text-foreground">{entry.name.slice(0, 2)}</AvatarFallback>
+ <AvatarFallback className="text-xs bg-primary text-primary-foreground">{entry.name.slice(0, 2)}</AvatarFallback>
  </Avatar>
  <span className={cn('flex-1 text-sm font-bold', (entry as any).isMe ? 'text-foreground' : 'text-foreground')}>{entry.name}</span>
  <span className={cn('flex items-center gap-1.5 text-xs font-bold', (entry as any).isMe ? 'text-foreground/60' : 'text-muted-foreground')}>

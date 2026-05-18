@@ -100,7 +100,7 @@ export default function AchievementsPage() {
  const config = rarityConfig[achievement.rarity];
  const Icon = achievement.icon;
  return (
- <Card key={achievement.id} className="border border-border bg-black/20 opacity-50 rounded-xl overflow-hidden">
+ <Card key={achievement.id} className="border border-border bg-secondary/80 opacity-50 rounded-xl overflow-hidden">
  <CardContent className="p-6 text-center h-full flex flex-col justify-between">
  <div>
  <div className="w-14 h-14 mx-auto mb-4 rounded-xl bg-secondary/50 border border-border flex items-center justify-center">

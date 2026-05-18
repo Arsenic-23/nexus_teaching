@@ -90,7 +90,7 @@ export default function ProgressPage() {
  className="w-full rounded-t-xl bg-secondary hover:bg-secondary/80 transition-all relative group"
  style={{ height: `${(xp / maxXp) * 120}px`, minHeight: xp > 0 ? '8px' : '0' }}
  >
- <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-black text-foreground text-[10px] font-bold rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+ <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-primary text-primary-foreground text-[10px] font-bold rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
  {xp} XP
  </div>
  </div>

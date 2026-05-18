@@ -330,7 +330,7 @@ export default function StudentDashboard() {
  }`}
  >
  <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black ${
- entry.isCurrentUser ? 'bg-black/10' : 'bg-secondary/50 border border-border text-muted-foreground'
+ entry.isCurrentUser ? 'bg-secondary' : 'bg-secondary/50 border border-border text-muted-foreground'
  }`}>
  {entry.position}
  </div>

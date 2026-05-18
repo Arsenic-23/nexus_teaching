@@ -39,7 +39,7 @@ function LeaderboardEntry({ entry }: { entry: typeof weeklyData[0] }) {
  {/* Avatar */}
  <Avatar className="w-12 h-12 shrink-0 border-2 border-border ">
  <AvatarImage src={entry.avatarUrl || undefined} />
- <AvatarFallback className="text-sm font-bold bg-black text-foreground">{entry.name.slice(0, 2)}</AvatarFallback>
+ <AvatarFallback className="text-sm font-bold bg-primary text-primary-foreground">{entry.name.slice(0, 2)}</AvatarFallback>
  </Avatar>
 
  {/* Name + rank */}

@@ -161,7 +161,7 @@ export default function LearnPage() {
  return (
  <Card
  key={subject.id}
- className="border-border bg-black/20 opacity-60 cursor-not-allowed rounded-xl"
+ className="border-border bg-secondary/80 opacity-60 cursor-not-allowed rounded-xl"
  >
  <CardContent className="p-6">
  <div className="flex items-start justify-between mb-5">

@@ -119,7 +119,7 @@ export default function ClassroomsPage() {
 
  {/* Join dialog */}
  <Dialog open={joinDialogOpen} onOpenChange={setJoinDialogOpen}>
- <DialogContent className="bg-black/90 border-border backdrop-blur-3xl rounded-xl shadow-sm text-foreground">
+ <DialogContent className="bg-card border-border backdrop-blur-3xl rounded-xl shadow-sm text-foreground">
  <DialogHeader>
  <DialogTitle className="text-2xl font-black">Join a Classroom</DialogTitle>
  <DialogDescription className="text-muted-foreground font-medium">Enter the classroom code provided by your teacher.</DialogDescription>

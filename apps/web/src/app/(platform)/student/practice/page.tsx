@@ -173,7 +173,7 @@ export default function PracticePage() {
  const Icon = boss.icon;
  return (
  <div key={boss.id} className={`flex items-center gap-4 p-5 rounded-xl border transition-all ${boss.available ? 'border-border bg-secondary/50 hover:bg-secondary group' : 'border-border bg-muted/50 opacity-50'}`}>
- <div className="w-12 h-12 rounded-xl bg-black border border-border flex items-center justify-center shrink-0">
+ <div className="w-12 h-12 rounded-xl bg-primary border border-border flex items-center justify-center shrink-0">
  <Icon className="w-6 h-6 text-foreground" />
  </div>
  <div className="flex-1 min-w-0">
