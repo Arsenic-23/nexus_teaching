@@ -94,7 +94,7 @@ export function ProgressCelebration({
             exit={{ opacity: 0, scale: 0.8, y: '-50%', x: '-50%' }}
             transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             style={{ position: 'absolute', top: '40%', left: '50%' }}
-            className="text-center px-8 py-6 rounded-2xl glass border border-white/10 shadow-2xl pointer-events-none"
+            className="text-center px-8 py-6 rounded-2xl glass border border-border shadow-2xl pointer-events-none"
           >
             <p className="text-2xl font-display font-bold">{message}</p>
             {subMessage && (

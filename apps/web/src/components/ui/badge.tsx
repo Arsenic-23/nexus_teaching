@@ -15,7 +15,7 @@ const badgeVariants = cva(
         outline: 'text-foreground',
         success:
           'border-transparent bg-success/20 text-success border-success/30',
-        warning: 'border-transparent bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
+        warning: 'border-transparent bg-muted text-muted-foreground border-border',
         xp: 'border-transparent bg-brand/20 text-brand border-brand/30',
         mastery: 'border-transparent bg-mastery/20 text-mastery border-mastery/30',
         streak: 'border-transparent bg-streak/20 text-streak border-streak/30',

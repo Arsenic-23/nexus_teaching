@@ -35,7 +35,7 @@ export function LevelIndicator({
       {/* Level badge */}
       <div
         className={cn(
-          'rounded-xl bg-gradient-xp flex items-center justify-center font-bold text-white shrink-0 glow-brand',
+          'rounded-xl bg-gradient-brand flex items-center justify-center font-bold text-white shrink-0 glow-brand',
           classes.badge,
         )}
       >
@@ -56,7 +56,7 @@ export function LevelIndicator({
           </div>
           <div className={cn('w-full rounded-full bg-secondary overflow-hidden', classes.bar)}>
             <div
-              className="h-full bg-gradient-xp rounded-full transition-all duration-700"
+              className="h-full bg-gradient-brand rounded-full transition-all duration-700"
               style={{ width: `${progress}%` }}
             />
           </div>

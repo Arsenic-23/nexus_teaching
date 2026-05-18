@@ -77,7 +77,7 @@ export default function MasteryPage() {
               {subject.topics.map((topic) => {
                 const isLocked = topic.status === 'locked';
                 return (
-                  <div key={topic.id} className={`flex items-center gap-4 p-3 rounded-lg border transition-all ${isLocked ? 'border-border bg-card/30 opacity-60' : 'border-border bg-card/50 hover:border-primary/30'}`}>
+                  <div key={topic.id} className={`flex items-center gap-4 p-3 rounded-lg border transition-all ${isLocked ? 'border-border bg-muted/50 opacity-60' : 'border-border bg-card hover:border-primary/30'}`}>
                     <MasteryRing level={topic.mastery} size={36} />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-2">

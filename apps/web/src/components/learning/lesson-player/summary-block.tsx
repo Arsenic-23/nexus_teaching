@@ -55,7 +55,7 @@ export function SummaryBlock({
 
       {/* Key points */}
       {keyPoints && keyPoints.length > 0 && (
-        <div className="text-left max-w-md mx-auto p-5 rounded-xl border border-border bg-card/50 space-y-3">
+        <div className="text-left max-w-md mx-auto p-5 rounded-xl border border-border bg-card space-y-3">
           <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
             <Star className="w-3.5 h-3.5 text-mastery" />
             Key Takeaways

@@ -22,42 +22,52 @@ export default async function AssignmentsPage({ params }: { params: Promise<{ cl
       <Breadcrumbs items={[{ label: 'Classrooms', href: '/student/classrooms' }, { label: 'Math Class', href: `/student/classrooms/${resolvedParams.classId}` }, { label: 'Assignments' }]} />
 
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-display font-bold">Assignments</h1>
-        <div className="flex gap-2">
-          <Badge variant="warning" className="text-xs">{pending.length} Pending</Badge>
-          <Badge variant="success" className="text-xs">{completed.length} Completed</Badge>
+        <h1 className="text-4xl md:text-5xl font-display font-black tracking-tight">Assignments</h1>
+        <div className="flex gap-3">
+          <div className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs font-bold text-gray-300">
+            {pending.length} Pending
+          </div>
+          <div className="px-3 py-1.5 rounded-lg bg-white/10 border border-white/20 text-xs font-bold text-white">
+            {completed.length} Completed
+          </div>
         </div>
       </div>
 
       {/* Pending */}
       {pending.length > 0 && (
-        <div className="space-y-3">
-          <h2 className="text-sm font-semibold text-orange-400 flex items-center gap-2">
-            <AlertTriangle className="w-4 h-4" /> Pending
+        <div className="space-y-4">
+          <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-widest flex items-center gap-2">
+            <AlertTriangle className="w-4 h-4 text-white" /> Pending
           </h2>
           {pending.map((a) => (
-            <Card key={a.id} className="border-orange-500/20 bg-orange-500/5 hover:border-orange-500/40 transition-all cursor-pointer">
-              <CardContent className="p-4">
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-lg bg-orange-500/20 flex items-center justify-center shrink-0">
-                    <BookOpen className="w-5 h-5 text-orange-400" />
+            <Card key={a.id} className="border-white/20 bg-white/5 backdrop-blur-2xl hover:bg-white/10 transition-all cursor-pointer shadow-xl rounded-3xl overflow-hidden group">
+              <CardContent className="p-6">
+                <div className="flex flex-col sm:flex-row sm:items-start gap-5">
+                  <div className="w-12 h-12 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center shrink-0 shadow-inner group-hover:scale-105 transition-transform">
+                    <BookOpen className="w-5 h-5 text-white" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-2">
-                      <p className="font-semibold">{a.title}</p>
-                      <Badge variant="secondary" className="text-xs shrink-0">{a.type}</Badge>
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                      <div>
+                        <p className="font-bold text-lg text-white mb-1">{a.title}</p>
+                        <p className="text-sm font-medium text-gray-400">{a.description}</p>
+                      </div>
+                      <div className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-wider text-gray-400 shrink-0">
+                        {a.type}
+                      </div>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1">{a.description}</p>
-                    <div className="flex items-center justify-between mt-2">
-                      <span className="text-xs text-orange-400 flex items-center gap-1">
-                        <Clock className="w-3 h-3" /> Due {a.dueDate} {a.dueTime}
+                    <div className="flex items-center justify-between mt-5 pt-5 border-t border-white/5">
+                      <span className="text-xs font-bold text-gray-300 flex items-center gap-1.5">
+                        <Clock className="w-4 h-4 text-gray-400" /> Due {a.dueDate} {a.dueTime}
                       </span>
-                      <Badge variant="warning" className="text-xs">{a.points} pts</Badge>
+                      <div className="px-3 py-1.5 rounded-lg bg-white border border-white text-[10px] font-black uppercase tracking-wider text-black">
+                        {a.points} pts
+                      </div>
                     </div>
                   </div>
                 </div>
-                <Button size="sm" className="w-full mt-3 gap-1">
-                  Start Assignment <ChevronRight className="w-3.5 h-3.5" />
+                <Button className="w-full mt-6 gap-2 bg-white text-black hover:bg-gray-200 rounded-xl py-6 font-bold shadow-lg">
+                  Start Assignment <ChevronRight className="w-4 h-4" />
                 </Button>
               </CardContent>
             </Card>
@@ -67,24 +77,34 @@ export default async function AssignmentsPage({ params }: { params: Promise<{ cl
 
       {/* Completed */}
       {completed.length > 0 && (
-        <div className="space-y-3">
-          <h2 className="text-sm font-semibold text-success flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4" /> Completed
+        <div className="space-y-4">
+          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-widest flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-gray-400" /> Completed
           </h2>
           {completed.map((a) => (
-            <Card key={a.id} className="border-success/20 bg-success/5">
-              <CardContent className="p-4">
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-lg bg-success/20 flex items-center justify-center shrink-0">
-                    <CheckCircle2 className="w-5 h-5 text-success" />
+            <Card key={a.id} className="border-white/5 bg-black/40 backdrop-blur-2xl shadow-xl rounded-3xl opacity-80 hover:opacity-100 transition-opacity">
+              <CardContent className="p-6">
+                <div className="flex flex-col sm:flex-row sm:items-start gap-5">
+                  <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
+                    <CheckCircle2 className="w-5 h-5 text-white" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-2">
-                      <p className="font-semibold">{a.title}</p>
-                      <Badge variant="success" className="text-xs shrink-0">{a.score}%</Badge>
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                      <div>
+                        <p className="font-bold text-lg text-gray-300 line-through mb-1">{a.title}</p>
+                        <div className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-[10px] font-bold text-white mb-2 inline-block">
+                          Score: {a.score}%
+                        </div>
+                      </div>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1">{a.description}</p>
-                    <p className="text-xs text-muted-foreground mt-1">Submitted {a.dueDate} · {a.points} pts</p>
+                    <p className="text-sm font-medium text-gray-500">{a.description}</p>
+                    <div className="mt-4 pt-4 border-t border-white/5 flex items-center gap-2">
+                      <p className="text-xs font-bold text-gray-400 flex items-center gap-1.5">
+                        <Clock className="w-4 h-4 text-gray-500" /> Submitted {a.dueDate}
+                      </p>
+                      <span className="text-gray-600">•</span>
+                      <p className="text-xs font-bold text-gray-500">{a.points} pts</p>
+                    </div>
                   </div>
                 </div>
               </CardContent>

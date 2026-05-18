@@ -149,14 +149,14 @@ export function BossBattleArena({
             <p className="text-sm text-muted-foreground">{boss.description}</p>
 
             <div className="grid grid-cols-2 gap-3 text-sm">
-              <div className="p-3 rounded-lg border border-border bg-card/50 text-center">
+              <div className="p-3 rounded-lg border border-border bg-card text-center">
                 <div className="flex items-center justify-center gap-1 mb-1">
                   <Sword className="w-4 h-4 text-primary" />
                   <span className="font-bold">Attack Power</span>
                 </div>
                 <p className="text-muted-foreground text-xs">Correct answers deal {player.attackPower} damage</p>
               </div>
-              <div className="p-3 rounded-lg border border-border bg-card/50 text-center">
+              <div className="p-3 rounded-lg border border-border bg-card text-center">
                 <div className="flex items-center justify-center gap-1 mb-1">
                   <Zap className="w-4 h-4 text-mastery" />
                   <span className="font-bold">Reward</span>

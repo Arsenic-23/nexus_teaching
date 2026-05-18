@@ -57,7 +57,7 @@ export default function AnalyticsPage() {
           { label: 'Quizzes', current: thisWeek.quizzesPassed, previous: lastWeek.quizzesPassed, suffix: '', icon: Award, color: 'text-mastery' },
           { label: 'Accuracy', current: thisWeek.accuracy, previous: lastWeek.accuracy, suffix: '%', icon: TrendingUp, color: 'text-success' },
         ].map(({ label, current, previous, suffix, icon: Icon, color }) => (
-          <Card key={label} className="border-border bg-card/50">
+          <Card key={label} className="border-border bg-card">
             <CardContent className="pt-4 pb-4">
               <div className="flex items-center gap-2 mb-2">
                 <Icon className={`w-4 h-4 ${color}`} />
@@ -71,7 +71,7 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Monthly XP chart */}
-      <Card className="border-border bg-card/50">
+      <Card className="border-border bg-card">
         <CardHeader className="pb-3">
           <CardTitle className="text-base">30-Day XP History</CardTitle>
         </CardHeader>
@@ -80,7 +80,7 @@ export default function AnalyticsPage() {
             {monthlyXp.map((xp, i) => (
               <div
                 key={i}
-                className="flex-1 rounded-t-sm bg-gradient-xp opacity-70 hover:opacity-100 transition-opacity cursor-pointer"
+                className="flex-1 rounded-t-sm bg-gradient-brand opacity-70 hover:opacity-100 transition-opacity cursor-pointer"
                 style={{ height: `${(xp / maxXp) * 72}px`, minHeight: xp > 0 ? '2px' : '0' }}
                 title={`Day ${i + 1}: ${xp} XP`}
               />
@@ -93,7 +93,7 @@ export default function AnalyticsPage() {
       </Card>
 
       {/* Time spent this week */}
-      <Card className="border-border bg-card/50">
+      <Card className="border-border bg-card">
         <CardHeader className="pb-3">
           <CardTitle className="text-base flex items-center gap-2">
             <Clock className="w-4 h-4 text-primary" />
@@ -116,7 +116,7 @@ export default function AnalyticsPage() {
       </Card>
 
       {/* Subject distribution */}
-      <Card className="border-border bg-card/50">
+      <Card className="border-border bg-card">
         <CardHeader className="pb-3">
           <CardTitle className="text-base">Study Distribution</CardTitle>
         </CardHeader>

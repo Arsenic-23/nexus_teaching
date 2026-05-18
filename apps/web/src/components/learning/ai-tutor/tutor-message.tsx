@@ -28,7 +28,7 @@ export function TutorMessage({ message, className }: TutorMessageProps) {
     >
       {/* Avatar */}
       {!isUser && (
-        <div className="w-8 h-8 rounded-lg bg-gradient-xp flex items-center justify-center shrink-0 mt-1">
+        <div className="w-8 h-8 rounded-lg bg-gradient-brand flex items-center justify-center shrink-0 mt-1">
           <Bot className="w-4 h-4 text-white" />
         </div>
       )}

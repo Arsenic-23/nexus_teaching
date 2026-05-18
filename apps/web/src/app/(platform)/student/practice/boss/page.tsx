@@ -123,7 +123,7 @@ export default function BossPage() {
           {bosses.map((boss) => (
             <Card
               key={boss.id}
-              className={`border transition-all ${boss.available ? 'border-destructive/30 bg-destructive/5 hover:border-destructive/50 hover:shadow-lg cursor-pointer' : 'border-border bg-card/30 opacity-60 cursor-not-allowed'}`}
+              className={`border transition-all ${boss.available ? 'border-destructive/30 bg-destructive/5 hover:border-destructive/50 hover:shadow-lg cursor-pointer' : 'border-border bg-muted/50 opacity-60 cursor-not-allowed'}`}
               onClick={() => boss.available && startBoss(boss.id)}
             >
               <CardContent className="p-6">
@@ -200,7 +200,7 @@ export default function BossPage() {
 
           <AnimatePresence mode="wait">
             <motion.div key={currentQ.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-              <div className="p-6 rounded-2xl border border-border bg-card/50">
+              <div className="p-6 rounded-2xl border border-border bg-card">
                 <MCQQuestion
                   question={currentQ.question}
                   choices={currentQ.choices}

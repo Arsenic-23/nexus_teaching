@@ -12,7 +12,7 @@ export default function NotFound() {
           <span className="text-6xl mx-2">🎮</span>
           <span className="text-gradient-brand">4</span>
         </div>
-        <div className="absolute inset-0 blur-3xl opacity-20 bg-gradient-xp rounded-full" />
+        <div className="absolute inset-0 blur-3xl opacity-20 bg-gradient-brand rounded-full" />
       </div>
 
       <h1 className="text-2xl font-display font-bold mb-2">Page Not Found</h1>

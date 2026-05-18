@@ -118,7 +118,7 @@ export default async function TopicPage({ params }: TopicPageProps) {
         </div>
 
         {/* Mastery ring */}
-        <div className="flex flex-col items-center gap-3 p-6 rounded-2xl border border-border bg-card/50 lg:w-48">
+        <div className="flex flex-col items-center gap-3 p-6 rounded-2xl border border-border bg-card lg:w-48">
           <MasteryRing level={topic.masteryPercent / 100} size={100} />
           <div className="text-center">
             <p className="text-2xl font-bold">{topic.masteryPercent}%</p>
@@ -128,7 +128,7 @@ export default async function TopicPage({ params }: TopicPageProps) {
       </div>
 
       {/* Overall progress */}
-      <Card className="border-border bg-card/50">
+      <Card className="border-border bg-card">
         <CardContent className="pt-4 pb-4">
           <div className="flex items-center justify-between mb-2 text-sm">
             <span className="font-medium">Progress</span>
@@ -145,7 +145,7 @@ export default async function TopicPage({ params }: TopicPageProps) {
           {topic.lessons.map((lesson, index) => (
             <div key={lesson.id}>
               {lesson.locked ? (
-                <div className="flex items-center gap-4 p-4 rounded-xl border border-border bg-card/30 opacity-60">
+                <div className="flex items-center gap-4 p-4 rounded-xl border border-border bg-muted/50 opacity-60">
                   <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center shrink-0">
                     <Lock className="w-3.5 h-3.5 text-muted-foreground" />
                   </div>
@@ -162,7 +162,7 @@ export default async function TopicPage({ params }: TopicPageProps) {
                       'flex items-center gap-4 p-4 rounded-xl border transition-all duration-200 cursor-pointer group',
                       lesson.completed
                         ? 'border-success/20 bg-success/5 hover:border-success/40'
-                        : 'border-border bg-card/50 hover:border-primary/30 hover:bg-card',
+                        : 'border-border bg-card hover:border-primary/30 hover:bg-card',
                     )}
                   >
                     <div className={cn(

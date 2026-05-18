@@ -48,7 +48,7 @@ export default function TeacherDashboard() {
           { label: 'Avg Streak', value: `${overview.avgStreak} 🔥`, icon: Zap, color: 'text-streak' },
           { label: 'Topics Done', value: overview.topicsCompleted, icon: BookOpen, color: 'text-mastery' },
         ].map(({ label, value, icon: Icon, color }) => (
-          <Card key={label} className="border-border bg-card/50">
+          <Card key={label} className="border-border bg-card">
             <CardContent className="pt-4 pb-4">
               <div className="flex items-center gap-2 mb-1">
                 <Icon className={`w-4 h-4 ${color}`} />
@@ -62,7 +62,7 @@ export default function TeacherDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Classrooms */}
-        <Card className="border-border bg-card/50">
+        <Card className="border-border bg-card">
           <CardHeader className="pb-3">
             <CardTitle className="text-base flex items-center justify-between">
               <span className="flex items-center gap-2">
@@ -110,7 +110,7 @@ export default function TeacherDashboard() {
           <CardContent className="space-y-3">
             {atRiskStudents.map((student) => (
               <Link key={student.id} href={`/teacher/students/${student.id}`}>
-                <div className="flex items-center gap-3 p-3 rounded-lg border border-orange-500/20 bg-card/50 hover:border-orange-500/40 transition-all cursor-pointer">
+                <div className="flex items-center gap-3 p-3 rounded-lg border border-orange-500/20 bg-card hover:border-orange-500/40 transition-all cursor-pointer">
                   <Avatar className="w-8 h-8 shrink-0">
                     <AvatarFallback className="text-xs">{student.name.slice(0, 2)}</AvatarFallback>
                   </Avatar>
@@ -131,7 +131,7 @@ export default function TeacherDashboard() {
         </Card>
 
         {/* Recent activity */}
-        <Card className="border-border bg-card/50 lg:col-span-2">
+        <Card className="border-border bg-card lg:col-span-2">
           <CardHeader className="pb-3">
             <CardTitle className="text-base flex items-center gap-2">
               <TrendingUp className="w-4 h-4 text-primary" />

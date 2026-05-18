@@ -33,7 +33,7 @@ export default function TeacherClassroomsPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {classrooms.map((cls) => (
           <Link key={cls.id} href={`/teacher/classrooms/${cls.id}`}>
-            <Card className="border-border bg-card/50 hover:border-primary/30 hover:shadow-lg transition-all cursor-pointer h-full group" style={{ borderColor: cls.color + '20' }}>
+            <Card className="border-border bg-card hover:border-primary/30 hover:shadow-lg transition-all cursor-pointer h-full group" style={{ borderColor: cls.color + '20' }}>
               <CardContent className="p-5">
                 <div className="flex items-start gap-3 mb-4">
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform" style={{ background: cls.color + '20' }}>

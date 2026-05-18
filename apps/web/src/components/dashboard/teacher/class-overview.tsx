@@ -21,7 +21,7 @@ export function ClassOverview({ classroom, className }: ClassOverviewProps) {
   const activityPercent = Math.round((classroom.activeToday / classroom.studentCount) * 100);
 
   return (
-    <Card className={cn('border-border bg-card/50', className)}>
+    <Card className={cn('border-border bg-card', className)}>
       <CardHeader className="pb-3">
         <CardTitle className="text-base flex items-center justify-between">
           <span className="flex items-center gap-2">

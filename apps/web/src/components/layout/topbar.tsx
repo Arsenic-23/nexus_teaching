@@ -84,7 +84,7 @@ export function TopBar({ streak = 0, xp = 0, level = 1, unreadNotifications = 0 
 
   return (
     <header className={cn(
-      'fixed top-0 right-0 left-0 h-16 z-30 border-b border-border/50 bg-background/60 backdrop-blur-2xl shadow-sm flex items-center justify-between px-6 transition-all duration-300',
+      'fixed top-0 right-0 left-0 h-16 z-30 border-b border-border bg-card/95 backdrop-blur-xl shadow-sm flex items-center justify-between px-6 transition-all duration-300',
       collapsed ? 'lg:left-[72px]' : 'lg:left-[260px]',
     )}>
       {/* Left: Search */}
@@ -92,7 +92,7 @@ export function TopBar({ streak = 0, xp = 0, level = 1, unreadNotifications = 0 
         <div className="relative">
           <button
             onClick={() => setSearchOpen((prev) => !prev)}
-            className="flex items-center gap-3 px-3 py-1.5 rounded-xl border border-border/60 bg-card/40 text-sm text-muted-foreground hover:text-foreground hover:bg-card hover:border-foreground/20 transition-all shadow-sm"
+            className="flex items-center gap-3 px-3 py-1.5 rounded-xl border border-border/60 bg-card text-sm text-muted-foreground hover:text-foreground hover:bg-card hover:border-foreground/20 transition-all shadow-sm"
           >
             <Search className="w-4 h-4" />
             <span className="hidden sm:inline">Search...</span>

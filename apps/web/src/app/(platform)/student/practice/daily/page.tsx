@@ -120,7 +120,7 @@ export default function DailyPracticePage() {
 
         <AnimatePresence mode="wait">
           <motion.div key={question?.id} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-            <div className="p-6 rounded-2xl border border-border bg-card/50">
+            <div className="p-6 rounded-2xl border border-border bg-card">
               {question?.type === 'mcq' && question.choices && (
                 <MCQQuestion question={question.question} choices={question.choices} selectedId={answers[question.id] as string} correctId={question.correctAnswer as string} onSelect={(id) => handleAnswer(question.id, id)} showResult={showResult} />
               )}

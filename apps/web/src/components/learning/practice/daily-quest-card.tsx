@@ -27,7 +27,7 @@ interface PracticeDailyQuestCardProps {
 const questTypeConfig = {
   lesson: { icon: '📚', color: 'text-primary', bg: 'bg-primary/10 border-primary/20' },
   quiz: { icon: '⚡', color: 'text-mastery', bg: 'bg-mastery/10 border-mastery/20' },
-  review: { icon: '🔄', color: 'text-purple-400', bg: 'bg-purple-500/10 border-purple-500/20' },
+  review: { icon: '🔄', color: 'text-primary', bg: 'bg-primary/10 border-border' },
   boss: { icon: '⚔️', color: 'text-destructive', bg: 'bg-destructive/10 border-destructive/20' },
   streak: { icon: '🔥', color: 'text-streak', bg: 'bg-streak/10 border-streak/20' },
 };

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Network, Info } from 'lucide-react';
+import { Network, Info, Calculator, Atom, FlaskConical } from 'lucide-react';
 import { SkillTreeCanvas, type SkillTreeNode } from '@/components/learning/skill-tree/skill-tree-canvas';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
@@ -43,9 +43,9 @@ const subjectMeta: Record<string, { mastered: number; inProgress: number; locked
 };
 
 const subjects = [
-  { id: 'mathematics', name: 'Mathematics', emoji: '📐' },
-  { id: 'physics', name: 'Physics', emoji: '⚡' },
-  { id: 'chemistry', name: 'Chemistry', emoji: '🧪' },
+  { id: 'mathematics', name: 'Mathematics', icon: Calculator },
+  { id: 'physics', name: 'Physics', icon: Atom },
+  { id: 'chemistry', name: 'Chemistry', icon: FlaskConical },
 ];
 
 export default function SkillTreePage() {
@@ -54,59 +54,72 @@ export default function SkillTreePage() {
   const meta = subjectMeta[activeSubject] ?? { mastered: 0, inProgress: 0, locked: 0 };
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-8 animate-fade-in">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-display font-bold flex items-center gap-2">
-            <Network className="w-6 h-6 text-primary" />
+          <h1 className="text-4xl md:text-5xl font-display font-black tracking-tight mb-2 flex items-center gap-3">
+            <Network className="w-8 h-8 text-white" />
             Skill Tree
           </h1>
-          <p className="text-muted-foreground text-sm mt-1">
+          <p className="text-muted-foreground text-lg font-medium">
             Visualize your learning path and mastery progress
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <Badge variant="success" className="text-xs">{meta.mastered} Mastered</Badge>
-          <Badge variant="default" className="text-xs">{meta.inProgress} In Progress</Badge>
-          <Badge variant="secondary" className="text-xs">{meta.locked} Locked</Badge>
+        <div className="flex items-center gap-3 bg-white/5 border border-white/10 p-2 rounded-2xl shadow-inner">
+          <div className="px-3 py-1.5 rounded-xl bg-white text-[10px] font-black uppercase tracking-wider text-black">
+            {meta.mastered} Mastered
+          </div>
+          <div className="px-3 py-1.5 rounded-xl bg-white/10 border border-white/20 text-[10px] font-black uppercase tracking-wider text-white">
+            {meta.inProgress} In Progress
+          </div>
+          <div className="px-3 py-1.5 rounded-xl bg-black/50 border border-white/5 text-[10px] font-bold uppercase tracking-wider text-gray-500">
+            {meta.locked} Locked
+          </div>
         </div>
       </div>
 
       {/* Info tip */}
-      <div className="flex items-start gap-2 p-3 rounded-lg bg-primary/5 border border-primary/20 text-sm">
-        <Info className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-        <p className="text-muted-foreground">
-          <span className="font-medium text-foreground">Navigate the tree:</span> Drag to pan, scroll to zoom, click nodes to see details. Complete topics to unlock new paths.
+      <div className="flex items-start gap-3 p-4 rounded-2xl bg-white/5 border border-white/10 shadow-inner">
+        <Info className="w-5 h-5 text-white shrink-0 mt-0.5" />
+        <p className="text-gray-400 text-sm font-medium">
+          <span className="font-bold text-white uppercase tracking-wider text-xs mr-2">Navigate the tree:</span>
+          Drag to pan, scroll to zoom, click nodes to see details. Complete topics to unlock new paths.
         </p>
       </div>
 
       {/* Subject selector */}
-      <div className="flex gap-2 flex-wrap">
-        {subjects.map((subject) => (
-          <button
-            key={subject.id}
-            onClick={() => setActiveSubject(subject.id)}
-            className={cn(
-              'flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-medium transition-all',
-              activeSubject === subject.id
-                ? 'bg-primary/10 border-primary/40 text-primary'
-                : 'bg-card border-border text-muted-foreground hover:border-primary/30 hover:text-foreground',
-            )}
-          >
-            <span>{subject.emoji}</span>
-            {subject.name}
-          </button>
-        ))}
+      <div className="flex gap-3 flex-wrap">
+        {subjects.map((subject) => {
+          const Icon = subject.icon;
+          return (
+            <button
+              key={subject.id}
+              onClick={() => setActiveSubject(subject.id)}
+              className={cn(
+                'flex items-center gap-2 px-5 py-2.5 rounded-xl border text-sm font-bold transition-all',
+                activeSubject === subject.id
+                  ? 'bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.4)]'
+                  : 'bg-white/5 border-white/10 text-gray-400 hover:border-white/30 hover:text-white',
+              )}
+            >
+              <Icon className="w-4 h-4" />
+              {subject.name}
+            </button>
+          );
+        })}
       </div>
 
       {/* Canvas */}
-      <SkillTreeCanvas
-        nodes={nodes}
-        width={560}
-        height={620}
-        className="w-full"
-      />
+      <div className="rounded-3xl overflow-hidden border border-white/10 bg-black/40 backdrop-blur-2xl shadow-2xl relative">
+        <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_50px_rgba(0,0,0,0.8)] z-10" />
+        <SkillTreeCanvas
+          nodes={nodes}
+          width={560}
+          height={620}
+          className="w-full relative z-0"
+        />
+      </div>
     </div>
   );
 }

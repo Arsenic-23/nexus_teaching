@@ -16,7 +16,7 @@ const reviewItems = [
 const priorityConfig = {
   high: { color: 'text-destructive', bg: 'border-destructive/30 bg-destructive/5', dot: 'bg-destructive' },
   medium: { color: 'text-orange-400', bg: 'border-orange-500/30 bg-orange-500/5', dot: 'bg-orange-400' },
-  low: { color: 'text-muted-foreground', bg: 'border-border bg-card/50', dot: 'bg-muted-foreground' },
+  low: { color: 'text-muted-foreground', bg: 'border-border bg-card', dot: 'bg-muted-foreground' },
 };
 
 export default function ReviewPage() {
@@ -27,7 +27,7 @@ export default function ReviewPage() {
     <div className="space-y-6 animate-fade-in">
       <div>
         <h1 className="text-2xl font-display font-bold flex items-center gap-2">
-          <RotateCcw className="w-6 h-6 text-purple-400" />
+          <RotateCcw className="w-6 h-6 text-primary" />
           Spaced Repetition Review
         </h1>
         <p className="text-muted-foreground text-sm mt-1">
@@ -36,8 +36,8 @@ export default function ReviewPage() {
       </div>
 
       {/* Info card */}
-      <div className="flex items-start gap-2 p-3 rounded-lg bg-purple-500/10 border border-purple-500/20 text-sm">
-        <Info className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
+      <div className="flex items-start gap-2 p-3 rounded-lg bg-primary/10 border border-border text-sm">
+        <Info className="w-4 h-4 text-primary shrink-0 mt-0.5" />
         <p className="text-muted-foreground">
           <span className="font-medium text-foreground">Spaced repetition</span> helps you remember things longer by reviewing at increasing intervals right before you forget.
         </p>
@@ -57,7 +57,7 @@ export default function ReviewPage() {
             <p className="text-xs text-muted-foreground">Due Today</p>
           </CardContent>
         </Card>
-        <Card className="border-border bg-card/50 text-center">
+        <Card className="border-border bg-card text-center">
           <CardContent className="pt-4 pb-4">
             <p className="text-2xl font-bold">{reviewItems.length - overdueCount - dueTodayCount}</p>
             <p className="text-xs text-muted-foreground">Upcoming</p>

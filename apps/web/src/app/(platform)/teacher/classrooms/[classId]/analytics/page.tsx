@@ -40,7 +40,7 @@ export default async function ClassAnalyticsPage({ params }: { params: Promise<{
           { label: 'Avg Accuracy', value: `${classAnalytics.avgAccuracy}%`, icon: TrendingUp, color: 'text-success' },
           { label: 'Activity Rate', value: `${Math.round(classAnalytics.activeRate * 100)}%`, icon: Users, color: 'text-primary' },
         ].map(({ label, value, icon: Icon, color }) => (
-          <Card key={label} className="border-border bg-card/50 text-center">
+          <Card key={label} className="border-border bg-card text-center">
             <CardContent className="pt-4 pb-4">
               <Icon className={`w-5 h-5 mx-auto mb-1 ${color}`} />
               <p className="text-xl font-bold">{value}</p>
@@ -51,13 +51,13 @@ export default async function ClassAnalyticsPage({ params }: { params: Promise<{
       </div>
 
       {/* Weekly XP chart */}
-      <Card className="border-border bg-card/50">
+      <Card className="border-border bg-card">
         <CardHeader className="pb-3"><CardTitle className="text-base">Weekly Class XP</CardTitle></CardHeader>
         <CardContent>
           <div className="flex items-end gap-2 h-20">
             {classAnalytics.weeklyXp.map((xp, i) => (
               <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                <div className="w-full rounded-t-md bg-gradient-xp opacity-80" style={{ height: `${(xp / maxXp) * 64}px`, minHeight: xp > 0 ? '2px' : '0' }} />
+                <div className="w-full rounded-t-md bg-gradient-brand opacity-80" style={{ height: `${(xp / maxXp) * 64}px`, minHeight: xp > 0 ? '2px' : '0' }} />
                 <span className="text-[9px] text-muted-foreground">{days[i]}</span>
               </div>
             ))}
@@ -66,7 +66,7 @@ export default async function ClassAnalyticsPage({ params }: { params: Promise<{
       </Card>
 
       {/* Topic breakdown */}
-      <Card className="border-border bg-card/50">
+      <Card className="border-border bg-card">
         <CardHeader className="pb-3"><CardTitle className="text-base">Topic Performance</CardTitle></CardHeader>
         <CardContent className="space-y-4">
           {classAnalytics.topicBreakdown.map((t) => (

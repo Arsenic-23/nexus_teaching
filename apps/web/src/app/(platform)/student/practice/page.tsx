@@ -1,4 +1,4 @@
-import { Sword, Target, RotateCcw, Zap, ChevronRight, Flame, Clock } from 'lucide-react';
+import { Sword, Target, RotateCcw, Zap, ChevronRight, Flame, Clock, BookOpen, Skull } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -13,8 +13,8 @@ const mockPracticeData = {
     { id: '4', title: 'Defeat a Boss Battle', type: 'boss' as const, current: 0, target: 1, xpReward: 50, completed: false, estimatedMinutes: 30, description: 'Challenge boss level questions', href: '/student/practice/boss' },
   ],
   bossBattles: [
-    { id: 'algebra-boss', name: 'The Algebra Titan', emoji: '🦾', topic: 'Algebra Mastery', difficulty: 'medium' as const, xpReward: 200, available: true },
-    { id: 'calculus-boss', name: 'Derivative Dragon', emoji: '🐉', topic: 'Calculus Concepts', difficulty: 'hard' as const, xpReward: 350, available: false },
+    { id: 'algebra-boss', name: 'The Algebra Titan', icon: Skull, topic: 'Algebra Mastery', difficulty: 'medium' as const, xpReward: 200, available: true },
+    { id: 'calculus-boss', name: 'Derivative Dragon', icon: Skull, topic: 'Calculus Concepts', difficulty: 'hard' as const, xpReward: 350, available: false },
   ],
   reviewItems: {
     dueToday: 8,
@@ -33,69 +33,79 @@ export default function PracticePage() {
     <div className="space-y-8 animate-fade-in">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-display font-bold flex items-center gap-2">
-          <Sword className="w-6 h-6 text-purple-400" />
+        <h1 className="text-4xl md:text-5xl font-display font-black tracking-tight mb-2 flex items-center gap-3">
+          <Sword className="w-8 h-8 text-white" />
           Practice Hub
         </h1>
-        <p className="text-muted-foreground text-sm mt-1">
+        <p className="text-muted-foreground text-lg font-medium">
           Sharpen your skills with daily practice and boss battles
         </p>
       </div>
 
       {/* Daily progress bar */}
-      <Card className="border-border bg-card/50">
-        <CardContent className="pt-5 pb-5">
-          <div className="flex items-center justify-between mb-3">
+      <Card className="border-white/5 bg-black/40 backdrop-blur-2xl shadow-2xl rounded-3xl overflow-hidden">
+        <CardContent className="p-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">
             <div>
-              <p className="font-semibold">Daily Goal</p>
-              <p className="text-xs text-muted-foreground">{completedQuests}/{dailyQuests.length} quests completed</p>
+              <p className="font-bold text-white text-lg">Daily Goal</p>
+              <p className="text-sm font-medium text-gray-400">{completedQuests}/{dailyQuests.length} quests completed</p>
             </div>
-            <div className="flex items-center gap-2">
-              <Flame className="w-5 h-5 text-streak" />
-              <span className="font-bold">{mockPracticeData.streak} day streak</span>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 shadow-inner">
+              <Flame className="w-5 h-5 text-orange-500" />
+              <span className="font-bold text-white">{mockPracticeData.streak} day streak</span>
             </div>
           </div>
-          <Progress value={questProgress} className="h-3" />
+          <div className="h-3 w-full rounded-full bg-white/10 overflow-hidden shadow-inner">
+            <div className="h-full rounded-full bg-white shadow-[0_0_15px_rgba(255,255,255,0.6)] transition-all duration-1000" style={{ width: `${questProgress}%` }} />
+          </div>
           {questProgress === 100 && (
-            <p className="text-xs text-success mt-2">🎉 Daily goal complete! +50 bonus XP earned</p>
+            <p className="text-sm font-bold text-white mt-4 flex items-center gap-2">
+              <Zap className="w-4 h-4 text-white" /> Daily goal complete! +50 bonus XP earned
+            </p>
           )}
         </CardContent>
       </Card>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Daily Quests */}
-        <div className="space-y-4">
+        <div className="space-y-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-semibold flex items-center gap-2">
-              <Target className="w-4 h-4 text-primary" />
+            <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-widest flex items-center gap-2">
+              <Target className="w-4 h-4 text-white" />
               Daily Quests
             </h2>
             <Link href="/student/practice/daily">
-              <Button size="sm" variant="outline" className="h-7 text-xs gap-1">
+              <Button size="sm" className="h-8 text-xs gap-1 bg-white/10 text-white hover:bg-white/20 border border-white/20 rounded-lg font-bold">
                 Start All
-                <ChevronRight className="w-3 h-3" />
+                <ChevronRight className="w-3.5 h-3.5" />
               </Button>
             </Link>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-4">
             {dailyQuests.map((quest) => (
-              <Link key={quest.id} href={quest.href}>
-                <Card className={`border-border bg-card/50 hover:border-primary/30 transition-all cursor-pointer ${quest.completed ? 'opacity-70' : ''}`}>
-                  <CardContent className="p-4">
-                    <div className="flex items-start gap-3">
-                      <div className="text-xl">
-                        {quest.completed ? '✅' : quest.type === 'lesson' ? '📚' : quest.type === 'quiz' ? '⚡' : quest.type === 'review' ? '🔄' : '⚔️'}
+              <Link key={quest.id} href={quest.href} className="block">
+                <Card className={`border-white/5 bg-black/40 backdrop-blur-2xl hover:border-white/20 hover:bg-black/60 shadow-xl transition-all cursor-pointer rounded-3xl group ${quest.completed ? 'opacity-50' : ''}`}>
+                  <CardContent className="p-6">
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform shrink-0">
+                        {quest.completed ? <Target className="w-6 h-6 text-gray-500" /> : quest.type === 'lesson' ? <BookOpen className="w-6 h-6 text-white" /> : quest.type === 'quiz' ? <Zap className="w-6 h-6 text-white" /> : quest.type === 'review' ? <RotateCcw className="w-6 h-6 text-white" /> : <Sword className="w-6 h-6 text-white" />}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between gap-2">
-                          <p className={`font-semibold text-sm ${quest.completed ? 'line-through text-muted-foreground' : ''}`}>{quest.title}</p>
-                          <Badge variant="xp" className="text-xs shrink-0">+{quest.xpReward}</Badge>
+                        <div className="flex flex-wrap items-center justify-between gap-3 mb-1">
+                          <p className={`font-bold text-lg ${quest.completed ? 'line-through text-gray-500' : 'text-white'}`}>{quest.title}</p>
+                          <div className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-[10px] font-black text-white shrink-0 uppercase tracking-wider">
+                            +{quest.xpReward} XP
+                          </div>
                         </div>
-                        <p className="text-xs text-muted-foreground mt-0.5">{quest.description}</p>
+                        <p className="text-sm font-medium text-gray-400 mb-4">{quest.description}</p>
                         {!quest.completed && quest.current > 0 && (
-                          <div className="mt-2">
-                            <Progress value={(quest.current / quest.target) * 100} className="h-1" />
-                            <p className="text-[10px] text-muted-foreground mt-0.5">{quest.current}/{quest.target}</p>
+                          <div className="mt-auto">
+                            <div className="flex justify-between text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2">
+                              <span>Progress</span>
+                              <span>{quest.current}/{quest.target}</span>
+                            </div>
+                            <div className="h-1.5 w-full rounded-full bg-white/10 overflow-hidden shadow-inner">
+                              <div className="h-full rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.5)] transition-all" style={{ width: `${(quest.current / quest.target) * 100}%` }} />
+                            </div>
                           </div>
                         )}
                       </div>
@@ -110,35 +120,36 @@ export default function PracticePage() {
         {/* Right column: Review + Boss */}
         <div className="space-y-6">
           {/* Spaced Repetition Review */}
-          <Card className="border-purple-500/20 bg-purple-500/5">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base flex items-center justify-between">
-                <span className="flex items-center gap-2 text-purple-400">
+          <Card className="border-white/5 bg-black/40 backdrop-blur-2xl shadow-xl rounded-3xl overflow-hidden group">
+            <CardHeader className="pb-4 border-b border-white/5">
+              <CardTitle className="text-sm font-semibold text-gray-400 uppercase tracking-widest flex items-center justify-between">
+                <span className="flex items-center gap-2 text-white">
                   <RotateCcw className="w-4 h-4" />
                   Spaced Review
                 </span>
-                <Badge className="bg-purple-500/20 text-purple-400 border-purple-500/30 text-xs">
+                <div className="px-3 py-1.5 rounded-lg bg-white text-[10px] font-black uppercase tracking-wider text-black">
                   {reviewItems.dueToday + reviewItems.overdue} due
-                </Badge>
+                </div>
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-3 gap-3 mb-4 text-center">
-                <div className="p-2 rounded-lg bg-secondary/50">
-                  <p className="font-bold text-destructive">{reviewItems.overdue}</p>
-                  <p className="text-[10px] text-muted-foreground">Overdue</p>
+            <CardContent className="pt-6 pb-6">
+              <div className="grid grid-cols-3 gap-4 mb-6 text-center">
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/10 shadow-inner">
+                  <p className="font-black text-xl text-white mb-1">{reviewItems.overdue}</p>
+                  <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Overdue</p>
                 </div>
-                <div className="p-2 rounded-lg bg-secondary/50">
-                  <p className="font-bold text-mastery">{reviewItems.dueToday}</p>
-                  <p className="text-[10px] text-muted-foreground">Due Today</p>
+                <div className="p-4 rounded-2xl bg-white/10 border border-white/20 shadow-[inset_0_0_15px_rgba(255,255,255,0.1)] relative">
+                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-white rounded-full animate-pulse shadow-[0_0_10px_rgba(255,255,255,0.8)]" />
+                  <p className="font-black text-xl text-white mb-1">{reviewItems.dueToday}</p>
+                  <p className="text-[10px] font-bold text-white uppercase tracking-wider">Due Today</p>
                 </div>
-                <div className="p-2 rounded-lg bg-secondary/50">
-                  <p className="font-bold text-muted-foreground">{reviewItems.upcoming}</p>
-                  <p className="text-[10px] text-muted-foreground">Upcoming</p>
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/10 shadow-inner">
+                  <p className="font-black text-xl text-gray-400 mb-1">{reviewItems.upcoming}</p>
+                  <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Upcoming</p>
                 </div>
               </div>
-              <Link href="/student/practice/review">
-                <Button variant="outline" size="sm" className="w-full gap-2 border-purple-500/30 text-purple-400 hover:bg-purple-500/5">
+              <Link href="/student/practice/review" className="block">
+                <Button className="w-full gap-2 bg-white text-black hover:bg-gray-200 rounded-xl py-6 font-bold shadow-lg">
                   <RotateCcw className="w-4 h-4" />
                   Start Review Session
                 </Button>
@@ -147,41 +158,50 @@ export default function PracticePage() {
           </Card>
 
           {/* Boss Battles */}
-          <Card className="border-destructive/20 bg-destructive/5">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base flex items-center justify-between text-destructive">
-                <span className="flex items-center gap-2">
-                  <Sword className="w-4 h-4" />
+          <Card className="border-white/5 bg-black/40 backdrop-blur-2xl shadow-xl rounded-3xl overflow-hidden">
+            <CardHeader className="pb-4 border-b border-white/5">
+              <CardTitle className="text-sm font-semibold text-gray-400 uppercase tracking-widest flex items-center justify-between">
+                <span className="flex items-center gap-2 text-white">
+                  <Skull className="w-4 h-4" />
                   Boss Battles
                 </span>
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {bossBattles.map((boss) => (
-                  <div key={boss.id} className={`flex items-center gap-3 p-3 rounded-lg border ${boss.available ? 'border-destructive/30 bg-card' : 'border-border bg-secondary/30 opacity-60'}`}>
-                    <span className="text-2xl">{boss.emoji}</span>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-sm">{boss.name}</p>
-                      <p className="text-xs text-muted-foreground">{boss.topic}</p>
+            <CardContent className="pt-6 pb-6">
+              <div className="space-y-4">
+                {bossBattles.map((boss) => {
+                  const Icon = boss.icon;
+                  return (
+                    <div key={boss.id} className={`flex items-center gap-4 p-5 rounded-2xl border transition-all ${boss.available ? 'border-white/20 bg-white/5 hover:bg-white/10 shadow-inner group' : 'border-white/5 bg-black/50 opacity-50'}`}>
+                      <div className="w-12 h-12 rounded-xl bg-black border border-white/10 flex items-center justify-center shrink-0">
+                        <Icon className="w-6 h-6 text-white" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-bold text-base text-white mb-1">{boss.name}</p>
+                        <p className="text-xs font-medium text-gray-400">{boss.topic}</p>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <div className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-[10px] font-black text-white mb-2 inline-block">
+                          +{boss.xpReward} XP
+                        </div>
+                        {boss.available ? (
+                          <Link href="/student/practice/boss" className="block">
+                            <Button size="sm" className="w-full h-8 text-xs bg-white text-black hover:bg-gray-200 rounded-lg font-bold">
+                              Fight <Sword className="w-3 h-3 ml-1" />
+                            </Button>
+                          </Link>
+                        ) : (
+                          <div className="w-full text-center text-[10px] font-bold text-gray-500 uppercase tracking-wider py-1.5 border border-white/5 rounded-lg">
+                            Locked
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    <div className="text-right shrink-0">
-                      <p className="text-xs font-bold text-brand">+{boss.xpReward} XP</p>
-                      {boss.available ? (
-                        <Link href="/student/practice/boss">
-                          <Button size="sm" className="h-6 text-xs mt-1 gap-1">
-                            Fight <Sword className="w-2.5 h-2.5" />
-                          </Button>
-                        </Link>
-                      ) : (
-                        <Badge variant="secondary" className="text-xs mt-1">Locked</Badge>
-                      )}
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
-              <Link href="/student/practice/boss" className="block mt-3">
-                <p className="text-xs text-center text-primary hover:underline">View all boss battles →</p>
+              <Link href="/student/practice/boss" className="block mt-6">
+                <p className="text-xs font-bold text-center text-gray-400 hover:text-white uppercase tracking-wider transition-colors">View all boss battles →</p>
               </Link>
             </CardContent>
           </Card>

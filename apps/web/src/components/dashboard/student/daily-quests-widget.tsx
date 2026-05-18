@@ -23,11 +23,11 @@ export function DailyQuestsWidget({ quests, className }: DailyQuestsWidgetProps)
   const completed = quests.filter((q) => q.completed).length;
 
   return (
-    <Card className={cn('border-border bg-card/50', className)}>
+    <Card className={cn('border-border bg-card', className)}>
       <CardHeader className="pb-3">
         <CardTitle className="text-base flex items-center justify-between">
           <span className="flex items-center gap-2">
-            <Sword className="w-4 h-4 text-purple-400" />
+            <Sword className="w-4 h-4 text-primary" />
             Daily Quests
           </span>
           <Badge variant="secondary" className="text-xs">

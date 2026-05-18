@@ -34,7 +34,7 @@ export function DailyQuestCard({ quest, onClick, className }: DailyQuestCardProp
         'flex items-center gap-3 p-3 rounded-xl border transition-all duration-200 cursor-pointer',
         quest.completed
           ? 'border-success/20 bg-success/5'
-          : 'border-border bg-card/50 hover:border-primary/30 hover:bg-card',
+          : 'border-border bg-card hover:border-primary/30 hover:bg-card',
         className,
       )}
     >

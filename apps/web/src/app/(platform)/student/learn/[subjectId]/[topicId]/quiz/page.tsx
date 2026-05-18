@@ -200,7 +200,7 @@ export default function QuizPage({ params }: QuizPageProps) {
               transition={{ duration: 0.25 }}
               className="space-y-4"
             >
-              <div className="p-6 rounded-2xl border border-border bg-card/50">
+              <div className="p-6 rounded-2xl border border-border bg-card">
                 {currentQuestion.type === 'mcq' && currentQuestion.choices && (
                   <MCQQuestion
                     question={currentQuestion.question}

@@ -29,9 +29,9 @@ export function StreakCounter({
     current >= 100
       ? 'text-yellow-400'
       : current >= 60
-        ? 'text-purple-400'
+        ? 'text-primary'
         : current >= 30
-          ? 'text-blue-400'
+          ? 'text-primary'
           : current >= 14
             ? 'text-red-400'
             : 'text-streak';

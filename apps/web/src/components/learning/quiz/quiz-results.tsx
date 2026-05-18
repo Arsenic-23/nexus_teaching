@@ -67,18 +67,18 @@ export function QuizResults({
 
       {/* Stats row */}
       <div className="grid grid-cols-3 gap-3">
-        <div className="text-center p-3 rounded-xl border border-border bg-card/50">
+        <div className="text-center p-3 rounded-xl border border-border bg-card">
           <div className="flex items-center justify-center gap-1 mb-1">
             <Zap className="w-4 h-4 text-brand" />
             <span className="font-bold text-brand">+{xpEarned}</span>
           </div>
           <p className="text-xs text-muted-foreground">XP Earned</p>
         </div>
-        <div className="text-center p-3 rounded-xl border border-border bg-card/50">
+        <div className="text-center p-3 rounded-xl border border-border bg-card">
           <p className="font-bold text-success mb-1">{score}</p>
           <p className="text-xs text-muted-foreground">Correct</p>
         </div>
-        <div className="text-center p-3 rounded-xl border border-border bg-card/50">
+        <div className="text-center p-3 rounded-xl border border-border bg-card">
           <p className="font-bold text-destructive mb-1">{total - score}</p>
           <p className="text-xs text-muted-foreground">Incorrect</p>
         </div>

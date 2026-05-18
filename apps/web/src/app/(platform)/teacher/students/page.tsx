@@ -41,7 +41,7 @@ export default function TeacherStudentsPage() {
           <Link key={student.id} href={`/teacher/students/${student.id}`}>
             <div className={cn(
               'flex items-center gap-4 p-4 rounded-xl border transition-all cursor-pointer hover:shadow-md',
-              student.status === 'at-risk' ? 'border-orange-500/20 bg-orange-500/5 hover:border-orange-500/40' : 'border-border bg-card/50 hover:border-primary/30',
+              student.status === 'at-risk' ? 'border-orange-500/20 bg-orange-500/5 hover:border-orange-500/40' : 'border-border bg-card hover:border-primary/30',
             )}>
               <span className="text-sm font-bold w-6 text-center text-muted-foreground">{i + 1}</span>
               <Avatar className="w-10 h-10 shrink-0">

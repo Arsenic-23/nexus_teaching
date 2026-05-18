@@ -1,4 +1,4 @@
-import { School, BookOpen, Users, Trophy, ChevronRight, Clock, CheckCircle2, AlertTriangle } from 'lucide-react';
+import { School, BookOpen, Users, Trophy, ChevronRight, Clock, CheckCircle2, AlertTriangle, Zap, Megaphone, CheckCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -45,26 +45,29 @@ export default async function ClassroomDetailPage({ params }: { params: Promise<
       <Breadcrumbs items={[{ label: 'Classrooms', href: '/student/classrooms' }, { label: cls.name }]} />
 
       {/* Class header */}
-      <div className="p-6 rounded-2xl border" style={{ borderColor: cls.color + '30', background: cls.color + '08' }}>
-        <div className="flex items-start gap-4">
-          <div className="w-14 h-14 rounded-xl flex items-center justify-center text-3xl shrink-0" style={{ background: cls.color + '20' }}>
-            {cls.subjectEmoji}
+      <div className="p-8 rounded-3xl border border-white/5 bg-black/40 backdrop-blur-2xl shadow-2xl overflow-hidden relative">
+        <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
+          <School className="w-32 h-32 text-white" />
+        </div>
+        <div className="flex items-start gap-6 relative z-10">
+          <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shadow-inner shrink-0">
+            <School className="w-8 h-8 text-white" />
           </div>
           <div className="flex-1">
-            <h1 className="text-xl font-display font-bold">{cls.name}</h1>
-            <p className="text-sm text-muted-foreground">{cls.teacherName}</p>
-            <div className="flex items-center gap-4 mt-2 text-sm">
-              <span className="flex items-center gap-1"><Users className="w-4 h-4" /> {cls.studentCount} students</span>
-              <span className="flex items-center gap-1"><Trophy className="w-4 h-4 text-mastery" /> Rank #{cls.myRank}</span>
+            <h1 className="text-2xl md:text-3xl font-display font-black tracking-tight text-white">{cls.name}</h1>
+            <p className="text-base text-gray-400 font-medium mt-1">{cls.teacherName}</p>
+            <div className="flex items-center gap-5 mt-4 text-sm font-bold text-gray-400">
+              <span className="flex items-center gap-1.5"><Users className="w-4 h-4 text-white" /> {cls.studentCount} students</span>
+              <span className="flex items-center gap-1.5"><Trophy className="w-4 h-4 text-white" /> Rank #{cls.myRank}</span>
             </div>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-3">
             <Link href={`/student/classrooms/${resolvedParams.classId}/assignments`}>
-              <Button size="sm" variant="outline" className="gap-1 relative">
+              <Button className="gap-2 relative bg-white text-black hover:bg-gray-200 rounded-xl px-6 py-5 text-sm font-bold shadow-xl shadow-white/5">
                 <BookOpen className="w-4 h-4" />
                 Assignments
                 {pendingCount > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-destructive text-white text-[9px] font-bold flex items-center justify-center">
+                  <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-black text-white border-2 border-gray-200 text-[10px] font-black flex items-center justify-center">
                     {pendingCount}
                   </span>
                 )}
@@ -88,18 +91,23 @@ export default async function ClassroomDetailPage({ params }: { params: Promise<
           <TabsTrigger value="leaderboard">Leaderboard</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="overview" className="space-y-4">
+        <TabsContent value="overview" className="space-y-6">
           {/* Announcements */}
           {cls.announcements.length > 0 && (
-            <Card className="border-border bg-card/50">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm">📢 Announcements</CardTitle>
+            <Card className="border-white/5 bg-black/40 backdrop-blur-2xl shadow-2xl rounded-3xl">
+              <CardHeader className="pb-3 border-b border-white/5">
+                <CardTitle className="text-sm font-semibold text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                  <Megaphone className="w-4 h-4 text-white" />
+                  Announcements
+                </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="pt-5 space-y-3">
                 {cls.announcements.map((ann) => (
-                  <div key={ann.id} className="p-3 rounded-lg bg-secondary/50 border border-border">
-                    <p className="text-sm">{ann.text}</p>
-                    <p className="text-xs text-muted-foreground mt-1.5">{ann.author} · {ann.date}</p>
+                  <div key={ann.id} className="p-4 rounded-2xl bg-white/5 border border-white/10 shadow-inner">
+                    <p className="text-sm font-medium text-white">{ann.text}</p>
+                    <p className="text-xs font-bold text-gray-500 mt-2 flex items-center gap-1">
+                      {ann.author} <span className="opacity-50">•</span> {ann.date}
+                    </p>
                   </div>
                 ))}
               </CardContent>
@@ -107,27 +115,31 @@ export default async function ClassroomDetailPage({ params }: { params: Promise<
           )}
 
           {/* Pending assignments */}
-          <Card className={cn('border', pendingCount > 0 ? 'border-orange-500/20 bg-orange-500/5' : 'border-border bg-card/50')}>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm flex items-center gap-2">
+          <Card className={cn('backdrop-blur-2xl shadow-2xl rounded-3xl', pendingCount > 0 ? 'border-white/20 bg-white/5' : 'border-white/5 bg-black/40')}>
+            <CardHeader className="pb-3 border-b border-white/5">
+              <CardTitle className="text-sm font-semibold text-gray-400 uppercase tracking-widest flex items-center gap-2">
                 {pendingCount > 0 ? (
-                  <><AlertTriangle className="w-4 h-4 text-orange-400" /> {pendingCount} Pending Assignments</>
+                  <><AlertTriangle className="w-4 h-4 text-white" /> {pendingCount} Pending Assignments</>
                 ) : (
-                  <><CheckCircle2 className="w-4 h-4 text-success" /> All Caught Up!</>
+                  <><CheckCircle className="w-4 h-4 text-white" /> All Caught Up!</>
                 )}
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2">
+            <CardContent className="pt-5 space-y-3">
               {cls.assignments.filter((a) => a.status === 'pending').slice(0, 2).map((a) => (
-                <div key={a.id} className="flex items-center justify-between p-2 rounded-lg hover:bg-secondary/50 transition-colors">
+                <div key={a.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-2xl bg-black/40 border border-white/10 hover:bg-white/5 transition-colors gap-4">
                   <div>
-                    <p className="text-sm font-medium">{a.title}</p>
-                    <p className="text-xs text-muted-foreground flex items-center gap-1"><Clock className="w-3 h-3" /> Due {a.dueDate}</p>
+                    <p className="text-sm font-bold text-white">{a.title}</p>
+                    <p className="text-xs font-bold text-gray-500 flex items-center gap-1.5 mt-1">
+                      <Clock className="w-3.5 h-3.5 text-gray-400" /> Due {a.dueDate}
+                    </p>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="warning" className="text-xs">{a.points} pts</Badge>
+                  <div className="flex items-center gap-3">
+                    <div className="px-3 py-1.5 rounded-lg bg-white/10 border border-white/5 text-[10px] font-bold text-white uppercase tracking-wider">
+                      {a.points} pts
+                    </div>
                     <Link href={`/student/learn/mathematics/${a.topicId}`}>
-                      <Button size="sm" variant="outline" className="text-xs h-7 gap-1">
+                      <Button size="sm" className="bg-white text-black hover:bg-gray-200 rounded-xl px-5 text-xs font-bold gap-2">
                         Start
                         <ChevronRight className="w-3 h-3" />
                       </Button>
@@ -136,8 +148,8 @@ export default async function ClassroomDetailPage({ params }: { params: Promise<
                 </div>
               ))}
               {pendingCount > 0 && (
-                <Link href={`/student/classrooms/${resolvedParams.classId}/assignments`}>
-                  <Button variant="outline" size="sm" className="w-full mt-2 text-xs">
+                <Link href={`/student/classrooms/${resolvedParams.classId}/assignments`} className="block mt-4">
+                  <Button variant="outline" size="sm" className="w-full text-xs font-bold rounded-xl py-5 border-white/10 hover:bg-white/5 hover:text-white transition-colors">
                     View All Assignments
                   </Button>
                 </Link>
@@ -147,28 +159,34 @@ export default async function ClassroomDetailPage({ params }: { params: Promise<
         </TabsContent>
 
         <TabsContent value="assignments">
-          <div className="space-y-2 mt-4">
+          <div className="space-y-3 mt-6">
             {cls.assignments.map((a) => (
-              <Card key={a.id} className={cn('border transition-all', a.status === 'completed' ? 'border-success/20 bg-success/5' : 'border-border bg-card/50 hover:border-primary/30')}>
-                <CardContent className="p-4 flex items-center gap-4">
-                  {a.status === 'completed' ? (
-                    <CheckCircle2 className="w-5 h-5 text-success shrink-0" />
-                  ) : (
-                    <BookOpen className="w-5 h-5 text-primary shrink-0" />
-                  )}
-                  <div className="flex-1">
-                    <p className="font-semibold text-sm">{a.title}</p>
-                    <p className="text-xs text-muted-foreground flex items-center gap-1"><Clock className="w-3 h-3" /> {a.dueDate}</p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {a.score !== undefined ? (
-                      <Badge variant="success" className="text-xs">{a.score}%</Badge>
+              <Card key={a.id} className={cn('backdrop-blur-2xl shadow-xl rounded-2xl transition-all hover:bg-white/5', a.status === 'completed' ? 'border-white/5 bg-white/5' : 'border-white/10 bg-black/40')}>
+                <CardContent className="p-5 flex items-center gap-5">
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-inner ${a.status === 'completed' ? 'bg-white/10 border border-white/20' : 'bg-black border border-white/10'}`}>
+                    {a.status === 'completed' ? (
+                      <CheckCircle className="w-5 h-5 text-white" />
                     ) : (
-                      <Badge variant="warning" className="text-xs">{a.points} pts</Badge>
+                      <BookOpen className="w-5 h-5 text-gray-300" />
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <p className={`text-sm font-bold ${a.status === 'completed' ? 'text-gray-400 line-through' : 'text-white'}`}>{a.title}</p>
+                    <p className="text-xs font-bold text-gray-500 flex items-center gap-1.5 mt-1.5"><Clock className="w-3.5 h-3.5" /> {a.dueDate}</p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    {a.score !== undefined ? (
+                      <div className="px-3 py-1.5 rounded-lg bg-white/10 border border-white/20 text-[10px] font-black text-white">
+                        {a.score}%
+                      </div>
+                    ) : (
+                      <div className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                        {a.points} pts
+                      </div>
                     )}
                     {a.status === 'pending' && (
                       <Link href={`/student/learn/mathematics/${a.topicId}`}>
-                        <Button size="sm" className="text-xs h-7 gap-1">
+                        <Button size="sm" className="bg-white text-black hover:bg-gray-200 rounded-xl px-5 text-xs font-bold gap-2 shadow-lg">
                           Start <ChevronRight className="w-3 h-3" />
                         </Button>
                       </Link>
@@ -181,19 +199,26 @@ export default async function ClassroomDetailPage({ params }: { params: Promise<
         </TabsContent>
 
         <TabsContent value="leaderboard">
-          <div className="space-y-2 mt-4">
-            {cls.leaderboard.map((entry) => (
-              <div key={entry.rank} className={cn('flex items-center gap-3 p-3 rounded-xl border', (entry as any).isMe ? 'border-primary/30 bg-primary/10' : 'border-border hover:bg-secondary/50')}>
-                <span className="text-sm font-bold w-6 text-center">
-                  {entry.rank === 1 ? '🥇' : entry.rank === 2 ? '🥈' : entry.rank === 3 ? '🥉' : `#${entry.rank}`}
-                </span>
-                <Avatar className="w-8 h-8">
-                  <AvatarFallback className="text-xs">{entry.name.slice(0, 2)}</AvatarFallback>
-                </Avatar>
-                <span className={cn('flex-1 text-sm', (entry as any).isMe && 'font-bold')}>{entry.name}</span>
-                <span className="text-sm font-mono text-muted-foreground">{entry.xp.toLocaleString()} XP</span>
+          <div className="space-y-3 mt-6">
+            <div className="p-6 rounded-3xl border border-white/5 bg-black/40 backdrop-blur-2xl shadow-2xl">
+              <div className="space-y-2">
+                {cls.leaderboard.map((entry) => (
+                  <div key={entry.rank} className={cn('flex items-center gap-4 p-4 rounded-2xl transition-all', (entry as any).isMe ? 'bg-white shadow-[0_0_15px_rgba(255,255,255,0.1)]' : 'border border-transparent hover:border-white/5 hover:bg-white/5')}>
+                    <div className={cn('w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black shadow-inner', (entry as any).isMe ? 'bg-black/10' : 'bg-white/5 border border-white/10 text-gray-400')}>
+                      {entry.rank}
+                    </div>
+                    <Avatar className="w-10 h-10 border border-white/10">
+                      <AvatarFallback className="text-xs bg-black text-white">{entry.name.slice(0, 2)}</AvatarFallback>
+                    </Avatar>
+                    <span className={cn('flex-1 text-sm font-bold', (entry as any).isMe ? 'text-black' : 'text-white')}>{entry.name}</span>
+                    <span className={cn('flex items-center gap-1.5 text-xs font-bold', (entry as any).isMe ? 'text-black/60' : 'text-gray-400')}>
+                      <Zap className="w-3.5 h-3.5" />
+                      {entry.xp.toLocaleString()}
+                    </span>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </TabsContent>
       </Tabs>

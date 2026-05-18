@@ -127,7 +127,7 @@ export default async function SubjectPage({ params }: { params: Promise<{ subjec
                 <span>Overall Mastery</span>
                 <span className="font-semibold" style={{ color: subject.color }}>{subject.masteryPercent}%</span>
               </div>
-              <div className="h-2 w-full rounded-full bg-black/20 overflow-hidden">
+              <div className="h-2 w-full rounded-full bg-muted/40 overflow-hidden">
                 <div
                   className="h-full rounded-full transition-all duration-700"
                   style={{ width: `${subject.masteryPercent}%`, background: subject.color }}
@@ -169,7 +169,7 @@ export default async function SubjectPage({ params }: { params: Promise<{ subjec
                   </Card>
                 ) : (
                   <Link href={`/student/learn/${resolvedParams.subjectId}/${topic.id}`}>
-                    <Card className={cn('border-border bg-card/50 transition-all cursor-pointer group', config.bg)}>
+                    <Card className={cn('border-border bg-card transition-all cursor-pointer group', config.bg)}>
                       <CardContent className="p-4">
                         <div className="flex items-center gap-4">
                           <div className={cn(

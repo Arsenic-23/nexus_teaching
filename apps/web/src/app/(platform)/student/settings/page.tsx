@@ -39,7 +39,7 @@ export default function SettingsPage() {
       </div>
 
       {/* Daily Goal */}
-      <Card className="border-border bg-card/50">
+      <Card className="border-border bg-card">
         <CardHeader className="pb-4">
           <CardTitle className="text-base flex items-center gap-2">
             <Target className="w-4 h-4 text-primary" />
@@ -80,10 +80,10 @@ export default function SettingsPage() {
       </Card>
 
       {/* Appearance */}
-      <Card className="border-border bg-card/50">
+      <Card className="border-border bg-card">
         <CardHeader className="pb-4">
           <CardTitle className="text-base flex items-center gap-2">
-            <Moon className="w-4 h-4 text-purple-400" />
+            <Moon className="w-4 h-4 text-primary" />
             Appearance
           </CardTitle>
         </CardHeader>
@@ -117,7 +117,7 @@ export default function SettingsPage() {
       </Card>
 
       {/* Notifications */}
-      <Card className="border-border bg-card/50">
+      <Card className="border-border bg-card">
         <CardHeader className="pb-4">
           <CardTitle className="text-base flex items-center gap-2">
             <Bell className="w-4 h-4 text-mastery" />
@@ -151,7 +151,7 @@ export default function SettingsPage() {
       </Card>
 
       {/* Account */}
-      <Card className="border-border bg-card/50">
+      <Card className="border-border bg-card">
         <CardHeader className="pb-4">
           <CardTitle className="text-base flex items-center gap-2">
             <User className="w-4 h-4 text-primary" />

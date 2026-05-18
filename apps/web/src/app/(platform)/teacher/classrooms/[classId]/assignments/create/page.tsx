@@ -35,7 +35,7 @@ export default function CreateAssignmentPage({ params }: { params: Promise<{ cla
         </div>
       </div>
 
-      <Card className="border-border bg-card/50">
+      <Card className="border-border bg-card">
         <CardContent className="pt-6 space-y-5">
           <div className="space-y-2">
             <label className="text-sm font-medium">Title *</label>

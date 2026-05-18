@@ -1,4 +1,4 @@
-import { BarChart3, TrendingUp, Target, Brain, ChevronRight, Zap } from 'lucide-react';
+import { BarChart3, TrendingUp, Target, Brain, ChevronRight, Zap, Calculator, Atom } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -18,8 +18,8 @@ const mockProgressData = {
     streakDays: 12,
   },
   subjects: [
-    { id: 'mathematics', name: 'Mathematics', emoji: '📐', mastery: 0.45, xp: 1800, topics: 8, color: '#3b82f6' },
-    { id: 'physics', name: 'Physics', emoji: '⚡', mastery: 0.28, xp: 650, topics: 3, color: '#8b5cf6' },
+    { id: 'mathematics', name: 'Mathematics', icon: Calculator, mastery: 0.45, xp: 1800, topics: 8, color: '#ffffff' },
+    { id: 'physics', name: 'Physics', icon: Atom, mastery: 0.28, xp: 650, topics: 3, color: '#ffffff' },
   ],
   weeklyXp: [120, 95, 180, 210, 140, 380, 0],
   recentActivity: [
@@ -40,51 +40,61 @@ export default function ProgressPage() {
     <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-display font-bold flex items-center gap-2">
-            <BarChart3 className="w-6 h-6 text-primary" />
+          <h1 className="text-4xl md:text-5xl font-display font-black tracking-tight mb-2">
             Progress
           </h1>
-          <p className="text-muted-foreground text-sm mt-1">Track your learning journey</p>
+          <p className="text-muted-foreground text-lg font-medium">Track your learning journey</p>
         </div>
       </div>
 
       {/* Quick stats */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
         {[
-          { label: 'Total XP', value: overall.xpTotal.toLocaleString(), icon: Zap, color: 'text-brand' },
-          { label: 'This Week', value: `+${overall.xpThisWeek}`, icon: TrendingUp, color: 'text-success' },
-          { label: 'Topics Done', value: `${overall.topicsMastered}/${overall.topicsStarted}`, icon: Target, color: 'text-mastery' },
-          { label: 'Day Streak', value: `${overall.streakDays}🔥`, icon: Brain, color: 'text-streak' },
+          { label: 'Total XP', value: overall.xpTotal.toLocaleString(), icon: Zap, color: 'text-white' },
+          { label: 'This Week', value: `+${overall.xpThisWeek}`, icon: TrendingUp, color: 'text-white' },
+          { label: 'Topics Done', value: `${overall.topicsMastered}/${overall.topicsStarted}`, icon: Target, color: 'text-white' },
+          { label: 'Day Streak', value: `${overall.streakDays}🔥`, icon: Brain, color: 'text-white' },
         ].map(({ label, value, icon: Icon, color }) => (
-          <Card key={label} className="border-border bg-card/50">
-            <CardContent className="pt-4 pb-4">
-              <div className="flex items-center gap-2 mb-1">
-                <Icon className={`w-4 h-4 ${color}`} />
-                <span className="text-xs text-muted-foreground">{label}</span>
+          <Card key={label} className="border-white/5 bg-black/40 backdrop-blur-2xl shadow-2xl rounded-3xl overflow-hidden">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-sm font-semibold text-gray-400 uppercase tracking-widest">{label}</span>
+                <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shadow-inner">
+                  <Icon className={`w-5 h-5 ${color}`} />
+                </div>
               </div>
-              <p className="text-xl font-bold">{value}</p>
+              <p className="text-3xl font-black text-white">{value}</p>
             </CardContent>
           </Card>
         ))}
       </div>
 
       {/* Weekly XP chart */}
-      <Card className="border-border bg-card/50">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-base flex items-center justify-between">
-            <span>Weekly XP</span>
-            <Badge variant="success" className="text-xs">+{overall.xpThisWeek} this week</Badge>
+      <Card className="border-white/5 bg-black/40 backdrop-blur-2xl shadow-2xl rounded-3xl overflow-hidden">
+        <CardHeader className="pb-6 border-b border-white/5">
+          <CardTitle className="text-sm font-semibold text-gray-400 uppercase tracking-widest flex items-center justify-between">
+            <span className="flex items-center gap-2">
+              <BarChart3 className="w-4 h-4" />
+              Weekly XP
+            </span>
+            <div className="px-3 py-1.5 rounded-lg bg-white text-[10px] font-black uppercase tracking-wider text-black">
+              +{overall.xpThisWeek} this week
+            </div>
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="flex items-end gap-2 h-24">
+        <CardContent className="pt-8 pb-6">
+          <div className="flex items-end gap-3 h-32">
             {weeklyXp.map((xp, i) => (
-              <div key={i} className="flex-1 flex flex-col items-center gap-1">
+              <div key={i} className="flex-1 flex flex-col items-center gap-3">
                 <div
-                  className="w-full rounded-t-md bg-gradient-xp opacity-80 transition-all hover:opacity-100"
-                  style={{ height: `${(xp / maxXp) * 80}px`, minHeight: xp > 0 ? '4px' : '0' }}
-                />
-                <span className="text-[9px] text-muted-foreground">{days[i]}</span>
+                  className="w-full rounded-t-xl bg-white/10 hover:bg-white/20 transition-all shadow-[inset_0_0_10px_rgba(255,255,255,0.1)] relative group"
+                  style={{ height: `${(xp / maxXp) * 120}px`, minHeight: xp > 0 ? '8px' : '0' }}
+                >
+                  <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-black text-white text-[10px] font-bold rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+                    {xp} XP
+                  </div>
+                </div>
+                <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">{days[i]}</span>
               </div>
             ))}
           </div>
@@ -92,58 +102,69 @@ export default function ProgressPage() {
       </Card>
 
       {/* Subject mastery */}
-      <div className="space-y-3">
+      <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-base font-semibold">Subject Mastery</h2>
-          <Link href="/student/progress/mastery" className="text-xs text-primary hover:underline">
-            Detailed View →
+          <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-widest">Subject Mastery</h2>
+          <Link href="/student/progress/mastery" className="text-xs font-bold text-white hover:text-gray-300 flex items-center gap-1">
+            Detailed View <ChevronRight className="w-3 h-3" />
           </Link>
         </div>
-        {subjects.map((subject) => (
-          <Link key={subject.id} href={`/student/progress/mastery?subject=${subject.id}`}>
-            <Card className="border-border bg-card/50 hover:border-primary/30 transition-all cursor-pointer">
-              <CardContent className="p-4">
-                <div className="flex items-center gap-4">
-                  <MasteryRing level={subject.mastery} size={52} />
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-lg">{subject.emoji}</span>
-                      <p className="font-semibold">{subject.name}</p>
+        <div className="space-y-4">
+          {subjects.map((subject) => {
+            const Icon = subject.icon;
+            return (
+              <Link key={subject.id} href={`/student/progress/mastery?subject=${subject.id}`} className="block">
+                <Card className="border-white/5 bg-black/40 backdrop-blur-2xl shadow-xl hover:border-white/20 hover:bg-black/60 transition-all cursor-pointer rounded-3xl group">
+                  <CardContent className="p-6">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-6">
+                      <MasteryRing level={subject.mastery} size={64} className="shrink-0 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]" />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-3 mb-2">
+                          <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white shrink-0 group-hover:scale-110 transition-transform">
+                            <Icon className="w-4 h-4" />
+                          </div>
+                          <p className="text-xl font-bold text-white truncate">{subject.name}</p>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-4 text-xs font-bold text-gray-400">
+                          <span className="text-white">{Math.round(subject.mastery * 100)}% mastery</span>
+                          <span className="w-1 h-1 rounded-full bg-white/20" />
+                          <span>{subject.xp.toLocaleString()} XP</span>
+                          <span className="w-1 h-1 rounded-full bg-white/20" />
+                          <span>{subject.topics} topics</span>
+                        </div>
+                        <div className="mt-4 h-2 w-full rounded-full bg-white/10 overflow-hidden shadow-inner">
+                          <div className="h-full rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.5)] transition-all" style={{ width: `${subject.mastery * 100}%` }} />
+                        </div>
+                      </div>
+                      <div className="hidden sm:flex w-10 h-10 rounded-full bg-white/5 border border-white/10 items-center justify-center group-hover:bg-white group-hover:text-black transition-colors shrink-0">
+                        <ChevronRight className="w-5 h-5" />
+                      </div>
                     </div>
-                    <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                      <span>{Math.round(subject.mastery * 100)}% mastery</span>
-                      <span>{subject.xp.toLocaleString()} XP</span>
-                      <span>{subject.topics} topics</span>
-                    </div>
-                    <div className="mt-2 h-1.5 w-full rounded-full bg-secondary overflow-hidden">
-                      <div className="h-full rounded-full" style={{ width: `${subject.mastery * 100}%`, background: subject.color }} />
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </Link>
-        ))}
+                  </CardContent>
+                </Card>
+              </Link>
+            );
+          })}
+        </div>
       </div>
 
       {/* Detailed analytics links */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
         {[
-          { label: 'Analytics', desc: 'Performance trends', href: '/student/progress/analytics', icon: BarChart3, color: 'text-primary' },
-          { label: 'Mastery Breakdown', desc: 'Topic by topic', href: '/student/progress/mastery', icon: Target, color: 'text-mastery' },
-          { label: 'Retention Heatmap', desc: 'Memory tracking', href: '/student/progress/retention', icon: Brain, color: 'text-purple-400' },
-        ].map(({ label, desc, href, icon: Icon, color }) => (
+          { label: 'Analytics', desc: 'Performance trends', href: '/student/progress/analytics', icon: BarChart3 },
+          { label: 'Mastery Breakdown', desc: 'Topic by topic', href: '/student/progress/mastery', icon: Target },
+          { label: 'Retention Heatmap', desc: 'Memory tracking', href: '/student/progress/retention', icon: Brain },
+        ].map(({ label, desc, href, icon: Icon }) => (
           <Link key={href} href={href}>
-            <Card className="border-border bg-card/50 hover:border-primary/30 transition-all cursor-pointer h-full">
-              <CardContent className="p-4 flex items-center gap-3">
-                <div className={`w-9 h-9 rounded-lg bg-secondary flex items-center justify-center shrink-0`}>
-                  <Icon className={`w-5 h-5 ${color}`} />
+            <Card className="border-white/5 bg-black/40 backdrop-blur-2xl shadow-xl hover:border-white/20 hover:bg-black/60 transition-all cursor-pointer h-full rounded-3xl group">
+              <CardContent className="p-6 flex items-start gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 shadow-inner group-hover:scale-110 transition-transform">
+                  <Icon className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <p className="font-semibold text-sm">{label}</p>
-                  <p className="text-xs text-muted-foreground">{desc}</p>
+                  <p className="font-bold text-lg text-white mb-1">{label}</p>
+                  <p className="text-sm font-medium text-gray-400">{desc}</p>
                 </div>
-                <ChevronRight className="w-4 h-4 text-muted-foreground ml-auto" />
               </CardContent>
             </Card>
           </Link>
@@ -151,21 +172,26 @@ export default function ProgressPage() {
       </div>
 
       {/* Recent activity */}
-      <Card className="border-border bg-card/50">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-base">Recent Activity</CardTitle>
+      <Card className="border-white/5 bg-black/40 backdrop-blur-2xl shadow-2xl rounded-3xl overflow-hidden">
+        <CardHeader className="pb-4 border-b border-white/5">
+          <CardTitle className="text-sm font-semibold text-gray-400 uppercase tracking-widest flex items-center gap-2">
+            <TrendingUp className="w-4 h-4 text-white" />
+            Recent Activity
+          </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
+        <CardContent className="pt-4 px-2 pb-2">
+          <div className="space-y-1">
             {recentActivity.map((activity, i) => (
-              <div key={i} className="flex items-center justify-between gap-3 p-2 rounded-lg hover:bg-secondary/50 transition-colors">
+              <div key={i} className="flex items-center justify-between gap-4 p-4 rounded-2xl hover:bg-white/5 transition-colors group">
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs text-muted-foreground">{activity.action}</p>
-                  <p className="text-sm font-medium truncate">{activity.item}</p>
+                  <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">{activity.action}</p>
+                  <p className="text-sm font-bold text-white truncate">{activity.item}</p>
                 </div>
                 <div className="text-right shrink-0">
-                  <p className="text-xs font-bold text-brand">+{activity.xp} XP</p>
-                  <p className="text-[10px] text-muted-foreground">{activity.time}</p>
+                  <div className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-[10px] font-black text-white mb-1.5 inline-block">
+                    +{activity.xp} XP
+                  </div>
+                  <p className="text-[10px] font-bold text-gray-500 block">{activity.time}</p>
                 </div>
               </div>
             ))}

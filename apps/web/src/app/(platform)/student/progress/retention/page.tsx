@@ -49,20 +49,20 @@ export default function RetentionPage() {
 
       <div>
         <h1 className="text-2xl font-display font-bold flex items-center gap-2">
-          <Brain className="w-6 h-6 text-purple-400" />
+          <Brain className="w-6 h-6 text-primary" />
           Retention Heatmap
         </h1>
         <p className="text-muted-foreground text-sm mt-1">Track your study consistency and memory retention</p>
       </div>
 
       {/* Info */}
-      <div className="flex items-start gap-2 p-3 rounded-lg bg-purple-500/10 border border-purple-500/20 text-sm">
-        <Info className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
+      <div className="flex items-start gap-2 p-3 rounded-lg bg-primary/10 border border-border text-sm">
+        <Info className="w-4 h-4 text-primary shrink-0 mt-0.5" />
         <p className="text-muted-foreground">Darker = more study activity. Review consistently to maintain high retention rates.</p>
       </div>
 
       {/* Heatmap */}
-      <Card className="border-border bg-card/50">
+      <Card className="border-border bg-card">
         <CardHeader className="pb-3">
           <CardTitle className="text-base">12-Week Activity</CardTitle>
         </CardHeader>
@@ -99,7 +99,7 @@ export default function RetentionPage() {
       </Card>
 
       {/* Topic retention scores */}
-      <Card className="border-border bg-card/50">
+      <Card className="border-border bg-card">
         <CardHeader className="pb-3">
           <CardTitle className="text-base">Topic Retention Scores</CardTitle>
         </CardHeader>

@@ -20,10 +20,10 @@ interface ExplanationBlockProps {
 }
 
 const calloutConfig: Record<CalloutType, { icon: React.ElementType; colors: string }> = {
-  info: { icon: Info, colors: 'border-blue-500/30 bg-blue-500/5 text-blue-400' },
+  info: { icon: Info, colors: 'border-border/30 bg-primary/5 text-primary' },
   warning: { icon: AlertTriangle, colors: 'border-orange-500/30 bg-orange-500/5 text-orange-400' },
   tip: { icon: Lightbulb, colors: 'border-mastery/30 bg-mastery/5 text-mastery' },
-  definition: { icon: BookOpen, colors: 'border-purple-500/30 bg-purple-500/5 text-purple-400' },
+  definition: { icon: BookOpen, colors: 'border-primary/30 bg-primary/5 text-primary' },
 };
 
 export function ExplanationBlock({

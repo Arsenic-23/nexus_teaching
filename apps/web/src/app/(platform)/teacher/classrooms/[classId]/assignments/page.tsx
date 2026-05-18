@@ -68,7 +68,7 @@ export default async function ClassAssignmentsPage({ params }: { params: Promise
         <div className="space-y-3">
           <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Completed</h2>
           {completed.map((a) => (
-            <Card key={a.id} className="border-border bg-card/50">
+            <Card key={a.id} className="border-border bg-card">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
                   <CheckCircle2 className="w-5 h-5 text-success shrink-0" />

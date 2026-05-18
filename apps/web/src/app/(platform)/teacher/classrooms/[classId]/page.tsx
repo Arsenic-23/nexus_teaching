@@ -64,7 +64,7 @@ export default async function TeacherClassroomPage({ params }: { params: Promise
                 { label: 'Avg Mastery', value: `${Math.round(cls.avgMastery * 100)}%`, icon: BarChart3 },
                 { label: 'Weekly XP', value: cls.weeklyXp.toLocaleString(), icon: TrendingUp },
               ].map(({ label, value, icon: Icon }) => (
-                <div key={label} className="text-center p-2 rounded-lg bg-card/80 border border-border">
+                <div key={label} className="text-center p-2 rounded-lg bg-card border border-border">
                   <p className="font-bold text-sm">{value}</p>
                   <p className="text-[10px] text-muted-foreground">{label}</p>
                 </div>
@@ -116,7 +116,7 @@ export default async function TeacherClassroomPage({ params }: { params: Promise
           <div className="space-y-2 mt-4">
             {cls.students.map((s, i) => (
               <Link key={s.id} href={`/teacher/students/${s.id}`}>
-                <div className={cn('flex items-center gap-3 p-3 rounded-xl border transition-all hover:border-primary/30 cursor-pointer', s.status === 'at-risk' ? 'border-orange-500/20 bg-orange-500/5' : 'border-border bg-card/50')}>
+                <div className={cn('flex items-center gap-3 p-3 rounded-xl border transition-all hover:border-primary/30 cursor-pointer', s.status === 'at-risk' ? 'border-orange-500/20 bg-orange-500/5' : 'border-border bg-card')}>
                   <span className="text-sm font-bold w-6 text-center text-muted-foreground">#{i + 1}</span>
                   <Avatar className="w-8 h-8"><AvatarFallback className="text-xs">{s.name.slice(0, 2)}</AvatarFallback></Avatar>
                   <div className="flex-1 min-w-0">
@@ -158,7 +158,7 @@ export default async function TeacherClassroomPage({ params }: { params: Promise
               </Link>
             </div>
             {cls.assignments.map((a) => (
-              <Card key={a.id} className="border-border bg-card/50">
+              <Card key={a.id} className="border-border bg-card">
                 <CardContent className="p-4">
                   <div className="flex items-start justify-between gap-3">
                     <div>
