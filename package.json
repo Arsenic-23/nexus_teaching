@@ -1,0 +1,31 @@
+{
+  "name": "teaching-platform",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Nexus Learning Platform — Next-generation gamified mastery-based learning system",
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "type-check": "turbo type-check",
+    "clean": "turbo clean && rm -rf node_modules",
+    "db:generate": "pnpm --filter @nexus/database generate",
+    "db:migrate": "pnpm --filter @nexus/database migrate:dev",
+    "db:push": "pnpm --filter @nexus/database push",
+    "db:seed": "pnpm --filter @nexus/database seed",
+    "db:studio": "pnpm --filter @nexus/database studio"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "prettier": "^3.4.0",
+    "turbo": "^2.3.0",
+    "typescript": "^5.7.0"
+  }
+}

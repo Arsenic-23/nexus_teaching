@@ -1,0 +1,1046 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==================== USER & AUTH ====================
+
+model User {
+  id        String   @id @default(cuid())
+  clerkId   String   @unique
+  email     String   @unique
+  firstName String
+  lastName  String
+  avatarUrl String?
+  role      UserRole @default(STUDENT)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  studentProfile StudentProfile?
+  teacherProfile TeacherProfile?
+  adminProfile   AdminProfile?
+  notifications  Notification[]
+
+  @@index([clerkId])
+  @@index([email])
+  @@index([role])
+}
+
+enum UserRole {
+  STUDENT
+  TEACHER
+  SCHOOL_ADMIN
+  SUPER_ADMIN
+}
+
+model StudentProfile {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Gamification State
+  totalXp Int     @default(0)
+  level   Int     @default(1)
+  rankId  String?
+  rank    Rank?   @relation(fields: [rankId], references: [id])
+
+  // Preferences
+  gradeLevel Int?
+  subjects   String[]
+  dailyGoal  Int      @default(30)
+  timezone   String   @default("UTC")
+
+  // Onboarding
+  onboardingComplete Boolean @default(false)
+  diagnosticComplete Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  progress          StudentProgress[]
+  xpTransactions    XPTransaction[]
+  streak            Streak?
+  achievements      StudentAchievement[]
+  quizAttempts      QuizAttempt[]
+  lessonCompletions LessonCompletion[]
+  enrollments       Enrollment[]
+  tutorSessions     TutorSession[]
+  questProgress     QuestProgress[]
+  retentionData     RetentionRecord[]
+
+  @@index([userId])
+  @@index([totalXp])
+  @@index([rankId])
+}
+
+model TeacherProfile {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  schoolId String?
+  school   School?  @relation(fields: [schoolId], references: [id])
+  subjects String[]
+  bio      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  classrooms Classroom[]
+
+  @@index([userId])
+  @@index([schoolId])
+}
+
+model AdminProfile {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  schoolId   String?
+  school     School?    @relation(fields: [schoolId], references: [id])
+  adminLevel AdminLevel @default(SCHOOL)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([schoolId])
+}
+
+enum AdminLevel {
+  SCHOOL
+  DISTRICT
+  SUPER
+}
+
+model School {
+  id      String  @id @default(cuid())
+  name    String
+  slug    String  @unique
+  domain  String?
+  logoUrl String?
+  address String?
+  city    String?
+  state   String?
+  country String?
+
+  planId String?
+  plan   SubscriptionPlan? @relation(fields: [planId], references: [id])
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  teachers   TeacherProfile[]
+  admins     AdminProfile[]
+  classrooms Classroom[]
+
+  @@index([slug])
+}
+
+// ==================== CURRICULUM ====================
+
+model Subject {
+  id          String  @id @default(cuid())
+  name        String
+  slug        String  @unique
+  description String?
+  iconUrl     String?
+  color       String?
+  order       Int     @default(0)
+  isActive    Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  topics    Topic[]
+  standards CurriculumStandard[]
+
+  @@index([slug])
+}
+
+model Topic {
+  id          String     @id @default(cuid())
+  subjectId   String
+  subject     Subject    @relation(fields: [subjectId], references: [id])
+  name        String
+  slug        String
+  description String?
+  iconUrl     String?
+  order       Int        @default(0)
+  difficulty  Difficulty @default(INTERMEDIATE)
+  estimatedTime Int?
+  isActive    Boolean    @default(true)
+
+  // Skill tree positioning
+  treeX Float?
+  treeY Float?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  lessons       Lesson[]
+  quizzes       Quiz[]
+  prerequisites TopicPrerequisite[] @relation("topic")
+  dependents    TopicPrerequisite[] @relation("prerequisite")
+  progress      StudentProgress[]
+  standards     CurriculumStandard[]
+
+  @@unique([subjectId, slug])
+  @@index([subjectId])
+}
+
+model TopicPrerequisite {
+  id             String @id @default(cuid())
+  topicId        String
+  topic          Topic  @relation("topic", fields: [topicId], references: [id])
+  prerequisiteId String
+  prerequisite   Topic  @relation("prerequisite", fields: [prerequisiteId], references: [id])
+
+  requiredMastery Float @default(0.7)
+
+  @@unique([topicId, prerequisiteId])
+  @@index([topicId])
+  @@index([prerequisiteId])
+}
+
+enum Difficulty {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  EXPERT
+}
+
+model Lesson {
+  id          String     @id @default(cuid())
+  topicId     String
+  topic       Topic      @relation(fields: [topicId], references: [id])
+  title       String
+  slug        String
+  description String?
+  order       Int        @default(0)
+  type        LessonType @default(INTERACTIVE)
+  difficulty  Difficulty @default(INTERMEDIATE)
+  xpReward    Int        @default(50)
+  estimatedTime Int?
+  isActive    Boolean    @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  steps       LessonStep[]
+  completions LessonCompletion[]
+
+  @@unique([topicId, slug])
+  @@index([topicId])
+}
+
+enum LessonType {
+  INTERACTIVE
+  GUIDED
+  EXPLORATION
+  APPLICATION
+}
+
+model LessonStep {
+  id       String   @id @default(cuid())
+  lessonId String
+  lesson   Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  order    Int
+  type     StepType
+  content  Json
+
+  interactionType InteractionType?
+  correctAnswer   Json?
+  hints           Json?
+  explanation     String?
+  xpReward        Int              @default(10)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([lessonId, order])
+  @@index([lessonId])
+}
+
+enum StepType {
+  EXPLANATION
+  INTERACTIVE
+  VISUALIZATION
+  CHECKPOINT
+  SUMMARY
+}
+
+enum InteractionType {
+  MULTIPLE_CHOICE
+  FREE_INPUT
+  DRAG_DROP
+  SLIDER
+  GRAPH_PLOT
+  CODE_INPUT
+  MATCHING
+  ORDERING
+  FILL_BLANK
+  TRUE_FALSE
+  NUMERIC_INPUT
+}
+
+// ==================== QUIZZES & ASSESSMENT ====================
+
+model Quiz {
+  id         String     @id @default(cuid())
+  topicId    String
+  topic      Topic      @relation(fields: [topicId], references: [id])
+  title      String
+  slug       String
+  type       QuizType   @default(MASTERY_CHECK)
+  difficulty Difficulty @default(INTERMEDIATE)
+  timeLimit  Int?
+  passingScore Float    @default(0.7)
+  maxAttempts  Int?
+  xpReward   Int        @default(100)
+
+  isAdaptive   Boolean @default(false)
+  minQuestions  Int     @default(5)
+  maxQuestions  Int     @default(20)
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  questions Question[]
+  attempts  QuizAttempt[]
+
+  @@unique([topicId, slug])
+  @@index([topicId])
+}
+
+enum QuizType {
+  MASTERY_CHECK
+  DIAGNOSTIC
+  PRACTICE
+  BOSS_BATTLE
+  RETENTION_CHECK
+  ASSIGNMENT
+}
+
+model Question {
+  id     String  @id @default(cuid())
+  quizId String?
+  quiz   Quiz?   @relation(fields: [quizId], references: [id])
+
+  topicId    String?
+  type       QuestionType
+  difficulty Difficulty   @default(INTERMEDIATE)
+
+  stem          String
+  media         Json?
+  options       Json?
+  correctAnswer Json
+  explanation   String?
+  hints         Json?
+
+  conceptTags String[]
+  bloomsLevel BloomsLevel @default(APPLY)
+  points      Int         @default(10)
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  responses QuestionResponse[]
+
+  @@index([quizId])
+  @@index([topicId])
+  @@index([type])
+  @@index([difficulty])
+}
+
+enum QuestionType {
+  MULTIPLE_CHOICE
+  MULTIPLE_SELECT
+  FREE_RESPONSE
+  NUMERIC_INPUT
+  FILL_BLANK
+  MATCHING
+  ORDERING
+  TRUE_FALSE
+}
+
+enum BloomsLevel {
+  REMEMBER
+  UNDERSTAND
+  APPLY
+  ANALYZE
+  EVALUATE
+  CREATE
+}
+
+model QuizAttempt {
+  id        String         @id @default(cuid())
+  quizId    String
+  quiz      Quiz           @relation(fields: [quizId], references: [id])
+  studentId String
+  student   StudentProfile @relation(fields: [studentId], references: [id])
+
+  score          Float
+  totalQuestions Int
+  correctCount   Int
+  timeSpent      Int
+  passed         Boolean
+  xpEarned       Int     @default(0)
+
+  startedAt   DateTime  @default(now())
+  completedAt DateTime?
+
+  responses QuestionResponse[]
+
+  @@index([quizId])
+  @@index([studentId])
+  @@index([studentId, quizId])
+}
+
+model QuestionResponse {
+  id         String      @id @default(cuid())
+  attemptId  String
+  attempt    QuizAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  questionId String
+  question   Question    @relation(fields: [questionId], references: [id])
+
+  answer    Json
+  isCorrect Boolean
+  timeSpent Int
+  hintsUsed Int     @default(0)
+
+  createdAt DateTime @default(now())
+
+  @@index([attemptId])
+  @@index([questionId])
+}
+
+// ==================== PROGRESS & MASTERY ====================
+
+model StudentProgress {
+  id        String         @id @default(cuid())
+  studentId String
+  student   StudentProfile @relation(fields: [studentId], references: [id])
+  topicId   String
+  topic     Topic          @relation(fields: [topicId], references: [id])
+
+  masteryLevel  Float         @default(0)
+  masteryStatus MasteryStatus @default(NOT_STARTED)
+
+  lessonsCompleted Int   @default(0)
+  totalLessons     Int   @default(0)
+  quizzesPassed    Int   @default(0)
+  averageScore     Float @default(0)
+  totalTimeSpent   Int   @default(0)
+
+  lastPracticed  DateTime?
+  retentionScore Float     @default(1)
+  nextReviewDate DateTime?
+
+  isUnlocked Boolean   @default(false)
+  unlockedAt DateTime?
+  masteredAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([studentId, topicId])
+  @@index([studentId])
+  @@index([topicId])
+  @@index([masteryStatus])
+  @@index([nextReviewDate])
+}
+
+enum MasteryStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  PRACTICED
+  PROFICIENT
+  MASTERED
+}
+
+model LessonCompletion {
+  id        String         @id @default(cuid())
+  studentId String
+  student   StudentProfile @relation(fields: [studentId], references: [id])
+  lessonId  String
+  lesson    Lesson         @relation(fields: [lessonId], references: [id])
+
+  score          Float?
+  timeSpent      Int
+  stepsCompleted Int
+  totalSteps     Int
+  xpEarned       Int    @default(0)
+
+  completedAt DateTime @default(now())
+
+  @@unique([studentId, lessonId])
+  @@index([studentId])
+  @@index([lessonId])
+}
+
+model RetentionRecord {
+  id        String         @id @default(cuid())
+  studentId String
+  student   StudentProfile @relation(fields: [studentId], references: [id])
+  topicId   String
+
+  interval    Int   @default(1)
+  easeFactor  Float @default(2.5)
+  repetitions Int   @default(0)
+  lastScore   Float
+
+  nextReview   DateTime
+  lastReviewed DateTime @default(now())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([studentId, topicId])
+  @@index([studentId, nextReview])
+}
+
+// ==================== GAMIFICATION ====================
+
+model XPTransaction {
+  id        String         @id @default(cuid())
+  studentId String
+  student   StudentProfile @relation(fields: [studentId], references: [id])
+
+  amount      Int
+  source      XPSource
+  sourceId    String?
+  description String?
+  multiplier  Float    @default(1.0)
+  streakBonus Int      @default(0)
+
+  createdAt DateTime @default(now())
+
+  @@index([studentId])
+  @@index([studentId, createdAt])
+  @@index([source])
+}
+
+enum XPSource {
+  LESSON_COMPLETE
+  QUIZ_PASS
+  QUIZ_PERFECT
+  STREAK_BONUS
+  DAILY_QUEST
+  BOSS_BATTLE
+  ACHIEVEMENT
+  RETENTION_REVIEW
+  FIRST_TRY_CORRECT
+  EXPLANATION_QUALITY
+}
+
+model Rank {
+  id        String   @id @default(cuid())
+  name      String
+  tier      RankTier
+  division  Int
+  minXp     Int
+  maxXp     Int
+  iconUrl   String?
+  color     String?
+  glowColor String?
+  order     Int      @unique
+
+  students StudentProfile[]
+
+  @@index([minXp])
+}
+
+enum RankTier {
+  BRONZE
+  SILVER
+  GOLD
+  PLATINUM
+  DIAMOND
+  MASTER
+}
+
+model Streak {
+  id        String         @id @default(cuid())
+  studentId String         @unique
+  student   StudentProfile @relation(fields: [studentId], references: [id])
+
+  currentStreak  Int       @default(0)
+  longestStreak  Int       @default(0)
+  lastActiveDate DateTime?
+
+  freezesAvailable Int     @default(1)
+  freezeUsedToday  Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([studentId])
+  @@index([currentStreak])
+}
+
+model Achievement {
+  id          String              @id @default(cuid())
+  name        String
+  slug        String              @unique
+  description String
+  iconUrl     String?
+  category    AchievementCategory
+
+  criteria Json
+  xpReward Int    @default(50)
+  rarity   Rarity @default(COMMON)
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  students StudentAchievement[]
+
+  @@index([category])
+  @@index([slug])
+}
+
+enum AchievementCategory {
+  LEARNING
+  MASTERY
+  STREAK
+  SOCIAL
+  CHALLENGE
+  MILESTONE
+  EXPLORATION
+}
+
+enum Rarity {
+  COMMON
+  UNCOMMON
+  RARE
+  EPIC
+  LEGENDARY
+}
+
+model StudentAchievement {
+  id            String         @id @default(cuid())
+  studentId     String
+  student       StudentProfile @relation(fields: [studentId], references: [id])
+  achievementId String
+  achievement   Achievement    @relation(fields: [achievementId], references: [id])
+
+  unlockedAt DateTime @default(now())
+
+  @@unique([studentId, achievementId])
+  @@index([studentId])
+}
+
+model DailyQuest {
+  id          String    @id @default(cuid())
+  title       String
+  description String
+  type        QuestType
+
+  targetValue Int
+  xpReward    Int        @default(25)
+  difficulty  Difficulty @default(BEGINNER)
+  minLevel    Int        @default(1)
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  progress QuestProgress[]
+}
+
+enum QuestType {
+  COMPLETE_LESSONS
+  PASS_QUIZZES
+  EARN_XP
+  MAINTAIN_STREAK
+  REVIEW_TOPICS
+  PERFECT_SCORE
+  USE_AI_TUTOR
+  DEFEAT_BOSS
+}
+
+model QuestProgress {
+  id        String         @id @default(cuid())
+  studentId String
+  student   StudentProfile @relation(fields: [studentId], references: [id])
+  questId   String
+  quest     DailyQuest     @relation(fields: [questId], references: [id])
+
+  currentValue Int      @default(0)
+  isCompleted  Boolean  @default(false)
+  completedAt  DateTime?
+  assignedDate DateTime @default(now())
+
+  @@unique([studentId, questId, assignedDate])
+  @@index([studentId, assignedDate])
+}
+
+model LeaderboardEntry {
+  id        String          @id @default(cuid())
+  studentId String
+  type      LeaderboardType
+  scope     String
+
+  score Int
+  rank  Int
+
+  periodStart DateTime
+  periodEnd   DateTime
+
+  updatedAt DateTime @updatedAt
+
+  @@unique([studentId, type, scope, periodStart])
+  @@index([type, scope, periodStart, score])
+}
+
+enum LeaderboardType {
+  WEEKLY_XP
+  MONTHLY_XP
+  ALL_TIME_XP
+  WEEKLY_MASTERY
+  CLASS_XP
+}
+
+// ==================== CLASSROOMS ====================
+
+model Classroom {
+  id        String         @id @default(cuid())
+  teacherId String
+  teacher   TeacherProfile @relation(fields: [teacherId], references: [id])
+  schoolId  String?
+  school    School?        @relation(fields: [schoolId], references: [id])
+
+  name        String
+  slug        String
+  description String?
+  subject     String
+  gradeLevel  Int?
+  joinCode    String  @unique
+  isActive    Boolean @default(true)
+  maxStudents Int     @default(40)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  enrollments Enrollment[]
+  assignments Assignment[]
+  discussions Discussion[]
+
+  @@index([teacherId])
+  @@index([schoolId])
+  @@index([joinCode])
+}
+
+model Enrollment {
+  id          String         @id @default(cuid())
+  studentId   String
+  student     StudentProfile @relation(fields: [studentId], references: [id])
+  classroomId String
+  classroom   Classroom      @relation(fields: [classroomId], references: [id])
+
+  status   EnrollmentStatus @default(ACTIVE)
+  joinedAt DateTime         @default(now())
+
+  @@unique([studentId, classroomId])
+  @@index([classroomId])
+  @@index([studentId])
+}
+
+enum EnrollmentStatus {
+  ACTIVE
+  INACTIVE
+  REMOVED
+}
+
+model Assignment {
+  id          String         @id @default(cuid())
+  classroomId String
+  classroom   Classroom      @relation(fields: [classroomId], references: [id])
+
+  title       String
+  description String?
+  type        AssignmentType
+
+  topicId   String?
+  quizId    String?
+  lessonIds String[]
+
+  dueDate       DateTime?
+  availableFrom DateTime  @default(now())
+  maxAttempts   Int?
+  passingScore  Float?
+  xpBonus       Int       @default(0)
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  submissions AssignmentSubmission[]
+
+  @@index([classroomId])
+  @@index([dueDate])
+}
+
+enum AssignmentType {
+  LESSON
+  QUIZ
+  TOPIC_MASTERY
+  PRACTICE_SET
+}
+
+model AssignmentSubmission {
+  id           String     @id @default(cuid())
+  assignmentId String
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  studentId    String
+
+  status    SubmissionStatus @default(IN_PROGRESS)
+  score     Float?
+  timeSpent Int?
+  attempts  Int              @default(1)
+
+  submittedAt DateTime?
+  gradedAt    DateTime?
+  feedback    String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([assignmentId, studentId])
+  @@index([assignmentId])
+  @@index([studentId])
+}
+
+enum SubmissionStatus {
+  IN_PROGRESS
+  SUBMITTED
+  GRADED
+  RETURNED
+}
+
+model Discussion {
+  id          String    @id @default(cuid())
+  classroomId String
+  classroom   Classroom @relation(fields: [classroomId], references: [id])
+  authorId    String
+
+  title    String
+  content  String
+  isPinned Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  replies DiscussionReply[]
+
+  @@index([classroomId])
+}
+
+model DiscussionReply {
+  id           String     @id @default(cuid())
+  discussionId String
+  discussion   Discussion @relation(fields: [discussionId], references: [id], onDelete: Cascade)
+  authorId     String
+
+  content String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([discussionId])
+}
+
+// ==================== AI & TUTORING ====================
+
+model TutorSession {
+  id        String         @id @default(cuid())
+  studentId String
+  student   StudentProfile @relation(fields: [studentId], references: [id])
+
+  topicId  String?
+  lessonId String?
+  status   SessionStatus @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  messages TutorMessage[]
+
+  @@index([studentId])
+  @@index([studentId, status])
+}
+
+enum SessionStatus {
+  ACTIVE
+  COMPLETED
+  ABANDONED
+}
+
+model TutorMessage {
+  id        String       @id @default(cuid())
+  sessionId String
+  session   TutorSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  role    MessageRole
+  content String
+
+  model     String?
+  tokensUsed Int?
+  latencyMs  Int?
+
+  createdAt DateTime @default(now())
+
+  @@index([sessionId])
+}
+
+enum MessageRole {
+  USER
+  ASSISTANT
+  SYSTEM
+}
+
+model AIUsageLog {
+  id     String @id @default(cuid())
+  userId String
+
+  provider     String
+  model        String
+  purpose      String
+  inputTokens  Int
+  outputTokens Int
+  cost         Float
+  latencyMs    Int
+  success      Boolean @default(true)
+  error        String?
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([provider, createdAt])
+  @@index([purpose])
+}
+
+// ==================== SUBSCRIPTIONS ====================
+
+model SubscriptionPlan {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  type        PlanType
+
+  priceMonthly Int
+  priceYearly  Int
+
+  features  Json
+  aiCredits Int  @default(100)
+  maxStudents Int?
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  subscriptions Subscription[]
+  schools       School[]
+
+  @@index([slug])
+}
+
+enum PlanType {
+  FREE
+  STUDENT_PRO
+  TEACHER_PRO
+  SCHOOL
+  ENTERPRISE
+}
+
+model Subscription {
+  id     String           @id @default(cuid())
+  userId String
+  planId String
+  plan   SubscriptionPlan @relation(fields: [planId], references: [id])
+
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+
+  status             SubscriptionStatus @default(ACTIVE)
+  currentPeriodStart DateTime
+  currentPeriodEnd   DateTime
+
+  canceledAt DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([stripeCustomerId])
+  @@index([status])
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  INCOMPLETE
+  TRIALING
+}
+
+// ==================== NOTIFICATIONS ====================
+
+model Notification {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  type    NotificationType
+  title   String
+  message String
+  data    Json?
+
+  isRead Boolean   @default(false)
+  readAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([userId, isRead])
+  @@index([userId, createdAt])
+}
+
+enum NotificationType {
+  ACHIEVEMENT_UNLOCKED
+  RANK_UP
+  STREAK_REMINDER
+  ASSIGNMENT_DUE
+  ASSIGNMENT_GRADED
+  CLASSROOM_INVITE
+  SYSTEM_ANNOUNCEMENT
+  AI_RECOMMENDATION
+  RETENTION_REMINDER
+}
+
+// ==================== CURRICULUM STANDARDS ====================
+
+model CurriculumStandard {
+  id          String  @id @default(cuid())
+  framework   String
+  code        String
+  description String
+  gradeLevel  Int?
+
+  subjectId String?
+  subject   Subject? @relation(fields: [subjectId], references: [id])
+  topicId   String?
+  topic     Topic?   @relation(fields: [topicId], references: [id])
+
+  @@index([framework])
+  @@index([subjectId])
+  @@index([topicId])
+}
