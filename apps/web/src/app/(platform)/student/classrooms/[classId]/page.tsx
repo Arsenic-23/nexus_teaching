@@ -2,7 +2,6 @@ import { School, BookOpen, Users, Trophy, ChevronRight, Clock, CheckCircle2, Ale
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Breadcrumbs } from '@/components/shared/breadcrumbs';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
@@ -13,16 +12,15 @@ const mockClassroom = {
   id: 'class1',
   name: 'Advanced Mathematics — Grade 11',
   teacherName: 'Ms. Sarah Chen',
-  teacherAvatar: null,
   subjectEmoji: '📐',
   color: '#3b82f6',
   studentCount: 28,
   myRank: 3,
   myXp: 2450,
   assignments: [
-    { id: 'a1', title: 'Quadratic Equations Problem Set', dueDate: 'Tomorrow', status: 'pending' as const, points: 100 },
-    { id: 'a2', title: 'Functions Quiz', dueDate: 'In 3 days', status: 'pending' as const, points: 50 },
-    { id: 'a3', title: 'Linear Equations Chapter Review', dueDate: 'Completed', status: 'completed' as const, points: 80, score: 92 },
+    { id: 'a1', title: 'Quadratic Equations Problem Set', dueDate: 'Tomorrow', status: 'pending' as const, points: 100, topicId: 'quadratic-equations' },
+    { id: 'a2', title: 'Functions Quiz', dueDate: 'In 3 days', status: 'pending' as const, points: 50, topicId: 'functions' },
+    { id: 'a3', title: 'Linear Equations Chapter Review', dueDate: 'Completed', status: 'completed' as const, points: 80, score: 92, topicId: 'linear-equations' },
   ],
   leaderboard: [
     { rank: 1, name: 'Emma L.', xp: 3200 },
@@ -37,7 +35,8 @@ const mockClassroom = {
   ],
 };
 
-export default function ClassroomDetailPage({ params }: { params: { classId: string } }) {
+export default async function ClassroomDetailPage({ params }: { params: Promise<{ classId: string }> }) {
+  const resolvedParams = await params;
   const cls = mockClassroom;
   const pendingCount = cls.assignments.filter((a) => a.status === 'pending').length;
 
@@ -60,7 +59,7 @@ export default function ClassroomDetailPage({ params }: { params: { classId: str
             </div>
           </div>
           <div className="flex gap-2">
-            <Link href={`/student/classrooms/${params.classId}/assignments`}>
+            <Link href={`/student/classrooms/${resolvedParams.classId}/assignments`}>
               <Button size="sm" variant="outline" className="gap-1 relative">
                 <BookOpen className="w-4 h-4" />
                 Assignments
@@ -78,7 +77,14 @@ export default function ClassroomDetailPage({ params }: { params: { classId: str
       <Tabs defaultValue="overview">
         <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="assignments">Assignments</TabsTrigger>
+          <TabsTrigger value="assignments">
+            Assignments
+            {pendingCount > 0 && (
+              <span className="ml-1.5 w-4 h-4 rounded-full bg-destructive text-white text-[9px] font-bold inline-flex items-center justify-center">
+                {pendingCount}
+              </span>
+            )}
+          </TabsTrigger>
           <TabsTrigger value="leaderboard">Leaderboard</TabsTrigger>
         </TabsList>
 
@@ -111,22 +117,37 @@ export default function ClassroomDetailPage({ params }: { params: { classId: str
                 )}
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-2">
               {cls.assignments.filter((a) => a.status === 'pending').slice(0, 2).map((a) => (
                 <div key={a.id} className="flex items-center justify-between p-2 rounded-lg hover:bg-secondary/50 transition-colors">
                   <div>
                     <p className="text-sm font-medium">{a.title}</p>
                     <p className="text-xs text-muted-foreground flex items-center gap-1"><Clock className="w-3 h-3" /> Due {a.dueDate}</p>
                   </div>
-                  <Badge variant="warning" className="text-xs">{a.points} pts</Badge>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="warning" className="text-xs">{a.points} pts</Badge>
+                    <Link href={`/student/learn/mathematics/${a.topicId}`}>
+                      <Button size="sm" variant="outline" className="text-xs h-7 gap-1">
+                        Start
+                        <ChevronRight className="w-3 h-3" />
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               ))}
+              {pendingCount > 0 && (
+                <Link href={`/student/classrooms/${resolvedParams.classId}/assignments`}>
+                  <Button variant="outline" size="sm" className="w-full mt-2 text-xs">
+                    View All Assignments
+                  </Button>
+                </Link>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
 
         <TabsContent value="assignments">
-          <div className="space-y-2">
+          <div className="space-y-2 mt-4">
             {cls.assignments.map((a) => (
               <Card key={a.id} className={cn('border transition-all', a.status === 'completed' ? 'border-success/20 bg-success/5' : 'border-border bg-card/50 hover:border-primary/30')}>
                 <CardContent className="p-4 flex items-center gap-4">
@@ -139,11 +160,18 @@ export default function ClassroomDetailPage({ params }: { params: { classId: str
                     <p className="font-semibold text-sm">{a.title}</p>
                     <p className="text-xs text-muted-foreground flex items-center gap-1"><Clock className="w-3 h-3" /> {a.dueDate}</p>
                   </div>
-                  <div className="text-right">
+                  <div className="flex items-center gap-2">
                     {a.score !== undefined ? (
                       <Badge variant="success" className="text-xs">{a.score}%</Badge>
                     ) : (
                       <Badge variant="warning" className="text-xs">{a.points} pts</Badge>
+                    )}
+                    {a.status === 'pending' && (
+                      <Link href={`/student/learn/mathematics/${a.topicId}`}>
+                        <Button size="sm" className="text-xs h-7 gap-1">
+                          Start <ChevronRight className="w-3 h-3" />
+                        </Button>
+                      </Link>
                     )}
                   </div>
                 </CardContent>
@@ -153,16 +181,16 @@ export default function ClassroomDetailPage({ params }: { params: { classId: str
         </TabsContent>
 
         <TabsContent value="leaderboard">
-          <div className="space-y-2">
+          <div className="space-y-2 mt-4">
             {cls.leaderboard.map((entry) => (
-              <div key={entry.rank} className={cn('flex items-center gap-3 p-3 rounded-xl border', entry.isMe ? 'border-primary/30 bg-primary/10' : 'border-border hover:bg-secondary/50')}>
+              <div key={entry.rank} className={cn('flex items-center gap-3 p-3 rounded-xl border', (entry as any).isMe ? 'border-primary/30 bg-primary/10' : 'border-border hover:bg-secondary/50')}>
                 <span className="text-sm font-bold w-6 text-center">
                   {entry.rank === 1 ? '🥇' : entry.rank === 2 ? '🥈' : entry.rank === 3 ? '🥉' : `#${entry.rank}`}
                 </span>
                 <Avatar className="w-8 h-8">
                   <AvatarFallback className="text-xs">{entry.name.slice(0, 2)}</AvatarFallback>
                 </Avatar>
-                <span className={cn('flex-1 text-sm', entry.isMe && 'font-bold')}>{entry.name}</span>
+                <span className={cn('flex-1 text-sm', (entry as any).isMe && 'font-bold')}>{entry.name}</span>
                 <span className="text-sm font-mono text-muted-foreground">{entry.xp.toLocaleString()} XP</span>
               </div>
             ))}

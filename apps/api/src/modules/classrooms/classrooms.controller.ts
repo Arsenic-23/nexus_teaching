@@ -2,14 +2,18 @@ import {
   Controller,
   Get,
   Post,
+  Delete,
+  Patch,
   Param,
   Body,
-  UseGuards,
+  Query,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { CurrentUser, CurrentUserPayload } from '../../common/decorators/current-user.decorator';
+import { Roles } from '../../common/decorators/roles.decorator';
 import { ClassroomsService } from './classrooms.service';
 import { AssignmentsService } from './assignments.service';
+import { CreateClassroomDto, JoinClassroomDto, CreateAssignmentDto, GradeSubmissionDto } from './dto/classroom.dto';
 
 @ApiTags('Classrooms')
 @ApiBearerAuth()
@@ -32,12 +36,13 @@ export class ClassroomsController {
   }
 
   @Post()
+  @Roles('TEACHER')
   @ApiOperation({ summary: 'Create a new classroom (teacher only)' })
   async createClassroom(
     @CurrentUser() user: CurrentUserPayload,
-    @Body() body: { name: string; subject: string; description?: string; gradeLevel?: number },
+    @Body() dto: CreateClassroomDto,
   ) {
-    const result = await this.classroomsService.createClassroom(user.teacherProfileId!, body);
+    const result = await this.classroomsService.createClassroom(user.teacherProfileId!, dto);
     return { data: result };
   }
 
@@ -48,13 +53,24 @@ export class ClassroomsController {
     return { data: result };
   }
 
+  @Delete(':id')
+  @Roles('TEACHER')
+  @ApiOperation({ summary: 'Archive/deactivate a classroom (teacher only)' })
+  async archiveClassroom(
+    @Param('id') id: string,
+    @CurrentUser() user: CurrentUserPayload,
+  ) {
+    const result = await this.classroomsService.archiveClassroom(id, user.teacherProfileId!);
+    return { data: result };
+  }
+
   @Post('join')
   @ApiOperation({ summary: 'Join a classroom by join code' })
   async joinClassroom(
     @CurrentUser() user: CurrentUserPayload,
-    @Body() body: { joinCode: string },
+    @Body() dto: JoinClassroomDto,
   ) {
-    const result = await this.classroomsService.joinClassroom(user.studentProfileId!, body.joinCode);
+    const result = await this.classroomsService.joinClassroom(user.studentProfileId!, dto.joinCode);
     return { data: result };
   }
 
@@ -65,6 +81,18 @@ export class ClassroomsController {
     @CurrentUser() user: CurrentUserPayload,
   ) {
     const result = await this.classroomsService.leaveClassroom(user.studentProfileId!, id);
+    return { data: result };
+  }
+
+  @Delete(':id/students/:studentId')
+  @Roles('TEACHER')
+  @ApiOperation({ summary: 'Remove a student from classroom (teacher only)' })
+  async removeStudent(
+    @Param('id') classroomId: string,
+    @Param('studentId') studentId: string,
+    @CurrentUser() user: CurrentUserPayload,
+  ) {
+    const result = await this.classroomsService.removeStudent(classroomId, studentId, user.teacherProfileId!);
     return { data: result };
   }
 
@@ -82,6 +110,17 @@ export class ClassroomsController {
     return { data: result };
   }
 
+  @Get(':id/leaderboard')
+  @ApiOperation({ summary: 'Get classroom leaderboard' })
+  @ApiQuery({ name: 'limit', required: false, type: Number })
+  async getLeaderboard(
+    @Param('id') id: string,
+    @Query('limit') limit?: number,
+  ) {
+    const result = await this.classroomsService.getClassLeaderboard(id, limit);
+    return { data: result };
+  }
+
   @Get(':id/assignments')
   @ApiOperation({ summary: 'Get assignments for a classroom' })
   async getAssignments(
@@ -93,24 +132,14 @@ export class ClassroomsController {
   }
 
   @Post(':id/assignments')
+  @Roles('TEACHER')
   @ApiOperation({ summary: 'Create an assignment (teacher only)' })
   async createAssignment(
     @Param('id') id: string,
     @CurrentUser() user: CurrentUserPayload,
-    @Body() body: {
-      title: string;
-      description?: string;
-      type: string;
-      topicId?: string;
-      quizId?: string;
-      lessonIds?: string[];
-      dueDate?: string;
-      maxAttempts?: number;
-      passingScore?: number;
-      xpBonus?: number;
-    },
+    @Body() dto: CreateAssignmentDto,
   ) {
-    const result = await this.assignmentsService.createAssignment(id, user.teacherProfileId!, body);
+    const result = await this.assignmentsService.createAssignment(id, user.teacherProfileId!, dto);
     return { data: result };
   }
 }

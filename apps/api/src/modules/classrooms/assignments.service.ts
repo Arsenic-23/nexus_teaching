@@ -5,6 +5,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma.service';
+import { GradeSubmissionDto } from './dto/classroom.dto';
 
 @Injectable()
 export class AssignmentsService {
@@ -133,6 +134,43 @@ export class AssignmentsService {
         submittedAt: new Date(),
         attempts: { increment: 1 },
       },
+    });
+  }
+
+  async gradeSubmission(
+    assignmentId: string,
+    studentProfileId: string,
+    dto: GradeSubmissionDto,
+  ) {
+    const submission = await this.prisma.assignmentSubmission.findUnique({
+      where: { assignmentId_studentId: { assignmentId, studentId: studentProfileId } },
+    });
+
+    if (!submission) throw new NotFoundException('Submission not found');
+
+    return this.prisma.assignmentSubmission.update({
+      where: { id: submission.id },
+      data: {
+        score: dto.score,
+        feedback: dto.feedback,
+        status: 'GRADED',
+        gradedAt: new Date(),
+      },
+    });
+  }
+
+  async getSubmissions(assignmentId: string) {
+    const assignment = await this.prisma.assignment.findUnique({
+      where: { id: assignmentId },
+    });
+    if (!assignment) throw new NotFoundException('Assignment not found');
+
+    return this.prisma.assignmentSubmission.findMany({
+      where: { assignmentId },
+      include: {
+        // StudentProfile doesn't have direct relation to submission — join through studentId
+      },
+      orderBy: { submittedAt: 'desc' },
     });
   }
 }

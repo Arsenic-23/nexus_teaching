@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ConflictException, Logger } from '@nestjs/common';
+import { Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma.service';
 import { OnboardingDto, UpdateProfileDto, UpdateSettingsDto } from './dto';
 
@@ -36,7 +36,6 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
 
-    // Update base user fields
     const userUpdate: Record<string, any> = {};
     if (dto.firstName) userUpdate.firstName = dto.firstName;
     if (dto.lastName) userUpdate.lastName = dto.lastName;
@@ -49,8 +48,7 @@ export class UsersService {
       });
     }
 
-    // Update student profile fields
-    if (user.studentProfile && (dto.gradeLevel || dto.subjects || dto.dailyGoal || dto.timezone)) {
+    if (user.studentProfile && (dto.gradeLevel !== undefined || dto.subjects !== undefined || dto.dailyGoal !== undefined || dto.timezone !== undefined)) {
       const profileUpdate: Record<string, any> = {};
       if (dto.gradeLevel !== undefined) profileUpdate.gradeLevel = dto.gradeLevel;
       if (dto.subjects !== undefined) profileUpdate.subjects = dto.subjects;
@@ -76,11 +74,17 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
 
-    if (user.studentProfile && dto.timezone) {
-      await this.prisma.studentProfile.update({
-        where: { id: user.studentProfile.id },
-        data: { timezone: dto.timezone },
-      });
+    if (user.studentProfile) {
+      const profileUpdate: Record<string, any> = {};
+      if (dto.timezone !== undefined) profileUpdate.timezone = dto.timezone;
+      if (dto.dailyGoal !== undefined) profileUpdate.dailyGoal = dto.dailyGoal;
+
+      if (Object.keys(profileUpdate).length > 0) {
+        await this.prisma.studentProfile.update({
+          where: { id: user.studentProfile.id },
+          data: profileUpdate,
+        });
+      }
     }
 
     return this.getProfile(userId);
@@ -96,7 +100,6 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
 
-    // Update user role
     await this.prisma.user.update({
       where: { id: userId },
       data: { role: dto.role as any },
@@ -104,7 +107,6 @@ export class UsersService {
 
     if (dto.role === 'STUDENT') {
       if (user.studentProfile) {
-        // Update existing profile
         await this.prisma.studentProfile.update({
           where: { id: user.studentProfile.id },
           data: {
@@ -115,7 +117,6 @@ export class UsersService {
           },
         });
       } else {
-        // Create student profile
         await this.prisma.studentProfile.create({
           data: {
             userId: user.id,

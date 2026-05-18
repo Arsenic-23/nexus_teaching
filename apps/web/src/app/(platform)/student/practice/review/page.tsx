@@ -2,16 +2,15 @@ import { RotateCcw, Clock, CheckCircle2, ArrowRight, Info } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
 import { MasteryRing } from '@/components/gamification/mastery-ring';
 import Link from 'next/link';
 
 const reviewItems = [
-  { id: 'r1', topic: 'Quadratic Formula', subject: 'Mathematics', dueIn: 'Overdue', masteryLevel: 0.45, priority: 'high' as const, lastReviewed: '5 days ago' },
-  { id: 'r2', topic: 'Complex Numbers', subject: 'Mathematics', dueIn: 'Today', masteryLevel: 0.3, priority: 'high' as const, lastReviewed: '3 days ago' },
-  { id: 'r3', topic: 'Newton\'s Laws', subject: 'Physics', dueIn: 'Today', masteryLevel: 0.6, priority: 'medium' as const, lastReviewed: '2 days ago' },
-  { id: 'r4', topic: 'Linear Equations', subject: 'Mathematics', dueIn: 'Tomorrow', masteryLevel: 0.88, priority: 'low' as const, lastReviewed: '6 days ago' },
-  { id: 'r5', topic: 'Kinematics', subject: 'Physics', dueIn: 'In 2 days', masteryLevel: 0.72, priority: 'low' as const, lastReviewed: '5 days ago' },
+  { id: 'r1', topic: 'Quadratic Formula', topicId: 'quadratic-equations', subjectId: 'mathematics', subject: 'Mathematics', dueIn: 'Overdue', masteryLevel: 0.45, priority: 'high' as const, lastReviewed: '5 days ago' },
+  { id: 'r2', topic: 'Complex Numbers', topicId: 'complex-numbers', subjectId: 'mathematics', subject: 'Mathematics', dueIn: 'Today', masteryLevel: 0.3, priority: 'high' as const, lastReviewed: '3 days ago' },
+  { id: 'r3', topic: "Newton's Laws", topicId: 'forces', subjectId: 'physics', subject: 'Physics', dueIn: 'Today', masteryLevel: 0.6, priority: 'medium' as const, lastReviewed: '2 days ago' },
+  { id: 'r4', topic: 'Linear Equations', topicId: 'linear-equations', subjectId: 'mathematics', subject: 'Mathematics', dueIn: 'Tomorrow', masteryLevel: 0.88, priority: 'low' as const, lastReviewed: '6 days ago' },
+  { id: 'r5', topic: 'Kinematics', topicId: 'kinematics', subjectId: 'physics', subject: 'Physics', dueIn: 'In 2 days', masteryLevel: 0.72, priority: 'low' as const, lastReviewed: '5 days ago' },
 ];
 
 const priorityConfig = {
@@ -68,10 +67,12 @@ export default function ReviewPage() {
 
       {/* Start session button */}
       {(overdueCount + dueTodayCount) > 0 && (
-        <Button variant="glow" size="lg" className="w-full gap-2">
-          <RotateCcw className="w-5 h-5" />
-          Start Review Session ({overdueCount + dueTodayCount} items)
-        </Button>
+        <Link href="/student/practice/daily">
+          <Button variant="glow" size="lg" className="w-full gap-2">
+            <RotateCcw className="w-5 h-5" />
+            Start Review Session ({overdueCount + dueTodayCount} items)
+          </Button>
+        </Link>
       )}
 
       {/* Review items */}
@@ -98,10 +99,12 @@ export default function ReviewPage() {
                       <span>Last: {item.lastReviewed}</span>
                     </div>
                   </div>
-                  <Button size="sm" variant="outline" className="shrink-0 gap-1 text-xs">
-                    Review
-                    <ArrowRight className="w-3 h-3" />
-                  </Button>
+                  <Link href={`/student/learn/${item.subjectId}/${item.topicId}`}>
+                    <Button size="sm" variant="outline" className="shrink-0 gap-1 text-xs">
+                      Review
+                      <ArrowRight className="w-3 h-3" />
+                    </Button>
+                  </Link>
                 </div>
               </CardContent>
             </Card>

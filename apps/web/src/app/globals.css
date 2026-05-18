@@ -4,53 +4,82 @@
 
 @layer base {
   :root {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 95%;
-    --card: 240 6% 8%;
-    --card-foreground: 0 0% 95%;
-    --popover: 240 6% 8%;
-    --popover-foreground: 0 0% 95%;
-    --primary: 217 91% 60%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 240 5% 15%;
-    --secondary-foreground: 0 0% 95%;
-    --muted: 240 5% 15%;
-    --muted-foreground: 240 5% 60%;
-    --accent: 263 70% 50%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+    --background: 36 12% 93%; /* #f0eeeb */
+    --foreground: 0 0% 17%; /* #2c2c2c */
+    --card: 40 12% 90%; /* #e8e6e2 */
+    --card-foreground: 0 0% 17%;
+    --popover: 40 12% 90%;
+    --popover-foreground: 0 0% 17%;
+    --primary: 0 0% 42%; /* #6b6b6b */
+    --primary-foreground: 36 12% 93%;
+    --secondary: 0 0% 63%; /* #a0a0a0 */
+    --secondary-foreground: 0 0% 17%;
+    --muted: 38 13% 86%; /* #e0ddd8 */
+    --muted-foreground: 0 0% 51%; /* #838383 */
+    --accent: 38 13% 86%;
+    --accent-foreground: 0 0% 17%;
+    --destructive: 0 74% 42%; /* #b91c1c */
+    --destructive-foreground: 36 12% 93%;
     --success: 160 84% 39%;
     --success-foreground: 0 0% 100%;
-    --border: 240 5% 15%;
-    --input: 240 5% 15%;
-    --ring: 217 91% 60%;
-    --radius: 0.75rem;
+    --border: 40 10% 82%; /* #d5d2cc */
+    --input: 40 10% 82%;
+    --ring: 42 6% 67%; /* #b0ada6 */
+    --radius: 0.625rem;
+  }
+
+  .light, .dark {
+    /* Base toggled via standard class, ensuring light explicitly forces light vars if needed */
   }
 
   .light {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 4%;
-    --card: 0 0% 98%;
-    --card-foreground: 240 10% 4%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 4%;
-    --primary: 217 91% 50%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 240 5% 96%;
-    --secondary-foreground: 240 6% 10%;
-    --muted: 240 5% 96%;
-    --muted-foreground: 240 4% 46%;
-    --accent: 263 70% 50%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+    --background: 36 12% 93%;
+    --foreground: 0 0% 17%;
+    --card: 40 12% 90%;
+    --card-foreground: 0 0% 17%;
+    --popover: 40 12% 90%;
+    --popover-foreground: 0 0% 17%;
+    --primary: 0 0% 42%;
+    --primary-foreground: 36 12% 93%;
+    --secondary: 0 0% 63%;
+    --secondary-foreground: 0 0% 17%;
+    --muted: 38 13% 86%;
+    --muted-foreground: 0 0% 51%;
+    --accent: 38 13% 86%;
+    --accent-foreground: 0 0% 17%;
+    --destructive: 0 74% 42%;
+    --destructive-foreground: 36 12% 93%;
     --success: 160 84% 39%;
     --success-foreground: 0 0% 100%;
-    --border: 240 6% 90%;
-    --input: 240 6% 90%;
-    --ring: 217 91% 50%;
-    --radius: 0.75rem;
+    --border: 40 10% 82%;
+    --input: 40 10% 82%;
+    --ring: 42 6% 67%;
+    --radius: 0.625rem;
+  }
+
+  .dark {
+    --background: 0 0% 7%; /* #121212 */
+    --foreground: 0 0% 83%; /* #d4d4d4 */
+    --card: 0 0% 9%; /* #171717 */
+    --card-foreground: 0 0% 83%;
+    --popover: 0 0% 9%;
+    --popover-foreground: 0 0% 83%;
+    --primary: 0 0% 54%; /* #8a8a8a */
+    --primary-foreground: 0 0% 7%;
+    --secondary: 0 0% 36%; /* #5c5c5c */
+    --secondary-foreground: 0 0% 83%;
+    --muted: 0 0% 11%; /* #1c1c1c */
+    --muted-foreground: 0 0% 40%; /* #666666 */
+    --accent: 0 0% 11%;
+    --accent-foreground: 0 0% 83%;
+    --destructive: 0 74% 42%;
+    --destructive-foreground: 0 0% 83%;
+    --success: 160 84% 39%;
+    --success-foreground: 0 0% 100%;
+    --border: 0 0% 13%; /* #222222 */
+    --input: 0 0% 13%;
+    --ring: 0 0% 23%; /* #3a3a3a */
+    --radius: 0.625rem;
   }
 }
 
@@ -90,6 +119,23 @@
 }
 
 @layer utilities {
+  /* Animation classes used throughout the platform */
+  .animate-fade-in {
+    animation: fade-in 0.3s ease-out;
+  }
+
+  .animate-slide-up {
+    animation: slide-up 0.3s ease-out;
+  }
+
+  .animate-slide-down {
+    animation: slide-down 0.3s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scale-in 0.2s ease-out;
+  }
+
   /* Glass morphism */
   .glass {
     @apply bg-card/70 backdrop-blur-[12px] border border-white/[0.08];
@@ -115,13 +161,13 @@
   /* Gradient backgrounds */
   .bg-gradient-page {
     background:
-      radial-gradient(ellipse at top left, rgba(59, 130, 246, 0.05), transparent 50%),
-      radial-gradient(ellipse at bottom right, rgba(139, 92, 246, 0.05), transparent 50%),
+      radial-gradient(ellipse at top left, hsl(var(--foreground) / 0.03), transparent 50%),
+      radial-gradient(ellipse at bottom right, hsl(var(--foreground) / 0.03), transparent 50%),
       hsl(var(--background));
   }
 
   .bg-gradient-card {
-    background: linear-gradient(135deg, hsl(var(--card)), hsl(var(--secondary)));
+    background: linear-gradient(135deg, hsl(var(--card)), hsl(var(--muted)));
   }
 
   .bg-gradient-xp {
@@ -144,6 +190,22 @@
   .text-gradient-mastery {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-yellow-400;
   }
+}
+
+/* Gradient animation for landing page */
+@keyframes gradient-x {
+  0%, 100% { background-size: 200% 200%; background-position: left center; }
+  50% { background-size: 200% 200%; background-position: right center; }
+}
+
+.animate-gradient-x {
+  animation: gradient-x 3s ease infinite;
+}
+
+/* Shimmer for skeleton */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 
 /* Reduced motion */

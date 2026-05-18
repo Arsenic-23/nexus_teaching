@@ -36,9 +36,9 @@ export function ExplanationBlock({
   className,
 }: ExplanationBlockProps) {
   return (
-    <div className={cn('space-y-6', className)}>
+    <div className={cn('space-y-8', className)}>
       {title && (
-        <h2 className="text-xl font-display font-bold text-foreground">{title}</h2>
+        <h2 className="text-2xl font-display font-black tracking-tight text-foreground">{title}</h2>
       )}
 
       {/* Main content */}
@@ -48,34 +48,40 @@ export function ExplanationBlock({
 
       {/* Formula block */}
       {formula && (
-        <div className="p-4 rounded-xl bg-secondary/80 border border-border font-mono text-center">
-          <p className="text-lg font-bold text-primary">{formula}</p>
+        <div className="p-6 rounded-2xl bg-gradient-to-r from-secondary/40 to-secondary/10 border border-border/50 backdrop-blur-md font-mono text-center shadow-inner relative overflow-hidden group">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+          <p className="text-xl font-bold text-foreground drop-shadow-sm">{formula}</p>
         </div>
       )}
 
       {/* Image */}
       {imageUrl && (
-        <div className="rounded-xl overflow-hidden border border-border bg-secondary/50">
-          <img src={imageUrl} alt={imageAlt || ''} className="w-full h-auto object-cover" />
+        <div className="rounded-2xl overflow-hidden border border-border/50 shadow-lg relative group">
+          <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+          <img src={imageUrl} alt={imageAlt || ''} className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-[1.02]" />
           {imageAlt && (
-            <p className="px-4 py-2 text-xs text-muted-foreground text-center">{imageAlt}</p>
+            <p className="absolute bottom-0 left-0 w-full p-4 text-sm font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity translate-y-2 group-hover:translate-y-0 duration-300">
+              {imageAlt}
+            </p>
           )}
         </div>
       )}
 
       {/* Callouts */}
       {callouts && callouts.length > 0 && (
-        <div className="space-y-3">
+        <div className="grid gap-4 mt-8">
           {callouts.map((callout, i) => {
             const { icon: Icon, colors } = calloutConfig[callout.type];
             return (
-              <div key={i} className={cn('flex gap-3 p-4 rounded-xl border', colors)}>
-                <Icon className="w-4 h-4 mt-0.5 shrink-0" />
+              <div key={i} className={cn('flex gap-4 p-5 rounded-2xl border shadow-sm backdrop-blur-md transition-all hover:shadow-md', colors)}>
+                <div className="mt-0.5 shrink-0 p-1.5 rounded-lg bg-background/50 backdrop-blur-sm border border-inherit">
+                  <Icon className="w-4 h-4" />
+                </div>
                 <div>
                   {callout.title && (
-                    <p className="font-semibold text-sm mb-1">{callout.title}</p>
+                    <p className="font-bold text-sm mb-1 text-foreground/90">{callout.title}</p>
                   )}
-                  <p className="text-sm text-foreground/80">{callout.content}</p>
+                  <p className="text-sm text-foreground/70 leading-relaxed">{callout.content}</p>
                 </div>
               </div>
             );

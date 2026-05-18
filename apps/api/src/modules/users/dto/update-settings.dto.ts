@@ -1,29 +1,51 @@
-import { IsString, IsOptional, IsBoolean } from 'class-validator';
+import { IsString, IsOptional, IsBoolean, IsInt, Min, Max } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class UpdateSettingsDto {
   @ApiPropertyOptional()
-  @IsOptional()
   @IsString()
+  @IsOptional()
   timezone?: string;
 
   @ApiPropertyOptional()
+  @IsInt()
+  @Min(5)
+  @Max(120)
   @IsOptional()
-  @IsBoolean()
-  emailNotifications?: boolean;
+  dailyGoal?: number;
 
   @ApiPropertyOptional()
-  @IsOptional()
-  @IsBoolean()
-  pushNotifications?: boolean;
-
-  @ApiPropertyOptional()
-  @IsOptional()
   @IsString()
+  @IsOptional()
   theme?: string;
 
   @ApiPropertyOptional()
+  @IsBoolean()
   @IsOptional()
-  @IsString()
-  language?: string;
+  streakReminder?: boolean;
+
+  @ApiPropertyOptional()
+  @IsBoolean()
+  @IsOptional()
+  weeklyReport?: boolean;
+
+  @ApiPropertyOptional()
+  @IsBoolean()
+  @IsOptional()
+  achievementAlerts?: boolean;
+
+  @ApiPropertyOptional()
+  @IsBoolean()
+  @IsOptional()
+  classAnnouncements?: boolean;
+
+  @ApiPropertyOptional()
+  @IsBoolean()
+  @IsOptional()
+  newLessons?: boolean;
+
+  @ApiPropertyOptional()
+  @IsBoolean()
+  @IsOptional()
+  emailDigest?: boolean;
 }

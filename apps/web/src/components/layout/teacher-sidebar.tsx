@@ -14,19 +14,25 @@ import {
   GraduationCap,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useState } from 'react';
+import { useSidebar } from '@/providers/sidebar-provider';
 
 const navItems = [
   { label: 'Dashboard', href: '/teacher/dashboard', icon: Home },
   { label: 'Classrooms', href: '/teacher/classrooms', icon: School },
   { label: 'Students', href: '/teacher/students', icon: Users },
   { label: 'Analytics', href: '/teacher/analytics', icon: BarChart3 },
+];
+
+const bottomNavItems = [
   { label: 'Settings', href: '/teacher/settings', icon: Settings },
 ];
 
 export function TeacherSidebar() {
   const pathname = usePathname();
-  const [collapsed, setCollapsed] = useState(false);
+  const { collapsed, setCollapsed } = useSidebar();
+
+  const isActive = (href: string) =>
+    pathname === href || pathname.startsWith(href + '/');
 
   return (
     <aside
@@ -36,7 +42,7 @@ export function TeacherSidebar() {
       )}
     >
       {/* Logo */}
-      <div className="flex items-center gap-3 h-16 px-4 border-b border-border">
+      <Link href="/" className="flex items-center gap-3 h-16 px-4 border-b border-border hover:bg-foreground/5 transition-colors shrink-0">
         <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-primary flex items-center justify-center shrink-0">
           <GraduationCap className="w-5 h-5 text-white" />
         </div>
@@ -46,27 +52,27 @@ export function TeacherSidebar() {
             <span className="text-xs text-muted-foreground ml-2">Teacher</span>
           </div>
         )}
-      </div>
+      </Link>
 
       {/* Navigation */}
       <nav className="flex-1 p-3 overflow-y-auto">
         <ul className="space-y-1">
           {navItems.map((item) => {
-            const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+            const active = isActive(item.href);
             return (
               <li key={item.href}>
                 <Link
                   href={item.href}
                   className={cn(
                     'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200',
-                    isActive
+                    active
                       ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20'
                       : 'text-muted-foreground hover:text-foreground hover:bg-secondary',
                     collapsed && 'justify-center px-2',
                   )}
                   title={collapsed ? item.label : undefined}
                 >
-                  <item.icon className={cn('shrink-0 w-5 h-5', isActive ? 'text-purple-400' : '')} />
+                  <item.icon className={cn('shrink-0 w-5 h-5', active ? 'text-purple-400' : '')} />
                   {!collapsed && <span>{item.label}</span>}
                 </Link>
               </li>
@@ -83,6 +89,30 @@ export function TeacherSidebar() {
           </div>
         </div>
       )}
+
+      {/* Bottom nav */}
+      <div className="p-3 border-t border-border space-y-1">
+        {bottomNavItems.map((item) => {
+          const active = isActive(item.href);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={cn(
+                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200',
+                active
+                  ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-secondary',
+                collapsed && 'justify-center px-2',
+              )}
+              title={collapsed ? item.label : undefined}
+            >
+              <item.icon className={cn('shrink-0 w-5 h-5', active ? 'text-purple-400' : '')} />
+              {!collapsed && <span>{item.label}</span>}
+            </Link>
+          );
+        })}
+      </div>
 
       {/* Collapse toggle */}
       <button

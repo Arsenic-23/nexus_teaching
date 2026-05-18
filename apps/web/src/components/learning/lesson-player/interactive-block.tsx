@@ -48,13 +48,17 @@ export function InteractiveBlock({
       {/* Interactive content */}
       <div
         className={cn(
-          'p-6 rounded-xl border transition-all duration-300',
+          'p-8 rounded-3xl border transition-all duration-500 shadow-sm relative overflow-hidden',
           completed
-            ? 'border-success/20 bg-success/5'
-            : 'border-border bg-card/50',
+            ? 'border-success/30 bg-gradient-to-b from-success/10 to-success/5 shadow-success/10'
+            : 'border-border/60 bg-gradient-to-b from-card/80 to-card/40 backdrop-blur-md',
         )}
       >
-        {children}
+        {/* Subtle background glow */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.02),transparent_50%)] pointer-events-none" />
+        <div className="relative z-10">
+          {children}
+        </div>
       </div>
     </div>
   );

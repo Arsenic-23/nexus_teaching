@@ -9,10 +9,10 @@ import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
 interface TopicPageProps {
-  params: {
+  params: Promise<{
     subjectId: string;
     topicId: string;
-  };
+  }>;
 }
 
 // Mock data
@@ -39,7 +39,8 @@ const mockTopicData = {
   quizScore: null as number | null,
 };
 
-export default function TopicPage({ params }: TopicPageProps) {
+export default async function TopicPage({ params }: TopicPageProps) {
+  const resolvedParams = await params;
   const topic = mockTopicData;
   const completedLessons = topic.lessons.filter((l) => l.completed).length;
   const nextLesson = topic.lessons.find((l) => !l.completed && !l.locked);
@@ -49,7 +50,7 @@ export default function TopicPage({ params }: TopicPageProps) {
       <Breadcrumbs
         items={[
           { label: 'Learn', href: '/student/learn' },
-          { label: topic.subjectName, href: `/student/learn/${params.subjectId}` },
+          { label: topic.subjectName, href: `/student/learn/${resolvedParams.subjectId}` },
           { label: topic.name },
         ]}
       />
@@ -86,7 +87,7 @@ export default function TopicPage({ params }: TopicPageProps) {
           {/* Quick actions */}
           <div className="flex flex-wrap gap-3">
             {nextLesson && (
-              <Link href={`/student/learn/${params.subjectId}/${params.topicId}/${nextLesson.id}`}>
+              <Link href={`/student/learn/${resolvedParams.subjectId}/${resolvedParams.topicId}/${nextLesson.id}`}>
                 <Button variant="glow" className="gap-2">
                   <Play className="w-4 h-4" />
                   {completedLessons === 0 ? 'Start Learning' : 'Continue Learning'}
@@ -94,7 +95,7 @@ export default function TopicPage({ params }: TopicPageProps) {
               </Link>
             )}
             {topic.quizAvailable && (
-              <Link href={`/student/learn/${params.subjectId}/${params.topicId}/quiz`}>
+              <Link href={`/student/learn/${resolvedParams.subjectId}/${resolvedParams.topicId}/quiz`}>
                 <Button
                   variant="outline"
                   className={cn('gap-2', !topic.quizPassed && 'border-mastery/30 text-mastery hover:bg-mastery/5')}
@@ -107,7 +108,7 @@ export default function TopicPage({ params }: TopicPageProps) {
                 </Button>
               </Link>
             )}
-            <Link href={`/student/ai-tutor?topic=${params.topicId}`}>
+            <Link href={`/student/ai-tutor?topic=${resolvedParams.topicId}`}>
               <Button variant="outline" className="gap-2">
                 <Bot className="w-4 h-4" />
                 Ask AI Tutor
@@ -155,7 +156,7 @@ export default function TopicPage({ params }: TopicPageProps) {
                   <Badge variant="secondary" className="text-xs">Locked</Badge>
                 </div>
               ) : (
-                <Link href={`/student/learn/${params.subjectId}/${params.topicId}/${lesson.id}`}>
+                <Link href={`/student/learn/${resolvedParams.subjectId}/${resolvedParams.topicId}/${lesson.id}`}>
                   <div
                     className={cn(
                       'flex items-center gap-4 p-4 rounded-xl border transition-all duration-200 cursor-pointer group',

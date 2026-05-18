@@ -20,10 +20,11 @@ const classAnalytics = {
 const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 const maxXp = Math.max(...classAnalytics.weeklyXp, 1);
 
-export default function ClassAnalyticsPage({ params }: { params: { classId: string } }) {
+export default async function ClassAnalyticsPage({ params }: { params: Promise<{ classId: string }> }) {
+  const resolvedParams = await params;
   return (
     <div className="space-y-6 animate-fade-in">
-      <Breadcrumbs items={[{ label: 'Classrooms', href: '/teacher/classrooms' }, { label: 'Advanced Math', href: `/teacher/classrooms/${params.classId}` }, { label: 'Analytics' }]} />
+      <Breadcrumbs items={[{ label: 'Classrooms', href: '/teacher/classrooms' }, { label: 'Advanced Math', href: `/teacher/classrooms/${resolvedParams.classId}` }, { label: 'Analytics' }]} />
 
       <div>
         <h1 className="text-2xl font-display font-bold flex items-center gap-2">

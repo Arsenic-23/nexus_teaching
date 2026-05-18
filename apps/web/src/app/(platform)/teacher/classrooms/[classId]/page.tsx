@@ -1,9 +1,10 @@
-import { School, Users, BookOpen, BarChart3, ChevronRight, AlertTriangle, TrendingUp } from 'lucide-react';
+import { School, Users, BookOpen, BarChart3, ChevronRight, AlertTriangle, TrendingUp, Plus } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
 import { Breadcrumbs } from '@/components/shared/breadcrumbs';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -26,12 +27,13 @@ const mockClassroom = {
     { id: 's5', name: 'Marcus T.', mastery: 0.28, xp: 800, streak: 0, rank: 5, status: 'at-risk' },
   ],
   assignments: [
-    { id: 'a1', title: 'Quadratic Equations Problem Set', dueDate: 'Tomorrow', submitted: 18, total: 28, avgScore: null },
-    { id: 'a2', title: 'Linear Equations Review', dueDate: 'Last week', submitted: 28, total: 28, avgScore: 84 },
+    { id: 'a1', title: 'Quadratic Equations Problem Set', dueDate: 'Tomorrow', submitted: 18, total: 28, avgScore: null, status: 'active' as const },
+    { id: 'a2', title: 'Linear Equations Review', dueDate: 'Last week', submitted: 28, total: 28, avgScore: 84, status: 'completed' as const },
   ],
 };
 
-export default function TeacherClassroomPage({ params }: { params: { classId: string } }) {
+export default async function TeacherClassroomPage({ params }: { params: Promise<{ classId: string }> }) {
+  const resolvedParams = await params;
   const cls = mockClassroom;
   const atRiskCount = cls.students.filter((s) => s.status === 'at-risk').length;
 
@@ -72,14 +74,44 @@ export default function TeacherClassroomPage({ params }: { params: { classId: st
         </div>
       </div>
 
+      {/* Quick navigation links */}
       <div className="flex gap-2 flex-wrap">
-        <Link href={`/teacher/classrooms/${params.classId}/students`}><Badge variant="secondary" className="cursor-pointer hover:bg-primary/10">Students</Badge></Link>
-        <Link href={`/teacher/classrooms/${params.classId}/assignments`}><Badge variant="secondary" className="cursor-pointer hover:bg-primary/10">Assignments</Badge></Link>
-        <Link href={`/teacher/classrooms/${params.classId}/analytics`}><Badge variant="secondary" className="cursor-pointer hover:bg-primary/10">Analytics</Badge></Link>
+        <Link href={`/teacher/classrooms/${resolvedParams.classId}/students`}>
+          <Badge variant="secondary" className="cursor-pointer hover:bg-primary/10 px-3 py-1.5 text-xs">
+            👥 Students
+          </Badge>
+        </Link>
+        <Link href={`/teacher/classrooms/${resolvedParams.classId}/assignments`}>
+          <Badge variant="secondary" className="cursor-pointer hover:bg-primary/10 px-3 py-1.5 text-xs">
+            📋 Assignments
+          </Badge>
+        </Link>
+        <Link href={`/teacher/classrooms/${resolvedParams.classId}/analytics`}>
+          <Badge variant="secondary" className="cursor-pointer hover:bg-primary/10 px-3 py-1.5 text-xs">
+            📊 Analytics
+          </Badge>
+        </Link>
+        <Link href={`/teacher/classrooms/${resolvedParams.classId}/assignments/create`}>
+          <Badge className="cursor-pointer bg-primary/20 text-primary border-primary/30 hover:bg-primary/30 px-3 py-1.5 text-xs">
+            <Plus className="w-3 h-3 mr-1" />
+            New Assignment
+          </Badge>
+        </Link>
       </div>
 
       <Tabs defaultValue="students">
-        <TabsList><TabsTrigger value="students">Students</TabsTrigger><TabsTrigger value="assignments">Assignments</TabsTrigger></TabsList>
+        <TabsList>
+          <TabsTrigger value="students">Students</TabsTrigger>
+          <TabsTrigger value="assignments">
+            Assignments
+            {cls.assignments.filter(a => a.status === 'active').length > 0 && (
+              <span className="ml-1.5 w-4 h-4 rounded-full bg-primary/20 text-primary text-[9px] font-bold inline-flex items-center justify-center">
+                {cls.assignments.filter(a => a.status === 'active').length}
+              </span>
+            )}
+          </TabsTrigger>
+        </TabsList>
+
         <TabsContent value="students">
           <div className="space-y-2 mt-4">
             {cls.students.map((s, i) => (
@@ -105,9 +137,26 @@ export default function TeacherClassroomPage({ params }: { params: { classId: st
               </Link>
             ))}
           </div>
+          <div className="mt-4">
+            <Link href={`/teacher/classrooms/${resolvedParams.classId}/students`}>
+              <Button variant="outline" size="sm" className="w-full gap-2">
+                <Users className="w-4 h-4" />
+                View All Students
+              </Button>
+            </Link>
+          </div>
         </TabsContent>
+
         <TabsContent value="assignments">
           <div className="space-y-3 mt-4">
+            <div className="flex justify-end">
+              <Link href={`/teacher/classrooms/${resolvedParams.classId}/assignments/create`}>
+                <Button size="sm" className="gap-2">
+                  <Plus className="w-4 h-4" />
+                  Create Assignment
+                </Button>
+              </Link>
+            </div>
             {cls.assignments.map((a) => (
               <Card key={a.id} className="border-border bg-card/50">
                 <CardContent className="p-4">
@@ -116,11 +165,18 @@ export default function TeacherClassroomPage({ params }: { params: { classId: st
                       <p className="font-semibold text-sm">{a.title}</p>
                       <p className="text-xs text-muted-foreground">Due: {a.dueDate}</p>
                     </div>
-                    {a.avgScore !== null ? (
-                      <Badge variant="success" className="text-xs">Avg: {a.avgScore}%</Badge>
-                    ) : (
-                      <Badge variant="warning" className="text-xs">In Progress</Badge>
-                    )}
+                    <div className="flex items-center gap-2 shrink-0">
+                      {a.avgScore !== null ? (
+                        <Badge variant="success" className="text-xs">Avg: {a.avgScore}%</Badge>
+                      ) : (
+                        <Badge variant="warning" className="text-xs">In Progress</Badge>
+                      )}
+                      <Link href={`/teacher/classrooms/${resolvedParams.classId}/assignments`}>
+                        <Button size="sm" variant="ghost" className="h-7 w-7 p-0">
+                          <ChevronRight className="w-4 h-4" />
+                        </Button>
+                      </Link>
+                    </div>
                   </div>
                   <div className="mt-3 space-y-1">
                     <div className="flex justify-between text-xs text-muted-foreground">
@@ -132,6 +188,12 @@ export default function TeacherClassroomPage({ params }: { params: { classId: st
                 </CardContent>
               </Card>
             ))}
+            <Link href={`/teacher/classrooms/${resolvedParams.classId}/assignments`}>
+              <Button variant="outline" size="sm" className="w-full gap-2 mt-2">
+                <BookOpen className="w-4 h-4" />
+                View All Assignments
+              </Button>
+            </Link>
           </div>
         </TabsContent>
       </Tabs>
