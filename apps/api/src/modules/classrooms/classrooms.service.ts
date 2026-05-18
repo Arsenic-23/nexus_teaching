@@ -62,8 +62,7 @@ export class ClassroomsService {
     teacherProfileId: string,
     data: { name: string; subject: string; description?: string; gradeLevel?: number },
   ) {
-    // Generate unique join code
-    let joinCode: string;
+    let joinCode: string = '';
     let attempts = 0;
     do {
       joinCode = generateJoinCode();
@@ -85,8 +84,24 @@ export class ClassroomsService {
         description: data.description,
         subject: data.subject,
         gradeLevel: data.gradeLevel,
-        joinCode: joinCode!,
+        joinCode,
       },
+    });
+  }
+
+  async archiveClassroom(classroomId: string, teacherProfileId: string) {
+    const classroom = await this.prisma.classroom.findUnique({
+      where: { id: classroomId },
+    });
+
+    if (!classroom) throw new NotFoundException('Classroom not found');
+    if (classroom.teacherId !== teacherProfileId) {
+      throw new ForbiddenException('Only the classroom teacher can archive it');
+    }
+
+    return this.prisma.classroom.update({
+      where: { id: classroomId },
+      data: { isActive: false },
     });
   }
 
@@ -140,6 +155,28 @@ export class ClassroomsService {
     });
   }
 
+  async removeStudent(classroomId: string, studentProfileId: string, teacherProfileId: string) {
+    const classroom = await this.prisma.classroom.findUnique({
+      where: { id: classroomId },
+    });
+
+    if (!classroom) throw new NotFoundException('Classroom not found');
+    if (classroom.teacherId !== teacherProfileId) {
+      throw new ForbiddenException('Only the classroom teacher can remove students');
+    }
+
+    const enrollment = await this.prisma.enrollment.findUnique({
+      where: { studentId_classroomId: { studentId: studentProfileId, classroomId } },
+    });
+
+    if (!enrollment) throw new NotFoundException('Enrollment not found');
+
+    return this.prisma.enrollment.update({
+      where: { id: enrollment.id },
+      data: { status: 'REMOVED' },
+    });
+  }
+
   async getStudents(classroomId: string) {
     const enrollments = await this.prisma.enrollment.findMany({
       where: { classroomId, status: 'ACTIVE' },
@@ -171,6 +208,30 @@ export class ClassroomsService {
     }));
   }
 
+  async getClassLeaderboard(classroomId: string, limit = 50) {
+    const enrollments = await this.prisma.enrollment.findMany({
+      where: { classroomId, status: 'ACTIVE' },
+      include: {
+        student: {
+          include: { user: true, rank: true },
+        },
+      },
+    });
+
+    return enrollments
+      .sort((a, b) => b.student.totalXp - a.student.totalXp)
+      .slice(0, limit)
+      .map((enrollment, idx) => ({
+        position: idx + 1,
+        studentId: enrollment.studentId,
+        studentName: `${enrollment.student.user.firstName} ${enrollment.student.user.lastName}`.trim(),
+        studentAvatar: enrollment.student.user.avatarUrl,
+        rank: enrollment.student.rank,
+        score: enrollment.student.totalXp,
+        level: enrollment.student.level,
+      }));
+  }
+
   async getClassAnalytics(classroomId: string) {
     const enrollments = await this.prisma.enrollment.findMany({
       where: { classroomId, status: 'ACTIVE' },
@@ -180,6 +241,7 @@ export class ClassroomsService {
             user: true,
             xpTransactions: { orderBy: { createdAt: 'desc' }, take: 10 },
             streak: true,
+            progress: true,
           },
         },
       },
@@ -191,11 +253,18 @@ export class ClassroomsService {
         ? enrollments.reduce((sum, e) => sum + e.student.totalXp, 0) / studentCount
         : 0;
 
-    const activeStudents = enrollments.filter((e) => {
-      const lastWeek = new Date();
-      lastWeek.setDate(lastWeek.getDate() - 7);
-      return e.student.xpTransactions.some((t) => new Date(t.createdAt) >= lastWeek);
-    }).length;
+    const lastWeek = new Date();
+    lastWeek.setDate(lastWeek.getDate() - 7);
+    const activeStudents = enrollments.filter((e) =>
+      e.student.xpTransactions.some((t) => new Date(t.createdAt) >= lastWeek),
+    ).length;
+
+    // Calculate average mastery across all students' progress
+    const allProgress = enrollments.flatMap((e) => e.student.progress);
+    const avgMastery =
+      allProgress.length > 0
+        ? allProgress.reduce((sum, p) => sum + p.masteryLevel, 0) / allProgress.length
+        : 0;
 
     const assignments = await this.prisma.assignment.findMany({
       where: { classroomId },
@@ -205,15 +274,24 @@ export class ClassroomsService {
       },
     });
 
+    // Average score from graded submissions
+    const gradedSubmissions = assignments.flatMap((a) => a.submissions);
+    const avgScore =
+      gradedSubmissions.length > 0
+        ? gradedSubmissions.reduce((sum, s) => sum + (s.score || 0), 0) / gradedSubmissions.length
+        : 0;
+
     return {
       studentCount,
       avgXp: Math.round(avgXp),
+      avgMastery: Math.round(avgMastery * 100) / 100,
+      avgScore: Math.round(avgScore * 100) / 100,
       activeStudents,
       assignmentCount: assignments.length,
       avgCompletionRate:
-        assignments.length > 0
+        assignments.length > 0 && studentCount > 0
           ? assignments.reduce(
-              (sum, a) => sum + (a._count.submissions / Math.max(studentCount, 1)),
+              (sum, a) => sum + (a._count.submissions / studentCount),
               0,
             ) / assignments.length
           : 0,

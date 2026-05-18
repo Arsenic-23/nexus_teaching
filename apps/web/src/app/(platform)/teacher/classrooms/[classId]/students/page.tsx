@@ -15,10 +15,11 @@ const students = [
   { id: 's5', name: 'Marcus T.', mastery: 0.28, xp: 800, streak: 0, status: 'at-risk' as const, quizScore: 45 },
 ];
 
-export default function ClassStudentsPage({ params }: { params: { classId: string } }) {
+export default async function ClassStudentsPage({ params }: { params: Promise<{ classId: string }> }) {
+  const resolvedParams = await params;
   return (
     <div className="space-y-6 animate-fade-in">
-      <Breadcrumbs items={[{ label: 'Classrooms', href: '/teacher/classrooms' }, { label: 'Advanced Math', href: `/teacher/classrooms/${params.classId}` }, { label: 'Students' }]} />
+      <Breadcrumbs items={[{ label: 'Classrooms', href: '/teacher/classrooms' }, { label: 'Advanced Math', href: `/teacher/classrooms/${resolvedParams.classId}` }, { label: 'Students' }]} />
 
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-display font-bold flex items-center gap-2">

@@ -58,8 +58,8 @@ export function LessonPlayer({ lesson, onComplete, onExit, className }: LessonPl
       )}
     >
       {/* Top bar */}
-      <div className="sticky top-0 z-10 border-b border-border bg-background/80 backdrop-blur-sm">
-        <div className="flex items-center gap-4 px-4 py-3">
+      <div className="sticky top-0 z-10 border-b border-border/50 bg-background/70 backdrop-blur-xl shadow-sm">
+        <div className="max-w-4xl mx-auto flex items-center gap-5 px-6 py-4">
           {onExit && (
             <button
               onClick={onExit}
@@ -87,7 +87,7 @@ export function LessonPlayer({ lesson, onComplete, onExit, className }: LessonPl
         </div>
 
         {/* Step tabs */}
-        <div className="flex gap-1 px-4 pb-2 overflow-x-auto scrollbar-none">
+        <div className="max-w-4xl mx-auto flex gap-1.5 px-6 pb-3 overflow-x-auto scrollbar-none">
           {lesson.steps.map((s, i) => (
             <button
               key={s.id}
@@ -106,8 +106,8 @@ export function LessonPlayer({ lesson, onComplete, onExit, className }: LessonPl
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto">
-        <div className="max-w-2xl mx-auto px-4 py-8">
+      <div className="flex-1 overflow-y-auto pt-6 pb-24">
+        <div className="max-w-3xl mx-auto px-6">
           {/* Topic breadcrumb */}
           <div className="flex items-center gap-2 text-xs text-muted-foreground mb-4">
             <BookOpen className="w-3.5 h-3.5" />
@@ -119,10 +119,11 @@ export function LessonPlayer({ lesson, onComplete, onExit, className }: LessonPl
           <AnimatePresence mode="wait">
             <motion.div
               key={step.id}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
+              initial={{ opacity: 0, y: 15, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -15, scale: 0.98 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className="bg-card/30 backdrop-blur-sm border border-border/50 rounded-3xl p-8 shadow-2xl shadow-black/5"
             >
               {step.content}
             </motion.div>
@@ -131,13 +132,13 @@ export function LessonPlayer({ lesson, onComplete, onExit, className }: LessonPl
       </div>
 
       {/* Bottom navigation */}
-      <div className="sticky bottom-0 border-t border-border bg-background/80 backdrop-blur-sm px-4 py-4">
-        <div className="max-w-2xl mx-auto flex items-center justify-between gap-4">
+      <div className="fixed bottom-0 left-0 w-full border-t border-border/40 bg-background/80 backdrop-blur-xl shadow-[0_-10px_40px_rgba(0,0,0,0.05)] px-6 py-4 z-20">
+        <div className="max-w-3xl mx-auto flex items-center justify-between gap-4">
           <Button
             variant="outline"
             onClick={handlePrev}
             disabled={currentStep === 0}
-            className="gap-2"
+            className="gap-2 rounded-xl px-6 hover:bg-card/80 transition-all"
           >
             <ChevronLeft className="w-4 h-4" />
             Back
@@ -146,7 +147,11 @@ export function LessonPlayer({ lesson, onComplete, onExit, className }: LessonPl
           <Button
             onClick={handleNext}
             variant={isLastStep ? 'glow' : 'default'}
-            className="gap-2 min-w-[120px]"
+            className={cn(
+              "gap-2 min-w-[140px] rounded-xl px-6 transition-all duration-300 shadow-lg",
+              !isLastStep && "hover:shadow-primary/20 hover:-translate-y-0.5",
+              isLastStep && "shadow-success/20 hover:shadow-success/40"
+            )}
           >
             {isLastStep ? (
               <>

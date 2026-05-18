@@ -7,8 +7,10 @@ import { LessonsController } from './lessons.controller';
 import { LessonsService } from './lessons.service';
 import { QuizzesController } from './quizzes.controller';
 import { QuizzesService } from './quizzes.service';
+import { GamificationModule } from '../gamification/gamification.module';
 
 @Module({
+  imports: [GamificationModule],
   controllers: [
     SubjectsController,
     TopicsController,

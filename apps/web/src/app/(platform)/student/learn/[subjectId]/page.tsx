@@ -65,8 +65,9 @@ const statusConfig = {
   mastered: { icon: CheckCircle2, color: 'text-success', bg: 'border-success/20 bg-success/5 hover:border-success/40' },
 };
 
-export default function SubjectPage({ params }: { params: { subjectId: string } }) {
-  const subject = subjectData[params.subjectId] || subjectData.mathematics;
+export default async function SubjectPage({ params }: { params: Promise<{ subjectId: string }> }) {
+  const resolvedParams = await params;
+  const subject = subjectData[resolvedParams.subjectId] || subjectData.mathematics;
 
   const masteredCount = subject.topics.filter((t) => t.status === 'mastered').length;
   const inProgressCount = subject.topics.filter((t) => t.status === 'in_progress').length;
@@ -98,7 +99,7 @@ export default function SubjectPage({ params }: { params: { subjectId: string } 
                 <h1 className="text-2xl font-display font-bold">{subject.name}</h1>
                 <p className="text-muted-foreground text-sm mt-0.5">{subject.description}</p>
               </div>
-              <Link href={`/student/skill-tree?subject=${params.subjectId}`}>
+              <Link href={`/student/skill-tree?subject=${resolvedParams.subjectId}`}>
                 <Button variant="outline" size="sm" className="gap-2 shrink-0">
                   <Network className="w-4 h-4" />
                   Skill Tree
@@ -167,7 +168,7 @@ export default function SubjectPage({ params }: { params: { subjectId: string } 
                     </CardContent>
                   </Card>
                 ) : (
-                  <Link href={`/student/learn/${params.subjectId}/${topic.id}`}>
+                  <Link href={`/student/learn/${resolvedParams.subjectId}/${topic.id}`}>
                     <Card className={cn('border-border bg-card/50 transition-all cursor-pointer group', config.bg)}>
                       <CardContent className="p-4">
                         <div className="flex items-center gap-4">

@@ -41,7 +41,9 @@ const mockData = {
   continueLearning: {
     topic: 'Quadratic Equations',
     lesson: 'The Quadratic Formula',
-    lessonId: 'lesson_quadratic_formula',
+    lessonId: 'quadratic-formula',
+    subjectId: 'mathematics',
+    topicId: 'quadratic-equations',
     progress: 60,
     xpReward: 60,
   },
@@ -52,8 +54,8 @@ const mockData = {
     overallMastery: 0.45,
   },
   weakAreas: [
-    { topicId: '1', topicName: 'Complex Numbers', severity: 'moderate' as 'critical' | 'moderate' | 'mild' },
-    { topicId: '2', topicName: 'Function Composition', severity: 'mild' as 'critical' | 'moderate' | 'mild' },
+    { topicId: 'complex-numbers', subjectId: 'mathematics', topicName: 'Complex Numbers', severity: 'moderate' as 'critical' | 'moderate' | 'mild' },
+    { topicId: 'functions', subjectId: 'mathematics', topicName: 'Function Composition', severity: 'mild' as 'critical' | 'moderate' | 'mild' },
   ],
   leaderboard: [
     { position: 1, name: 'Sarah K.', xp: 3200, isCurrentUser: false },
@@ -72,28 +74,28 @@ export default function StudentDashboard() {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-8">
         <div>
-          <h1 className="text-2xl font-display font-bold">
+          <h1 className="text-3xl md:text-4xl font-display font-black tracking-tight drop-shadow-sm">
             Good morning, {student.name}! 👋
           </h1>
-          <p className="text-muted-foreground text-sm mt-1">
+          <p className="text-muted-foreground text-base mt-2 font-medium">
             {streak.current > 0 ? `🔥 ${streak.current} day streak — keep it up!` : "Start your streak today!"}
           </p>
         </div>
         <div className="flex items-center gap-2">
           <div
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border text-sm font-semibold"
-            style={{ borderColor: student.rank.color + '40', color: student.rank.color }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border shadow-sm backdrop-blur-sm text-sm font-bold transition-transform hover:scale-105"
+            style={{ borderColor: student.rank.color + '40', color: student.rank.color, backgroundColor: student.rank.color + '05' }}
           >
-            <Star className="w-4 h-4" />
+            <Star className="w-4 h-4 drop-shadow-md" />
             {student.rank.name}
           </div>
         </div>
       </div>
 
       {/* XP Progress Bar */}
-      <Card className="border-border bg-card/50">
+      <Card className="border-border/60 bg-gradient-to-b from-card/80 to-card/40 backdrop-blur-md shadow-sm overflow-hidden">
         <CardContent className="pt-6">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
@@ -123,7 +125,7 @@ export default function StudentDashboard() {
         <div className="lg:col-span-2 space-y-6">
 
           {/* Continue Learning */}
-          <Card className="border-border bg-card/50 hover:border-primary/30 transition-colors">
+          <Card className="border-border/60 bg-gradient-to-b from-card/80 to-card/40 backdrop-blur-md hover:border-primary/40 hover:shadow-lg transition-all duration-300 group overflow-hidden">
             <CardHeader className="pb-3">
               <CardTitle className="text-base flex items-center gap-2">
                 <BookOpen className="w-4 h-4 text-primary" />
@@ -141,7 +143,7 @@ export default function StudentDashboard() {
               <Progress value={continueLearning.progress} className="h-2 mb-3" />
               <div className="flex items-center justify-between">
                 <span className="text-xs text-muted-foreground">{continueLearning.progress}% complete</span>
-                <Link href={`/student/learn/math/quadratic-equations/${continueLearning.lessonId}`}>
+                <Link href={`/student/learn/${continueLearning.subjectId}/${continueLearning.topicId}/${continueLearning.lessonId}`}>
                   <Button size="sm" className="gap-1">
                     Continue
                     <ArrowRight className="w-3 h-3" />
@@ -152,7 +154,7 @@ export default function StudentDashboard() {
           </Card>
 
           {/* Mastery Overview */}
-          <Card className="border-border bg-card/50">
+          <Card className="border-border/60 bg-gradient-to-b from-card/80 to-card/40 backdrop-blur-md shadow-sm">
             <CardHeader className="pb-3">
               <CardTitle className="text-base flex items-center justify-between">
                 <span className="flex items-center gap-2">
@@ -194,7 +196,7 @@ export default function StudentDashboard() {
 
           {/* Weak Areas */}
           {weakAreas.length > 0 && (
-            <Card className="border-orange-500/20 bg-orange-500/5">
+            <Card className="border-orange-500/20 bg-gradient-to-b from-orange-500/10 to-orange-500/5 backdrop-blur-md shadow-sm">
               <CardHeader className="pb-3">
                 <CardTitle className="text-base flex items-center gap-2 text-orange-400">
                   <AlertTriangle className="w-4 h-4" />
@@ -209,9 +211,11 @@ export default function StudentDashboard() {
                         <div className={`w-2 h-2 rounded-full ${area.severity === 'critical' ? 'bg-destructive' : area.severity === 'moderate' ? 'bg-orange-400' : 'bg-yellow-400'}`} />
                         <span className="text-sm font-medium">{area.topicName}</span>
                       </div>
-                      <Button size="sm" variant="outline" className="text-xs h-7">
-                        Review
-                      </Button>
+                      <Link href={`/student/learn/${area.subjectId}/${area.topicId}`}>
+                        <Button size="sm" variant="outline" className="text-xs h-7">
+                          Review
+                        </Button>
+                      </Link>
                     </div>
                   ))}
                 </div>
@@ -227,7 +231,7 @@ export default function StudentDashboard() {
         <div className="space-y-6">
 
           {/* Streak Widget */}
-          <Card className="border-streak/20 bg-streak/5">
+          <Card className="border-streak/20 bg-gradient-to-b from-streak/10 to-streak/5 backdrop-blur-md shadow-sm">
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -258,7 +262,7 @@ export default function StudentDashboard() {
           </Card>
 
           {/* Daily Quests */}
-          <Card className="border-border bg-card/50">
+          <Card className="border-border/60 bg-gradient-to-b from-card/80 to-card/40 backdrop-blur-md shadow-sm">
             <CardHeader className="pb-3">
               <CardTitle className="text-base flex items-center justify-between">
                 <span className="flex items-center gap-2">
@@ -294,11 +298,17 @@ export default function StudentDashboard() {
                   </div>
                 ))}
               </div>
+              <Link href="/student/practice" className="block mt-3">
+                <Button size="sm" variant="outline" className="w-full text-xs gap-1">
+                  View Practice Hub
+                  <ArrowRight className="w-3 h-3" />
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 
           {/* Leaderboard */}
-          <Card className="border-border bg-card/50">
+          <Card className="border-border/60 bg-gradient-to-b from-card/80 to-card/40 backdrop-blur-md shadow-sm">
             <CardHeader className="pb-3">
               <CardTitle className="text-base flex items-center justify-between">
                 <span className="flex items-center gap-2">

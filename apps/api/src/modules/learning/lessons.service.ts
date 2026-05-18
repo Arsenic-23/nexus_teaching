@@ -7,6 +7,7 @@ import {
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { PrismaService } from '../../database/prisma.service';
 import { EVENTS, LessonCompletedEvent, LessonStepCompletedEvent } from '../../common/events/events';
+import { XpService } from '../gamification/xp.service';
 
 @Injectable()
 export class LessonsService {
@@ -15,6 +16,7 @@ export class LessonsService {
   constructor(
     private prisma: PrismaService,
     private eventEmitter: EventEmitter2,
+    private xpService: XpService,
   ) {}
 
   async findById(lessonId: string, studentProfileId?: string): Promise<any> {
@@ -195,8 +197,8 @@ export class LessonsService {
         },
       });
 
-      // Award XP
-      await this.awardXP(studentProfileId, lesson.xpReward, 'LESSON_COMPLETE', lessonId);
+      // Award XP via XpService (handles daily cap + streak bonus)
+      await this.xpService.awardXP(studentProfileId, lesson.xpReward, 'LESSON_COMPLETE', lessonId, `Lesson completed: ${lesson.title}`);
 
       // Emit lesson completed event
       this.eventEmitter.emit(
@@ -219,53 +221,4 @@ export class LessonsService {
     };
   }
 
-  private async awardXP(
-    studentProfileId: string,
-    amount: number,
-    source: string,
-    sourceId: string,
-  ) {
-    // Update student total XP
-    const profile = await this.prisma.studentProfile.update({
-      where: { id: studentProfileId },
-      data: {
-        totalXp: { increment: amount },
-      },
-    });
-
-    // Calculate new level (100 XP per level as base, increases)
-    const newLevel = this.calculateLevel(profile.totalXp);
-    if (newLevel !== profile.level) {
-      await this.prisma.studentProfile.update({
-        where: { id: studentProfileId },
-        data: { level: newLevel },
-      });
-    }
-
-    // Record transaction
-    await this.prisma.xPTransaction.create({
-      data: {
-        studentId: studentProfileId,
-        amount,
-        source: source as any,
-        sourceId,
-        multiplier: 1.0,
-        streakBonus: 0,
-      },
-    });
-
-    this.eventEmitter.emit(EVENTS.XP_EARNED, {
-      studentProfileId,
-      amount,
-      source,
-      sourceId,
-      totalXp: profile.totalXp + amount,
-      level: newLevel,
-    });
-  }
-
-  private calculateLevel(totalXp: number): number {
-    // Level formula: level = floor(1 + sqrt(totalXp / 100))
-    return Math.floor(1 + Math.sqrt(totalXp / 100));
-  }
 }

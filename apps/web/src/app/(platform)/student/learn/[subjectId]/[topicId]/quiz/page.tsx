@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, use } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronRight, Clock } from 'lucide-react';
@@ -16,10 +16,10 @@ import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
 interface QuizPageProps {
-  params: {
+  params: Promise<{
     subjectId: string;
     topicId: string;
-  };
+  }>;
 }
 
 type QuestionResult = 'correct' | 'incorrect' | 'unanswered';
@@ -96,6 +96,7 @@ const mockQuestions: Question[] = [
 ];
 
 export default function QuizPage({ params }: QuizPageProps) {
+  const resolvedParams = use(params);
   const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string | boolean>>({});
@@ -151,7 +152,7 @@ export default function QuizPage({ params }: QuizPageProps) {
             setQuestionResults([]);
             setQuizDone(false);
           }}
-          nextHref={`/student/learn/${params.subjectId}/${params.topicId}`}
+          nextHref={`/student/learn/${resolvedParams.subjectId}/${resolvedParams.topicId}`}
           nextLabel="Back to Topic"
         />
       </div>
@@ -163,7 +164,7 @@ export default function QuizPage({ params }: QuizPageProps) {
       {/* Top bar */}
       <div className="sticky top-0 z-10 border-b border-border bg-background/80 backdrop-blur-sm px-4 py-3">
         <div className="max-w-2xl mx-auto flex items-center gap-4">
-          <Link href={`/student/learn/${params.subjectId}/${params.topicId}`}>
+          <Link href={`/student/learn/${resolvedParams.subjectId}/${resolvedParams.topicId}`}>
             <Button size="icon-sm" variant="ghost">
               <X className="w-4 h-4" />
             </Button>

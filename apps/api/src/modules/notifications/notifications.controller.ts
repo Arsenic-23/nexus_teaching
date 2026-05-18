@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Param } from '@nestjs/common';
+import { Controller, Get, Patch, Param, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { CurrentUser, CurrentUserPayload } from '../../common/decorators/current-user.decorator';
 import { NotificationsService } from './notifications.service';
@@ -11,8 +11,11 @@ export class NotificationsController {
 
   @Get()
   @ApiOperation({ summary: 'Get notifications for the current user' })
-  async getNotifications(@CurrentUser() user: CurrentUserPayload): Promise<any> {
-    const result = await this.notificationsService.getNotifications(user.userId);
+  async getNotifications(
+    @CurrentUser() user: CurrentUserPayload,
+    @Query('limit') limit?: number,
+  ): Promise<any> {
+    const result = await this.notificationsService.getNotifications(user.userId, limit ? Number(limit) : 20);
     return { data: result };
   }
 

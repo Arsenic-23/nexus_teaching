@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 import { DatabaseModule } from './database/database.module';
 import { HealthModule } from './health/health.module';
 import { AuthModule } from './modules/auth/auth.module';
@@ -13,6 +14,8 @@ import { AIModule } from './modules/ai/ai.module';
 import { ClassroomsModule } from './modules/classrooms/classrooms.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { GamificationListener } from './common/events/gamification.listener';
+import { ClerkAuthGuard } from './common/guards/clerk-auth.guard';
+import { RolesGuard } from './common/guards/roles.guard';
 
 @Module({
   imports: [
@@ -58,6 +61,16 @@ import { GamificationListener } from './common/events/gamification.listener';
   providers: [
     // Global event listeners
     GamificationListener,
+
+    // Global guards — applied to every endpoint
+    {
+      provide: APP_GUARD,
+      useClass: ClerkAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
   ],
 })
 export class AppModule {}

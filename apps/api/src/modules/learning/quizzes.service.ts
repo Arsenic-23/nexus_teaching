@@ -7,6 +7,7 @@ import {
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { PrismaService } from '../../database/prisma.service';
 import { EVENTS, QuizCompletedEvent } from '../../common/events/events';
+import { XpService } from '../gamification/xp.service';
 
 interface SubmitAnswerDto {
   questionId: string;
@@ -27,7 +28,47 @@ export class QuizzesService {
   constructor(
     private prisma: PrismaService,
     private eventEmitter: EventEmitter2,
+    private xpService: XpService,
   ) {}
+
+  async getQuiz(quizId: string, studentProfileId?: string): Promise<any> {
+    const quiz = await this.prisma.quiz.findUnique({
+      where: { id: quizId },
+      include: {
+        topic: { include: { subject: true } },
+        _count: { select: { questions: true } },
+      },
+    });
+
+    if (!quiz || !quiz.isActive) {
+      throw new NotFoundException('Quiz not found');
+    }
+
+    let attempts: any[] = [];
+    if (studentProfileId) {
+      attempts = await this.prisma.quizAttempt.findMany({
+        where: { quizId, studentId: studentProfileId },
+        orderBy: { startedAt: 'desc' },
+        take: 5,
+      });
+    }
+
+    return {
+      id: quiz.id,
+      title: quiz.title,
+      type: quiz.type,
+      difficulty: quiz.difficulty,
+      timeLimit: quiz.timeLimit,
+      passingScore: quiz.passingScore,
+      maxAttempts: quiz.maxAttempts,
+      xpReward: quiz.xpReward,
+      isAdaptive: quiz.isAdaptive,
+      totalQuestions: quiz._count.questions,
+      topic: quiz.topic,
+      myAttempts: attempts,
+      bestScore: attempts.length > 0 ? Math.max(...attempts.map((a) => a.score)) : null,
+    };
+  }
 
   async startQuiz(quizId: string, studentProfileId: string): Promise<any> {
     const quiz = await this.prisma.quiz.findUnique({
@@ -244,14 +285,24 @@ export class QuizzesService {
           },
         });
 
-        // Award XP
+        // Award XP via XpService (handles daily cap + streak bonus)
         if (xpEarned > 0) {
-          await this.awardXP(
+          await this.xpService.awardXP(
             studentProfileId,
             xpEarned,
             isPerfect ? 'QUIZ_PERFECT' : 'QUIZ_PASS',
             quizId,
+            isPerfect ? 'Perfect quiz score!' : 'Quiz passed',
           );
+        }
+
+        // Update DEFEAT_BOSS quest if this is a boss battle quiz
+        if (quiz.type === 'BOSS_BATTLE' && passed) {
+          this.eventEmitter.emit('quest.update', {
+            studentProfileId,
+            questType: 'DEFEAT_BOSS',
+            increment: 1,
+          });
         }
 
         // Emit quiz completed event
@@ -355,43 +406,4 @@ export class QuizzesService {
     return shuffled;
   }
 
-  private async awardXP(
-    studentProfileId: string,
-    amount: number,
-    source: string,
-    sourceId: string,
-  ) {
-    const profile = await this.prisma.studentProfile.update({
-      where: { id: studentProfileId },
-      data: { totalXp: { increment: amount } },
-    });
-
-    const newLevel = Math.floor(1 + Math.sqrt(profile.totalXp / 100));
-    if (newLevel !== profile.level) {
-      await this.prisma.studentProfile.update({
-        where: { id: studentProfileId },
-        data: { level: newLevel },
-      });
-    }
-
-    await this.prisma.xPTransaction.create({
-      data: {
-        studentId: studentProfileId,
-        amount,
-        source: source as any,
-        sourceId,
-        multiplier: 1.0,
-        streakBonus: 0,
-      },
-    });
-
-    this.eventEmitter.emit(EVENTS.XP_EARNED, {
-      studentProfileId,
-      amount,
-      source,
-      sourceId,
-      totalXp: profile.totalXp,
-      level: newLevel,
-    });
-  }
 }

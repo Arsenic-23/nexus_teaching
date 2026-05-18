@@ -5,47 +5,35 @@ const isPublicRoute = createRouteMatcher([
   '/',
   '/sign-in(.*)',
   '/sign-up(.*)',
+  '/onboarding(.*)',
   '/pricing',
   '/about',
   '/features',
   '/api/webhooks(.*)',
+  '/api/health(.*)',
 ]);
 
-const isStudentRoute = createRouteMatcher(['/student(.*)']);
-const isTeacherRoute = createRouteMatcher(['/teacher(.*)']);
-const isAdminRoute = createRouteMatcher(['/admin(.*)']);
-const isSuperAdminRoute = createRouteMatcher(['/super-admin(.*)']);
+const isProtectedRoute = createRouteMatcher([
+  '/student(.*)',
+  '/teacher(.*)',
+  '/admin(.*)',
+]);
 
 export default clerkMiddleware(async (auth, request) => {
-  const { userId, sessionClaims } = await auth();
-
-  // Allow public routes
+  // Always allow public routes
   if (isPublicRoute(request)) return NextResponse.next();
 
-  // Require authentication for protected routes
-  if (!userId) {
-    const signInUrl = new URL('/sign-in', request.url);
-    signInUrl.searchParams.set('redirect_url', request.url);
-    return NextResponse.redirect(signInUrl);
-  }
+  // For protected routes, just verify authentication
+  // Role-based routing is handled in individual layout server components
+  // where the session token is always fresh (no caching issues)
+  if (isProtectedRoute(request)) {
+    const { userId } = await auth();
 
-  const role = (sessionClaims?.metadata as { role?: string })?.role;
-
-  // Role-based access control
-  if (isStudentRoute(request) && role !== 'STUDENT') {
-    return NextResponse.redirect(new URL('/onboarding', request.url));
-  }
-
-  if (isTeacherRoute(request) && role !== 'TEACHER') {
-    return NextResponse.redirect(new URL('/onboarding', request.url));
-  }
-
-  if (isAdminRoute(request) && role !== 'SCHOOL_ADMIN') {
-    return NextResponse.redirect(new URL('/', request.url));
-  }
-
-  if (isSuperAdminRoute(request) && role !== 'SUPER_ADMIN') {
-    return NextResponse.redirect(new URL('/', request.url));
+    if (!userId) {
+      const signInUrl = new URL('/sign-in', request.url);
+      signInUrl.searchParams.set('redirect_url', request.url);
+      return NextResponse.redirect(signInUrl);
+    }
   }
 
   return NextResponse.next();
@@ -53,9 +41,7 @@ export default clerkMiddleware(async (auth, request) => {
 
 export const config = {
   matcher: [
-    // Skip Next.js internals and all static files
     '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-    // Always run for API routes
     '/(api|trpc)(.*)',
   ],
 };

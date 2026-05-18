@@ -12,13 +12,14 @@ const assignments = [
   { id: 'a4', title: 'Polynomial Identities Worksheet', description: 'Practice worksheet on special polynomial identities', dueDate: 'Dec 5', dueTime: '', status: 'completed' as const, points: 60, score: 78, type: 'Worksheet' },
 ];
 
-export default function AssignmentsPage({ params }: { params: { classId: string } }) {
+export default async function AssignmentsPage({ params }: { params: Promise<{ classId: string }> }) {
+  const resolvedParams = await params;
   const pending = assignments.filter((a) => a.status === 'pending');
   const completed = assignments.filter((a) => a.status === 'completed');
 
   return (
     <div className="space-y-6 animate-fade-in">
-      <Breadcrumbs items={[{ label: 'Classrooms', href: '/student/classrooms' }, { label: 'Math Class', href: `/student/classrooms/${params.classId}` }, { label: 'Assignments' }]} />
+      <Breadcrumbs items={[{ label: 'Classrooms', href: '/student/classrooms' }, { label: 'Math Class', href: `/student/classrooms/${resolvedParams.classId}` }, { label: 'Assignments' }]} />
 
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-display font-bold">Assignments</h1>

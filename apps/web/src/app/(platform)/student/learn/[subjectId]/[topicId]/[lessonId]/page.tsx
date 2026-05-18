@@ -6,14 +6,14 @@ import { ExplanationBlock } from '@/components/learning/lesson-player/explanatio
 import { InteractiveBlock } from '@/components/learning/lesson-player/interactive-block';
 import { SummaryBlock } from '@/components/learning/lesson-player/summary-block';
 import { MCQQuestion } from '@/components/learning/quiz/mcq-question';
-import { useState } from 'react';
+import { useState, use } from 'react';
 
 interface LessonPageProps {
-  params: {
+  params: Promise<{
     subjectId: string;
     topicId: string;
     lessonId: string;
-  };
+  }>;
 }
 
 // Mock lesson content
@@ -108,6 +108,7 @@ Taking the square root of both sides gives us the quadratic formula!`}
 };
 
 export default function LessonPage({ params }: LessonPageProps) {
+  const resolvedParams = use(params);
   const router = useRouter();
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);
@@ -153,8 +154,8 @@ export default function LessonPage({ params }: LessonPageProps) {
   return (
     <LessonPlayer
       lesson={{ ...mockLesson, steps }}
-      onComplete={() => router.push(`/student/learn/${params.subjectId}/${params.topicId}`)}
-      onExit={() => router.push(`/student/learn/${params.subjectId}/${params.topicId}`)}
+      onComplete={() => router.push(`/student/learn/${resolvedParams.subjectId}/${resolvedParams.topicId}`)}
+      onExit={() => router.push(`/student/learn/${resolvedParams.subjectId}/${resolvedParams.topicId}`)}
     />
   );
 }

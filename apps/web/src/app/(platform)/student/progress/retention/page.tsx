@@ -1,28 +1,33 @@
+'use client';
+
+import { useMemo } from 'react';
 import { Brain, Info } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Breadcrumbs } from '@/components/shared/breadcrumbs';
 import { cn } from '@/lib/utils';
 
-// Generate 12 weeks of heatmap data
-const generateHeatmapData = () => {
+// Generate 12 weeks of heatmap data deterministically on client only
+function generateHeatmapData() {
+  const seed = [1, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0];
+  const intensitySeed = [3, 0, 2, 4, 0, 1, 3, 0, 0, 2, 4, 3, 0, 2, 1, 4, 0, 3, 0, 2, 1, 4, 0, 3, 2, 0, 4, 3, 1, 0, 2, 0, 4, 3, 0, 1, 2, 4, 0, 3, 0, 2, 1, 4, 3, 0, 2, 1, 4, 0, 3, 2, 0, 4, 1, 3, 2, 0, 4, 1, 3, 2, 4, 0, 3, 1, 2, 0, 4, 3, 1, 0, 2, 4, 3, 1, 0, 2, 4, 3, 0, 1, 2, 4];
   const weeks = [];
+  let idx = 0;
   for (let w = 0; w < 12; w++) {
     const days = [];
     for (let d = 0; d < 7; d++) {
-      const hasActivity = Math.random() > 0.35;
+      const hasActivity = seed[idx % seed.length] === 1;
+      const intensity = hasActivity ? (intensitySeed[idx % intensitySeed.length] % 4) + 1 : 0;
       days.push({
         date: new Date(Date.now() - (12 - w) * 7 * 86400000 + d * 86400000),
-        intensity: hasActivity ? Math.floor(Math.random() * 4) + 1 : 0,
-        xp: hasActivity ? Math.floor(Math.random() * 300) + 50 : 0,
+        intensity,
+        xp: hasActivity ? (intensitySeed[idx % intensitySeed.length] + 1) * 60 : 0,
       });
+      idx++;
     }
     weeks.push(days);
   }
   return weeks;
-};
-
-const heatmapData = generateHeatmapData();
+}
 
 const intensityColors = ['bg-secondary/30', 'bg-primary/20', 'bg-primary/40', 'bg-primary/70', 'bg-primary'];
 
@@ -35,6 +40,7 @@ const topicRetention = [
 ];
 
 export default function RetentionPage() {
+  const heatmapData = useMemo(() => generateHeatmapData(), []);
   const dayLabels = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
   return (
@@ -105,7 +111,7 @@ export default function RetentionPage() {
                   <span className="font-medium">{t.topic}</span>
                   <div className="flex items-center gap-2">
                     <span className={cn(
-                      'text-xs',
+                      'text-xs font-semibold',
                       t.retention >= 80 ? 'text-success' :
                       t.retention >= 60 ? 'text-mastery' : 'text-destructive',
                     )}>

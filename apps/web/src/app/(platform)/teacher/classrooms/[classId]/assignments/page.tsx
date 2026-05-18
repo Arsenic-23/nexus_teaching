@@ -14,19 +14,20 @@ const assignments = [
   { id: 'a4', title: 'Polynomial Identities Worksheet', type: 'Worksheet', dueDate: '2 weeks ago', submitted: 26, total: 28, avgScore: 79, status: 'completed' as const },
 ];
 
-export default function ClassAssignmentsPage({ params }: { params: { classId: string } }) {
+export default async function ClassAssignmentsPage({ params }: { params: Promise<{ classId: string }> }) {
+  const resolvedParams = await params;
   const active = assignments.filter((a) => a.status === 'active');
   const completed = assignments.filter((a) => a.status === 'completed');
 
   return (
     <div className="space-y-6 animate-fade-in">
-      <Breadcrumbs items={[{ label: 'Classrooms', href: '/teacher/classrooms' }, { label: 'Advanced Math', href: `/teacher/classrooms/${params.classId}` }, { label: 'Assignments' }]} />
+      <Breadcrumbs items={[{ label: 'Classrooms', href: '/teacher/classrooms' }, { label: 'Advanced Math', href: `/teacher/classrooms/${resolvedParams.classId}` }, { label: 'Assignments' }]} />
 
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-display font-bold flex items-center gap-2">
           <BookOpen className="w-6 h-6 text-primary" /> Assignments
         </h1>
-        <Link href={`/teacher/classrooms/${params.classId}/assignments/create`}>
+        <Link href={`/teacher/classrooms/${resolvedParams.classId}/assignments/create`}>
           <Button className="gap-2"><Plus className="w-4 h-4" /> Create Assignment</Button>
         </Link>
       </div>

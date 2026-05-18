@@ -36,7 +36,8 @@ const mockStudentDetail = {
   ],
 };
 
-export default function StudentDetailPage({ params }: { params: { studentId: string } }) {
+export default async function StudentDetailPage({ params }: { params: Promise<{ studentId: string }> }) {
+  const resolvedParams = await params;
   const student = mockStudentDetail;
 
   return (

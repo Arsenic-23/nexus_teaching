@@ -68,6 +68,11 @@ export class GamificationListener {
     await this.updateQuestProgress(event.studentProfileId, 'USE_AI_TUTOR', 1);
   }
 
+  @OnEvent('quest.update')
+  async handleQuestUpdate(payload: { studentProfileId: string; questType: string; increment: number }) {
+    await this.updateQuestProgress(payload.studentProfileId, payload.questType, payload.increment);
+  }
+
   private async updateStreak(studentProfileId: string) {
     try {
       const today = new Date();
