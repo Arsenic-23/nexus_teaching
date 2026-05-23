@@ -45,11 +45,11 @@ export function TrueFalseQuestion({
               disabled={showResult}
               className={cn(
                 'flex flex-col items-center gap-2 p-6 rounded-xl border transition-all duration-200 font-semibold text-lg',
-                !showResult && !isSelected && 'border-border bg-card/50 hover:border-primary/40 hover:bg-card cursor-pointer',
+                !showResult && !isSelected && 'border-border bg-card hover:border-primary/40 hover:bg-card cursor-pointer',
                 !showResult && isSelected && 'border-primary bg-primary/10 shadow-md',
                 showResult && isCorrect && 'border-success/50 bg-success/10 text-success',
                 showResult && isWrong && 'border-destructive/50 bg-destructive/10 text-destructive',
-                showResult && !isCorrect && !isWrong && 'border-border bg-card/30 opacity-50',
+                showResult && !isCorrect && !isWrong && 'border-border bg-muted/50 opacity-50',
               )}
             >
               <span className="text-2xl">{emoji}</span>

@@ -43,23 +43,23 @@ const config: Config = {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
-        // Gamification
+        // Gamification — muted grey palette for educational tone
         brand: {
-          DEFAULT: '#3b82f6',
-          hover: '#2563eb',
-          glow: 'rgba(59, 130, 246, 0.25)',
+          DEFAULT: 'hsl(220 9% 52%)',
+          hover: 'hsl(220 9% 42%)',
+          glow: 'hsl(220 9% 52% / 0.2)',
         },
         mastery: {
-          DEFAULT: '#fbbf24',
-          glow: 'rgba(251, 191, 36, 0.3)',
+          DEFAULT: 'hsl(220 6% 62%)',
+          glow: 'hsl(220 6% 62% / 0.2)',
         },
         streak: {
-          DEFAULT: '#f97316',
-          glow: 'rgba(249, 115, 22, 0.3)',
+          DEFAULT: 'hsl(220 7% 55%)',
+          glow: 'hsl(220 7% 55% / 0.2)',
         },
         xp: {
-          DEFAULT: '#3b82f6',
-          glow: 'rgba(59, 130, 246, 0.25)',
+          DEFAULT: 'hsl(220 9% 52%)',
+          glow: 'hsl(220 9% 52% / 0.2)',
         },
         rank: {
           bronze: '#cd7f32',
@@ -102,8 +102,8 @@ const config: Config = {
       },
       keyframes: {
         'glow-pulse': {
-          '0%, 100%': { boxShadow: '0 0 15px rgba(59, 130, 246, 0.2)' },
-          '50%': { boxShadow: '0 0 25px rgba(59, 130, 246, 0.4)' },
+          '0%, 100%': { boxShadow: '0 0 15px hsl(220 9% 52% / 0.15)' },
+          '50%': { boxShadow: '0 0 25px hsl(220 9% 52% / 0.25)' },
         },
         'flame-flicker': {
           '0%, 100%': { transform: 'scaleY(1) scaleX(1)' },

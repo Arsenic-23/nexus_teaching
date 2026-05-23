@@ -39,7 +39,7 @@ export function XPBar({
       )}
       <div className={cn('relative w-full overflow-hidden rounded-full bg-secondary', sizeClasses[size])}>
         <div
-          className="h-full bg-gradient-xp transition-all duration-1000 ease-out rounded-full"
+          className="h-full bg-gradient-brand transition-all duration-1000 ease-out rounded-full"
           style={{ width: `${progress}%` }}
         />
       </div>

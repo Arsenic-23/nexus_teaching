@@ -34,7 +34,7 @@ export default async function ClassStudentsPage({ params }: { params: Promise<{ 
       <div className="space-y-2">
         {students.map((s, i) => (
           <Link key={s.id} href={`/teacher/students/${s.id}`}>
-            <div className={cn('flex items-center gap-4 p-4 rounded-xl border transition-all cursor-pointer hover:shadow-md', s.status === 'at-risk' ? 'border-orange-500/20 bg-orange-500/5' : 'border-border bg-card/50 hover:border-primary/30')}>
+            <div className={cn('flex items-center gap-4 p-4 rounded-xl border transition-all cursor-pointer hover:shadow-md', s.status === 'at-risk' ? 'border-orange-500/20 bg-orange-500/5' : 'border-border bg-card hover:border-primary/30')}>
               <span className="text-sm font-bold w-6 text-center text-muted-foreground">{i + 1}</span>
               <Avatar className="w-9 h-9"><AvatarFallback className="text-xs">{s.name.slice(0, 2)}</AvatarFallback></Avatar>
               <div className="flex-1 min-w-0">

@@ -48,14 +48,14 @@ export function StudentSidebar() {
   return (
     <aside
       className={cn(
-        'hidden lg:flex flex-col fixed left-0 top-0 h-full border-r border-border/50 bg-gradient-to-b from-card/90 to-card/50 backdrop-blur-2xl z-40 transition-all duration-300 shadow-xl shadow-black/5',
+        'hidden lg:flex flex-col fixed left-0 top-0 h-full border-r border-border bg-card backdrop-blur-xl z-40 transition-all duration-300 shadow-[var(--shadow-card)]',
         collapsed ? 'w-[72px]' : 'w-[260px]',
       )}
     >
       {/* Logo */}
       <Link href="/" className="flex items-center gap-3 h-16 px-4 border-b border-border shrink-0 hover:bg-foreground/5 transition-colors">
-        <div className="w-8 h-8 rounded-xl bg-gradient-xp flex items-center justify-center shrink-0 shadow-md shadow-primary/25">
-          <Zap className="w-4 h-4 text-white" />
+        <div className="w-8 h-8 rounded-xl bg-gradient-brand flex items-center justify-center shrink-0 shadow-sm">
+          <Zap className="w-4 h-4 text-primary-foreground" />
         </div>
         {!collapsed && (
           <div>

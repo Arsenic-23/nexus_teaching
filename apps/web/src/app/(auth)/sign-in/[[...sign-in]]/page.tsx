@@ -10,8 +10,8 @@ export default function SignInPage() {
 
       {/* Logo */}
       <Link href="/" className="flex items-center gap-2.5 mb-8">
-        <div className="w-9 h-9 rounded-xl bg-gradient-xp flex items-center justify-center shadow-lg shadow-primary/30">
-          <Zap className="w-5 h-5 text-white" />
+        <div className="w-9 h-9 rounded-xl bg-gradient-brand flex items-center justify-center shadow-lg shadow-primary/30">
+          <Zap className="w-5 h-5 text-primary-foreground" />
         </div>
         <span className="font-display text-xl font-bold tracking-tight">Nexus Learning</span>
       </Link>
@@ -35,13 +35,13 @@ export default function SignInPage() {
             identityPreviewEditButton: 'text-primary',
           },
           variables: {
-            colorBackground: 'hsl(240 6% 8%)',
-            colorText: 'hsl(0 0% 95%)',
-            colorPrimary: 'hsl(217 91% 60%)',
-            colorInputBackground: 'hsl(240 5% 15%)',
-            colorInputText: 'hsl(0 0% 95%)',
+            colorBackground: 'hsl(220 8% 11%)',
+            colorText: 'hsl(220 10% 90%)',
+            colorPrimary: 'hsl(220 6% 68%)',
+            colorInputBackground: 'hsl(220 8% 14%)',
+            colorInputText: 'hsl(220 10% 90%)',
             borderRadius: '0.75rem',
-            colorDanger: 'hsl(0 84% 60%)',
+            colorDanger: 'hsl(0 55% 52%)',
           },
         }}
       />

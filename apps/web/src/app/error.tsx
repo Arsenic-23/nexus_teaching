@@ -34,7 +34,7 @@ export default function Error({
       )}
 
       <div className="flex flex-col sm:flex-row gap-3 mt-4">
-        <Button onClick={reset} variant="glow" className="gap-2">
+        <Button onClick={reset} variant="default" className="gap-2">
           <RotateCcw className="w-4 h-4" />
           Try Again
         </Button>

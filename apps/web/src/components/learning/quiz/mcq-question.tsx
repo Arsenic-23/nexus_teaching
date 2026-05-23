@@ -48,7 +48,7 @@ export function MCQQuestion({
               disabled={showResult}
               className={cn(
                 'w-full flex items-center gap-4 p-5 rounded-2xl border text-left transition-all duration-300 shadow-sm relative overflow-hidden',
-                !showResult && !isSelected && 'border-border/60 bg-card/40 hover:border-primary/50 hover:bg-card hover:shadow-md cursor-pointer',
+                !showResult && !isSelected && 'border-border/60 bg-card hover:border-primary/50 hover:bg-card hover:shadow-md cursor-pointer',
                 !showResult && isSelected && 'border-primary bg-primary/5 shadow-md shadow-primary/10 ring-1 ring-primary/20',
                 showResult && isCorrect && 'border-success/50 bg-success/10 text-success shadow-success/10',
                 showResult && isWrong && 'border-destructive/50 bg-destructive/10 text-destructive shadow-destructive/10',

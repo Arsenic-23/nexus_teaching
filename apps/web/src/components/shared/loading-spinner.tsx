@@ -36,7 +36,7 @@ export function FullPageLoader({ label = 'Loading...' }: { label?: string }) {
         <div className="relative">
           <div className="w-16 h-16 rounded-full border-4 border-border border-t-primary animate-spin" />
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-6 h-6 rounded-full bg-gradient-xp" />
+            <div className="w-6 h-6 rounded-full bg-gradient-brand" />
           </div>
         </div>
         <p className="text-sm text-muted-foreground font-medium">{label}</p>

@@ -51,7 +51,7 @@ export default function TeacherAnalyticsPage() {
           { label: 'Avg Accuracy', value: `${analyticsData.avgAccuracy}%`, icon: Zap, color: 'text-success' },
           { label: 'Avg Streak', value: `${analyticsData.avgStreak}🔥`, icon: TrendingUp, color: 'text-streak' },
         ].map(({ label, value, icon: Icon, color }) => (
-          <Card key={label} className="border-border bg-card/50">
+          <Card key={label} className="border-border bg-card">
             <CardContent className="pt-4 pb-4">
               <div className="flex items-center gap-2 mb-1"><Icon className={`w-4 h-4 ${color}`} /><span className="text-xs text-muted-foreground">{label}</span></div>
               <p className="text-xl font-bold">{value}</p>
@@ -61,13 +61,13 @@ export default function TeacherAnalyticsPage() {
       </div>
 
       {/* Weekly XP */}
-      <Card className="border-border bg-card/50">
+      <Card className="border-border bg-card">
         <CardHeader className="pb-3"><CardTitle className="text-base">Weekly XP — All Classes</CardTitle></CardHeader>
         <CardContent>
           <div className="flex items-end gap-2 h-24">
             {weeklyXpByDay.map((xp, i) => (
               <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                <div className="w-full rounded-t-md bg-gradient-xp opacity-80 hover:opacity-100 transition-opacity" style={{ height: `${(xp / maxXp) * 80}px` }} />
+                <div className="w-full rounded-t-md bg-gradient-brand opacity-80 hover:opacity-100 transition-opacity" style={{ height: `${(xp / maxXp) * 80}px` }} />
                 <span className="text-[9px] text-muted-foreground">{days[i]}</span>
               </div>
             ))}
@@ -76,7 +76,7 @@ export default function TeacherAnalyticsPage() {
       </Card>
 
       {/* Class comparison */}
-      <Card className="border-border bg-card/50">
+      <Card className="border-border bg-card">
         <CardHeader className="pb-3"><CardTitle className="text-base">Class Performance Comparison</CardTitle></CardHeader>
         <CardContent className="space-y-4">
           {classrooms.map((cls) => (

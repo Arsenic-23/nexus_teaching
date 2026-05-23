@@ -27,16 +27,16 @@ const rarityConfig: Record<Rarity, { color: string; glow: string; label: string;
     bg: 'border-border bg-card',
   },
   RARE: {
-    color: 'text-blue-400',
+    color: 'text-primary',
     glow: 'shadow-[0_0_20px_rgba(59,130,246,0.3)]',
     label: 'Rare',
-    bg: 'border-blue-500/30 bg-blue-500/5',
+    bg: 'border-border/30 bg-primary/5',
   },
   EPIC: {
-    color: 'text-purple-400',
+    color: 'text-primary',
     glow: 'shadow-[0_0_25px_rgba(139,92,246,0.4)]',
     label: 'Epic',
-    bg: 'border-purple-500/30 bg-purple-500/5',
+    bg: 'border-primary/30 bg-primary/5',
   },
   LEGENDARY: {
     color: 'text-mastery',

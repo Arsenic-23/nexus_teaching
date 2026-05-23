@@ -13,7 +13,7 @@ interface MasteryRingProps {
 const STATUS_COLORS: Record<string, { stroke: string; glow: string; label: string }> = {
   not_started: { stroke: 'stroke-muted', glow: '', label: 'Not Started' },
   in_progress: { stroke: 'stroke-primary', glow: 'drop-shadow(0 0 6px rgba(59,130,246,0.5))', label: 'In Progress' },
-  practiced: { stroke: 'stroke-purple-500', glow: 'drop-shadow(0 0 6px rgba(139,92,246,0.5))', label: 'Practiced' },
+  practiced: { stroke: 'stroke-primary', glow: 'drop-shadow(0 0 6px hsl(220 9% 52% / 0.3))', label: 'Practiced' },
   proficient: { stroke: 'stroke-violet-400', glow: 'drop-shadow(0 0 8px rgba(139,92,246,0.6))', label: 'Proficient' },
   mastered: { stroke: 'stroke-yellow-400', glow: 'drop-shadow(0 0 12px rgba(251,191,36,0.7))', label: 'Mastered' },
 };

@@ -20,7 +20,7 @@ export function XpGainToast({ amount, visible, className }: XpGainToastProps) {
           exit={{ opacity: 0, y: -80, scale: 0.8 }}
           transition={{ duration: 1.5, ease: 'easeOut' }}
           className={cn(
-            'pointer-events-none absolute z-50 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-xp text-white text-sm font-bold shadow-lg glow-brand',
+            'pointer-events-none absolute z-50 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-brand text-white text-sm font-bold shadow-lg glow-brand',
             className,
           )}
         >

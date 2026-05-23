@@ -123,7 +123,7 @@ export function LessonPlayer({ lesson, onComplete, onExit, className }: LessonPl
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -15, scale: 0.98 }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="bg-card/30 backdrop-blur-sm border border-border/50 rounded-3xl p-8 shadow-2xl shadow-black/5"
+              className="bg-muted/50 backdrop-blur-sm border border-border/50 rounded-3xl p-8 shadow-2xl shadow-black/5"
             >
               {step.content}
             </motion.div>
@@ -138,7 +138,7 @@ export function LessonPlayer({ lesson, onComplete, onExit, className }: LessonPl
             variant="outline"
             onClick={handlePrev}
             disabled={currentStep === 0}
-            className="gap-2 rounded-xl px-6 hover:bg-card/80 transition-all"
+            className="gap-2 rounded-xl px-6 hover:bg-card transition-all"
           >
             <ChevronLeft className="w-4 h-4" />
             Back

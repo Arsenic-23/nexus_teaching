@@ -103,7 +103,7 @@ export default function OnboardingPage() {
           animate={{ opacity: 1, y: 0 }}
           className="flex items-center justify-center gap-3 mb-10"
         >
-          <div className="w-10 h-10 rounded-xl bg-gradient-xp flex items-center justify-center shadow-lg shadow-primary/25">
+          <div className="w-10 h-10 rounded-xl bg-gradient-brand flex items-center justify-center shadow-lg shadow-primary/25">
             <Zap className="w-6 h-6 text-white" />
           </div>
           <span className="font-display text-2xl font-bold">Nexus Learning</span>
@@ -118,7 +118,7 @@ export default function OnboardingPage() {
             </div>
             <div className="h-1.5 w-full rounded-full bg-secondary overflow-hidden">
               <motion.div
-                className="h-full bg-gradient-xp rounded-full"
+                className="h-full bg-gradient-brand rounded-full"
                 initial={{ width: 0 }}
                 animate={{ width: `${((stepIndex + 1) / (role === 'STUDENT' ? 4 : 1)) * 100}%` }}
                 transition={{ duration: 0.4, ease: 'easeOut' }}
@@ -161,7 +161,7 @@ export default function OnboardingPage() {
                     icon: School,
                     title: 'I am a Teacher',
                     description: 'Manage classrooms, create assignments, and track every student\'s mastery and progress.',
-                    color: 'text-purple-400',
+                    color: 'text-primary',
                     emoji: '👩‍🏫',
                   },
                 ].map((option) => (
@@ -172,7 +172,7 @@ export default function OnboardingPage() {
                       'p-7 rounded-2xl border text-left transition-all duration-200 group relative overflow-hidden',
                       role === option.id
                         ? 'border-primary bg-primary/10 shadow-xl shadow-primary/10'
-                        : 'border-border bg-card/50 hover:border-primary/40 hover:bg-card',
+                        : 'border-border bg-card hover:border-primary/40 hover:bg-card',
                     )}
                   >
                     {role === option.id && (
@@ -226,7 +226,7 @@ export default function OnboardingPage() {
                       'p-4 rounded-xl border text-sm font-medium transition-all',
                       grade === g.value
                         ? 'border-primary bg-primary/10 text-primary shadow-md'
-                        : 'border-border bg-card/50 hover:border-primary/40 text-muted-foreground hover:text-foreground',
+                        : 'border-border bg-card hover:border-primary/40 text-muted-foreground hover:text-foreground',
                     )}
                   >
                     {g.label}
@@ -270,7 +270,7 @@ export default function OnboardingPage() {
                       'p-4 rounded-xl border flex items-center gap-3 text-left transition-all',
                       selectedSubjects.includes(subject.id)
                         ? 'border-primary bg-primary/10 shadow-md'
-                        : 'border-border bg-card/50 hover:border-primary/40',
+                        : 'border-border bg-card hover:border-primary/40',
                     )}
                   >
                     <span className="text-2xl shrink-0">{subject.icon}</span>
@@ -329,7 +329,7 @@ export default function OnboardingPage() {
                       'p-6 rounded-xl border text-center transition-all',
                       dailyGoal === goal.minutes
                         ? `border-primary bg-primary/10 shadow-md ${goal.border}`
-                        : 'border-border bg-card/50 hover:border-primary/40',
+                        : 'border-border bg-card hover:border-primary/40',
                     )}
                   >
                     <span className="text-3xl block mb-2">{goal.icon}</span>
@@ -399,7 +399,7 @@ export default function OnboardingPage() {
                   { icon: Target, label: 'Mastery-based', color: 'text-primary bg-primary/10 border-primary/20' },
                   { icon: Flame, label: 'Build streaks', color: 'text-streak bg-streak/10 border-streak/20' },
                   { icon: Trophy, label: 'Rank up', color: 'text-mastery bg-mastery/10 border-mastery/20' },
-                  { icon: Brain, label: 'AI Tutor', color: 'text-purple-400 bg-purple-500/10 border-purple-500/20' },
+                  { icon: Brain, label: 'AI Tutor', color: 'text-primary bg-primary/10 border-border' },
                 ].map(({ icon: Icon, label, color }, i) => (
                   <motion.div
                     key={label}

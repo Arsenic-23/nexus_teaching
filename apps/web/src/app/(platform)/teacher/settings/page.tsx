@@ -30,7 +30,7 @@ export default function TeacherSettingsPage() {
       </div>
 
       {/* Notifications */}
-      <Card className="border-border bg-card/50">
+      <Card className="border-border bg-card">
         <CardHeader className="pb-4">
           <CardTitle className="text-base flex items-center gap-2">
             <Bell className="w-4 h-4 text-mastery" />
@@ -60,7 +60,7 @@ export default function TeacherSettingsPage() {
       </Card>
 
       {/* Account */}
-      <Card className="border-border bg-card/50">
+      <Card className="border-border bg-card">
         <CardHeader className="pb-4">
           <CardTitle className="text-base flex items-center gap-2">
             <User className="w-4 h-4 text-primary" />

@@ -133,9 +133,9 @@ export function TutorChat({
   return (
     <div className={cn('flex flex-col h-full bg-background rounded-xl border border-border overflow-hidden', className)}>
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-card/50">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-card">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-gradient-xp flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-gradient-brand flex items-center justify-center">
             <Bot className="w-4 h-4 text-white" />
           </div>
           <div>
@@ -193,7 +193,7 @@ export function TutorChat({
       </AnimatePresence>
 
       {/* Input */}
-      <div className="px-4 py-3 border-t border-border bg-card/30">
+      <div className="px-4 py-3 border-t border-border bg-muted/50">
         <div className="flex gap-2 items-end">
           <Textarea
             ref={textareaRef}

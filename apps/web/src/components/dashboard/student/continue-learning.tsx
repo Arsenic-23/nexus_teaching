@@ -20,7 +20,7 @@ interface ContinueLearningProps {
 
 export function ContinueLearning({ lesson, className }: ContinueLearningProps) {
   return (
-    <Card className={cn('border-border bg-card/50 hover:border-primary/30 transition-colors', className)}>
+    <Card className={cn('border-border bg-card hover:border-primary/30 transition-colors', className)}>
       <CardHeader className="pb-3">
         <CardTitle className="text-base flex items-center gap-2">
           <BookOpen className="w-4 h-4 text-primary" />

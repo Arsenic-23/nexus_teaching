@@ -79,7 +79,7 @@ export function SkillTreeCanvas({
       </div>
 
       {/* Legend */}
-      <div className="absolute bottom-3 left-3 z-10 flex items-center gap-3 p-2 rounded-lg bg-card/80 backdrop-blur-sm border border-border text-xs text-muted-foreground">
+      <div className="absolute bottom-3 left-3 z-10 flex items-center gap-3 p-2 rounded-lg bg-card backdrop-blur-sm border border-border text-xs text-muted-foreground">
         <div className="flex items-center gap-1.5">
           <div className="w-3 h-3 rounded-full bg-success/80" />
           <span>Mastered</span>

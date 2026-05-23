@@ -37,14 +37,14 @@ export function TeacherSidebar() {
   return (
     <aside
       className={cn(
-        'hidden lg:flex flex-col fixed left-0 top-0 h-full border-r border-border bg-card/50 backdrop-blur-sm z-40 transition-all duration-300',
+        'hidden lg:flex flex-col fixed left-0 top-0 h-full border-r border-border bg-card backdrop-blur-xl z-40 transition-all duration-300 shadow-[var(--shadow-card)]',
         collapsed ? 'w-[72px]' : 'w-[260px]',
       )}
     >
       {/* Logo */}
       <Link href="/" className="flex items-center gap-3 h-16 px-4 border-b border-border hover:bg-foreground/5 transition-colors shrink-0">
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-primary flex items-center justify-center shrink-0">
-          <GraduationCap className="w-5 h-5 text-white" />
+        <div className="w-8 h-8 rounded-xl bg-gradient-brand flex items-center justify-center shrink-0 shadow-sm">
+          <GraduationCap className="w-5 h-5 text-primary-foreground" />
         </div>
         {!collapsed && (
           <div>
@@ -66,13 +66,13 @@ export function TeacherSidebar() {
                   className={cn(
                     'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200',
                     active
-                      ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-secondary',
+                      ? 'bg-foreground/10 text-foreground border border-border shadow-sm'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-foreground/5',
                     collapsed && 'justify-center px-2',
                   )}
                   title={collapsed ? item.label : undefined}
                 >
-                  <item.icon className={cn('shrink-0 w-5 h-5', active ? 'text-purple-400' : '')} />
+                  <item.icon className={cn('shrink-0 w-5 h-5', active ? 'text-primary' : '')} />
                   {!collapsed && <span>{item.label}</span>}
                 </Link>
               </li>
@@ -84,7 +84,7 @@ export function TeacherSidebar() {
       {/* Teacher badge */}
       {!collapsed && (
         <div className="px-4 pb-3">
-          <div className="p-2 rounded-lg bg-purple-500/10 border border-purple-500/20 text-xs text-purple-400 text-center font-semibold">
+          <div className="p-2 rounded-lg bg-primary/10 border border-border text-xs text-primary text-center font-semibold">
             👩‍🏫 Teacher Mode
           </div>
         </div>
@@ -101,13 +101,13 @@ export function TeacherSidebar() {
               className={cn(
                 'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200',
                 active
-                  ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20'
+                  ? 'bg-primary/10 text-primary border border-border'
                   : 'text-muted-foreground hover:text-foreground hover:bg-secondary',
                 collapsed && 'justify-center px-2',
               )}
               title={collapsed ? item.label : undefined}
             >
-              <item.icon className={cn('shrink-0 w-5 h-5', active ? 'text-purple-400' : '')} />
+              <item.icon className={cn('shrink-0 w-5 h-5', active ? 'text-primary' : '')} />
               {!collapsed && <span>{item.label}</span>}
             </Link>
           );

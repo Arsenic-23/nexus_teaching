@@ -40,7 +40,7 @@ export default function CreateClassroomPage() {
         </div>
       </div>
 
-      <Card className="border-border bg-card/50">
+      <Card className="border-border bg-card">
         <CardContent className="pt-6 space-y-5">
           {/* Name */}
           <div className="space-y-2">

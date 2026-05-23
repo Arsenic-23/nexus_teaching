@@ -44,7 +44,7 @@ export function WeakAreasWidget({ areas, className }: WeakAreasWidgetProps) {
             return (
               <div
                 key={area.topicId}
-                className="flex items-center justify-between p-3 rounded-lg bg-card/50 border border-border hover:border-orange-500/30 transition-colors"
+                className="flex items-center justify-between p-3 rounded-lg bg-card border border-border hover:border-orange-500/30 transition-colors"
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <div className={cn('w-2 h-2 rounded-full shrink-0', config.dot)} />

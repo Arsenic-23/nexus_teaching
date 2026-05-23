@@ -5,10 +5,10 @@ export default function Loading() {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-page gap-6">
       {/* Animated logo */}
       <div className="relative">
-        <div className="w-16 h-16 rounded-2xl bg-gradient-xp flex items-center justify-center animate-pulse">
-          <Zap className="w-8 h-8 text-white" />
+        <div className="w-16 h-16 rounded-2xl bg-gradient-brand flex items-center justify-center animate-pulse">
+          <Zap className="w-8 h-8 text-primary-foreground" />
         </div>
-        <div className="absolute inset-0 rounded-2xl bg-gradient-xp blur-xl opacity-40 animate-ping" />
+        <div className="absolute inset-0 rounded-2xl bg-gradient-brand blur-xl opacity-40 animate-ping" />
       </div>
 
       <div className="text-center space-y-2">

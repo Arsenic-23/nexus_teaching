@@ -45,7 +45,7 @@ export default async function StudentDetailPage({ params }: { params: Promise<{ 
       <Breadcrumbs items={[{ label: 'Students', href: '/teacher/students' }, { label: student.name }]} />
 
       {/* Student header */}
-      <div className={`p-6 rounded-2xl border ${student.status === 'at-risk' ? 'border-orange-500/20 bg-orange-500/5' : 'border-border bg-card/50'}`}>
+      <div className={`p-6 rounded-2xl border ${student.status === 'at-risk' ? 'border-orange-500/20 bg-orange-500/5' : 'border-border bg-card'}`}>
         <div className="flex items-start gap-4">
           <Avatar className="w-16 h-16 border-2 border-border">
             <AvatarFallback className="text-xl">{student.name.slice(0, 2)}</AvatarFallback>
@@ -88,7 +88,7 @@ export default async function StudentDetailPage({ params }: { params: Promise<{ 
           { label: 'Streak', value: `${student.streak}🔥`, icon: Flame, color: 'text-streak' },
           { label: 'Lessons', value: student.lessonsCompleted, icon: BookOpen, color: 'text-success' },
         ].map(({ label, value, icon: Icon, color }) => (
-          <Card key={label} className="border-border bg-card/50 text-center">
+          <Card key={label} className="border-border bg-card text-center">
             <CardContent className="pt-4 pb-4">
               <Icon className={`w-4 h-4 mx-auto mb-1 ${color}`} />
               <p className="text-xl font-bold">{value}</p>
@@ -99,7 +99,7 @@ export default async function StudentDetailPage({ params }: { params: Promise<{ 
       </div>
 
       {/* Topic progress */}
-      <Card className="border-border bg-card/50">
+      <Card className="border-border bg-card">
         <CardHeader className="pb-3"><CardTitle className="text-sm">Topic Mastery</CardTitle></CardHeader>
         <CardContent className="space-y-3">
           {student.topicProgress.map((t) => (
@@ -115,7 +115,7 @@ export default async function StudentDetailPage({ params }: { params: Promise<{ 
       </Card>
 
       {/* Recent activity */}
-      <Card className="border-border bg-card/50">
+      <Card className="border-border bg-card">
         <CardHeader className="pb-3"><CardTitle className="text-sm">Recent Activity</CardTitle></CardHeader>
         <CardContent className="space-y-2">
           {student.recentActivity.map((a, i) => (
