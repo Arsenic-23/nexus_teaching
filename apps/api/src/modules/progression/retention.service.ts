@@ -130,8 +130,8 @@ export class RetentionService {
     });
 
     const now = new Date();
-    const dueForReview = records.filter((r) => r.nextReview <= now);
-    const upcoming = records.filter((r) => r.nextReview > now);
+    const dueForReview = records.filter((r: any) => r.nextReview <= now);
+    const upcoming = records.filter((r: any) => r.nextReview > now);
 
     return {
       dueForReview,
@@ -139,7 +139,7 @@ export class RetentionService {
       totalTracked: records.length,
       averageRetention:
         records.length > 0
-          ? records.reduce((sum, r) => sum + r.lastScore, 0) / records.length
+          ? records.reduce((sum: number, r: any) => sum + r.lastScore, 0) / records.length
           : 0,
     };
   }

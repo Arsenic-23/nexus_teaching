@@ -70,7 +70,7 @@ export class WeakAreasService {
       include: { subject: true },
     });
 
-    const topicMap = new Map(topics.map((t) => [t.id, t]));
+    const topicMap = new Map<string, any>(topics.map((t: any) => [t.id, t]));
 
     return weakTopicIds
       .map((topicId) => {
