@@ -10,7 +10,7 @@
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 238 83% 62%;
     --primary-foreground: 210 40% 98%;
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
@@ -24,7 +24,7 @@
     --success-foreground: 0 0% 100%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --ring: 238 83% 62%;
     --radius: 0.75rem;
     --shadow-card: 0 1px 2px hsl(220 18% 12% / 0.04), 0 4px 16px hsl(220 18% 12% / 0.06);
     --shadow-elevated: 0 4px 24px hsl(220 18% 12% / 0.08);
@@ -37,8 +37,8 @@
     --card-foreground: 220 10% 90%;
     --popover: 220 8% 11%;
     --popover-foreground: 220 10% 90%;
-    --primary: 220 6% 68%;
-    --primary-foreground: 220 10% 8%;
+    --primary: 238 83% 66%;
+    --primary-foreground: 210 40% 98%;
     --secondary: 220 7% 16%;
     --secondary-foreground: 220 10% 90%;
     --muted: 220 8% 14%;
@@ -51,7 +51,7 @@
     --success-foreground: 0 0% 100%;
     --border: 220 7% 18%;
     --input: 220 7% 18%;
-    --ring: 220 6% 35%;
+    --ring: 238 83% 66%;
     --radius: 0.75rem;
     --shadow-card: 0 1px 2px hsl(0 0% 0% / 0.2), 0 4px 16px hsl(0 0% 0% / 0.25);
     --shadow-elevated: 0 8px 32px hsl(0 0% 0% / 0.35);
@@ -134,17 +134,18 @@
   .landing-grid-bg {
     background-color: hsl(var(--background));
     background-image:
-      linear-gradient(hsl(var(--border) / 0.35) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(var(--border) / 0.35) 1px, transparent 1px);
+      linear-gradient(hsl(var(--foreground) / 0.10) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--foreground) / 0.10) 1px, transparent 1px);
     background-size: 64px 64px;
-    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 20%, transparent 70%);
+    mask-image: linear-gradient(to bottom, black 0%, transparent 40%);
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 40%);
   }
 
   .landing-hero-glow {
     background: radial-gradient(
-      ellipse 60% 50% at 50% -10%,
-      hsl(var(--foreground) / 0.06),
-      transparent 70%
+      ellipse 80% 60% at 50% 0%,
+      hsl(var(--primary) / 0.08),
+      transparent 80%
     );
   }
 
@@ -225,11 +226,11 @@
   }
 
   .bg-gradient-brand {
-    background: linear-gradient(135deg, hsl(220 9% 42%), hsl(220 6% 58%));
+    background: linear-gradient(135deg, hsl(238 83% 52%), hsl(238 83% 72%));
   }
 
   .bg-gradient-xp {
-    background: linear-gradient(90deg, hsl(220 9% 45%), hsl(220 6% 55%));
+    background: linear-gradient(90deg, hsl(238 83% 55%), hsl(238 83% 65%));
   }
 
   .bg-gradient-mastery {
@@ -263,6 +264,15 @@
 @keyframes shimmer {
   0% { transform: translateX(-100%); }
   100% { transform: translateX(100%); }
+}
+
+@keyframes border-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-border-spin {
+  animation: border-spin 6s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

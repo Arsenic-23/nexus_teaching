@@ -11,7 +11,7 @@ import {
   Zap,
   ChevronLeft,
   ChevronRight,
-  GraduationCap,
+  Orbit,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useSidebar } from '@/providers/sidebar-provider';
@@ -42,9 +42,9 @@ export function TeacherSidebar() {
       )}
     >
       {/* Logo */}
-      <Link href="/" className="flex items-center gap-3 h-16 px-4 border-b border-border hover:bg-foreground/5 transition-colors shrink-0">
-        <div className="w-8 h-8 rounded-xl bg-gradient-brand flex items-center justify-center shrink-0 shadow-sm">
-          <GraduationCap className="w-5 h-5 text-primary-foreground" />
+      <Link href="/" className="flex items-center gap-3 h-16 px-4 border-b border-border hover:bg-foreground/5 transition-colors shrink-0 group">
+        <div className="w-8 h-8 rounded-xl bg-gradient-brand flex items-center justify-center shrink-0 shadow-lg shadow-primary/20 group-hover:scale-105 group-hover:rotate-12 transition-all duration-500">
+          <Orbit className="w-4 h-4 text-primary-foreground group-hover:animate-spin-slow" />
         </div>
         {!collapsed && (
           <div>

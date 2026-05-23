@@ -13,7 +13,7 @@ import {
   Trophy,
   Star,
   Settings,
-  Zap,
+  Orbit,
   ChevronLeft,
   ChevronRight,
   User,
@@ -53,9 +53,9 @@ export function StudentSidebar() {
       )}
     >
       {/* Logo */}
-      <Link href="/" className="flex items-center gap-3 h-16 px-4 border-b border-border shrink-0 hover:bg-foreground/5 transition-colors">
-        <div className="w-8 h-8 rounded-xl bg-gradient-brand flex items-center justify-center shrink-0 shadow-sm">
-          <Zap className="w-4 h-4 text-primary-foreground" />
+      <Link href="/" className="flex items-center gap-3 h-16 px-4 border-b border-border shrink-0 hover:bg-foreground/5 transition-colors group">
+        <div className="w-8 h-8 rounded-xl bg-gradient-brand flex items-center justify-center shrink-0 shadow-lg shadow-primary/20 group-hover:scale-105 group-hover:rotate-12 transition-all duration-500">
+          <Orbit className="w-4 h-4 text-primary-foreground group-hover:animate-spin-slow" />
         </div>
         {!collapsed && (
           <div>

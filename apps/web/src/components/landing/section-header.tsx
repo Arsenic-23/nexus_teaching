@@ -31,7 +31,7 @@ export function SectionHeader({
         className,
       )}
     >
-      {label && <p className="section-label mb-4">{label}</p>}
+      {label && <div className={cn("mb-6 flex", align === 'center' ? 'justify-center' : 'justify-start')}><span className="section-label px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 shadow-sm shadow-primary/5">{label}</span></div>}
       <h2 className="landing-headline mb-5 max-w-3xl mx-auto">{title}</h2>
       {description && (
         <p

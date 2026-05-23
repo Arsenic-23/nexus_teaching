@@ -5,11 +5,12 @@ import { useRouter } from 'next/navigation';
 import { useUser, useClerk } from '@clerk/nextjs';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  GraduationCap, School, ArrowRight, BookOpen, Zap, Target, Flame,
-  CheckCircle2, ChevronRight, Brain, Trophy, Star
+  GraduationCap, School, ArrowRight, BookOpen, Target, Flame,
+  CheckCircle2, ChevronRight, Brain, Trophy, Star, Orbit
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { LottieAnimation } from '@/components/ui/lottie-animation';
 
 type OnboardingStep = 'role' | 'grade' | 'subjects' | 'goal' | 'complete';
 type UserRole = 'STUDENT' | 'TEACHER';
@@ -91,20 +92,21 @@ export default function OnboardingPage() {
   const stepIndex = ['role', 'grade', 'subjects', 'goal'].indexOf(step);
 
   return (
-    <div className="min-h-screen bg-gradient-page flex items-center justify-center p-6 relative overflow-hidden">
-      {/* Background orbs */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl pointer-events-none" />
+    <div className="min-h-screen bg-background flex items-center justify-center p-6 relative overflow-hidden">
+      {/* Premium organic mesh background */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
+      <div className="absolute -top-40 -right-40 w-[40rem] h-[40rem] bg-primary/10 rounded-full blur-[120px] pointer-events-none animate-pulse" />
+      <div className="absolute -bottom-40 -left-40 w-[40rem] h-[40rem] bg-accent/10 rounded-full blur-[120px] pointer-events-none animate-pulse delay-700" />
 
-      <div className="w-full max-w-2xl relative">
+      <div className="w-full max-w-3xl relative z-10 bg-card/30 backdrop-blur-[64px] border border-white/10 dark:border-white/5 p-8 md:p-14 rounded-[3rem] shadow-[0_8px_40px_-12px_rgba(0,0,0,0.3)]">
         {/* Logo */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex items-center justify-center gap-3 mb-10"
+          className="flex items-center justify-center gap-3 mb-10 group cursor-default"
         >
-          <div className="w-10 h-10 rounded-xl bg-gradient-brand flex items-center justify-center shadow-lg shadow-primary/25">
-            <Zap className="w-6 h-6 text-white" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-brand flex items-center justify-center shadow-lg shadow-primary/25 group-hover:scale-105 group-hover:rotate-12 transition-all duration-500">
+            <Orbit className="w-6 h-6 text-white group-hover:animate-spin-slow" />
           </div>
           <span className="font-display text-2xl font-bold">Nexus Learning</span>
         </motion.div>
@@ -137,16 +139,16 @@ export default function OnboardingPage() {
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.25 }}
             >
-              <div className="text-center mb-10">
-                <h1 className="text-3xl font-display font-bold mb-3">
+              <div className="text-center mb-12">
+                <h1 className="text-4xl md:text-5xl font-display font-black tracking-tight mb-4 text-foreground drop-shadow-sm">
                   Welcome to Nexus! 👋
                 </h1>
-                <p className="text-muted-foreground text-base">
-                  Tell us who you are so we can personalize your experience.
+                <p className="text-muted-foreground text-lg max-w-md mx-auto leading-relaxed">
+                  Tell us who you are so we can perfectly tailor your experience.
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-10">
                 {[
                   {
                     id: 'STUDENT' as UserRole,
@@ -169,12 +171,15 @@ export default function OnboardingPage() {
                     key={option.id}
                     onClick={() => setRole(option.id)}
                     className={cn(
-                      'p-7 rounded-2xl border text-left transition-all duration-200 group relative overflow-hidden',
+                      'p-8 rounded-[2rem] border text-left transition-all duration-500 group relative overflow-hidden',
                       role === option.id
-                        ? 'border-primary bg-primary/10 shadow-xl shadow-primary/10'
-                        : 'border-border bg-card hover:border-primary/40 hover:bg-card',
+                        ? 'border-primary/50 bg-gradient-to-br from-primary/10 to-transparent shadow-2xl shadow-primary/20 -translate-y-2'
+                        : 'border-white/5 bg-card/30 hover:border-primary/30 hover:bg-card/60 hover:-translate-y-1 hover:shadow-xl',
                     )}
                   >
+                    {/* Glass sheen */}
+                    <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                    
                     {role === option.id && (
                       <div className="absolute top-3 right-3">
                         <CheckCircle2 className="w-5 h-5 text-primary" />
@@ -188,13 +193,12 @@ export default function OnboardingPage() {
               </div>
 
               <Button
-                className="w-full gap-2"
-                size="xl"
+                className="w-full gap-3 h-14 rounded-2xl text-lg shadow-xl shadow-primary/20"
                 variant="glow"
                 onClick={() => setStep(role === 'STUDENT' ? 'grade' : 'goal')}
               >
                 Continue
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
               </Button>
             </motion.div>
           )}
@@ -208,36 +212,38 @@ export default function OnboardingPage() {
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.25 }}
             >
-              <div className="text-center mb-10">
-                <h1 className="text-3xl font-display font-bold mb-3">
+              <div className="text-center mb-12">
+                <h1 className="text-4xl md:text-5xl font-display font-black tracking-tight mb-4 text-foreground drop-shadow-sm">
                   What grade are you in?
                 </h1>
-                <p className="text-muted-foreground">
-                  We&apos;ll tailor the difficulty and content to your level.
+                <p className="text-muted-foreground text-lg max-w-md mx-auto leading-relaxed">
+                  We'll tailor the difficulty and content directly to your level.
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
                 {gradeOptions.map((g) => (
                   <button
                     key={g.value}
                     onClick={() => setGrade(g.value)}
                     className={cn(
-                      'p-4 rounded-xl border text-sm font-medium transition-all',
+                      'p-5 rounded-2xl border text-base font-semibold transition-all duration-300 relative overflow-hidden group',
                       grade === g.value
-                        ? 'border-primary bg-primary/10 text-primary shadow-md'
-                        : 'border-border bg-card hover:border-primary/40 text-muted-foreground hover:text-foreground',
+                        ? 'border-primary/50 bg-gradient-to-br from-primary/10 to-transparent text-primary shadow-lg shadow-primary/20 -translate-y-1'
+                        : 'border-white/5 bg-card/30 hover:border-primary/30 hover:bg-card/60 text-muted-foreground hover:text-foreground hover:-translate-y-1 hover:shadow-xl',
                     )}
                   >
+                    {/* Glass sheen */}
+                    <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                     {g.label}
                   </button>
                 ))}
               </div>
 
-              <div className="flex gap-3">
-                <Button variant="outline" className="flex-1" onClick={() => setStep('role')}>Back</Button>
-                <Button variant="glow" className="flex-1 gap-2" onClick={() => setStep('subjects')}>
-                  Continue <ArrowRight className="w-4 h-4" />
+              <div className="flex gap-4">
+                <Button variant="outline" size="xl" className="flex-1 rounded-2xl h-14 bg-background/50 backdrop-blur-md border-white/10 hover:bg-background/80 transition-colors" onClick={() => setStep('role')}>Back</Button>
+                <Button variant="glow" size="xl" className="flex-[2] gap-3 h-14 rounded-2xl text-lg shadow-xl shadow-primary/20 group" onClick={() => setStep('subjects')}>
+                  Continue <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                 </Button>
               </div>
             </motion.div>
@@ -252,51 +258,57 @@ export default function OnboardingPage() {
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.25 }}
             >
-              <div className="text-center mb-10">
-                <h1 className="text-3xl font-display font-bold mb-3">
+              <div className="text-center mb-12">
+                <h1 className="text-4xl md:text-5xl font-display font-black tracking-tight mb-4 text-foreground drop-shadow-sm">
                   What do you want to study?
                 </h1>
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground text-lg max-w-md mx-auto leading-relaxed">
                   Pick your subjects. You can always add more later.
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 gap-3 mb-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
                 {subjects.map((subject) => (
                   <button
                     key={subject.id}
                     onClick={() => toggleSubject(subject.id)}
                     className={cn(
-                      'p-4 rounded-xl border flex items-center gap-3 text-left transition-all',
+                      'p-5 rounded-2xl border flex items-center gap-4 text-left transition-all duration-300 relative overflow-hidden group',
                       selectedSubjects.includes(subject.id)
-                        ? 'border-primary bg-primary/10 shadow-md'
-                        : 'border-border bg-card hover:border-primary/40',
+                        ? 'border-primary/50 bg-gradient-to-br from-primary/10 to-transparent shadow-lg shadow-primary/20 -translate-y-1'
+                        : 'border-white/5 bg-card/30 hover:border-primary/30 hover:bg-card/60 hover:-translate-y-1 hover:shadow-xl',
                     )}
                   >
-                    <span className="text-2xl shrink-0">{subject.icon}</span>
-                    <div className="min-w-0">
-                      <p className="font-semibold text-sm">{subject.name}</p>
-                      <p className="text-xs text-muted-foreground truncate">{subject.description}</p>
+                    {/* Glass sheen */}
+                    <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+                    <span className="text-3xl shrink-0">{subject.icon}</span>
+                    <div className="min-w-0 relative z-10">
+                      <p className="font-bold text-base mb-0.5">{subject.name}</p>
+                      <p className="text-sm text-muted-foreground truncate">{subject.description}</p>
                     </div>
                     <div className={cn(
-                      'w-4 h-4 rounded-full border-2 shrink-0 ml-auto transition-all',
+                      'w-5 h-5 rounded-full border-2 shrink-0 ml-auto transition-all relative z-10 flex items-center justify-center',
                       selectedSubjects.includes(subject.id)
                         ? 'border-primary bg-primary'
-                        : 'border-muted-foreground',
-                    )} />
+                        : 'border-white/20 bg-transparent',
+                    )}>
+                      {selectedSubjects.includes(subject.id) && <CheckCircle2 className="w-3 h-3 text-white" />}
+                    </div>
                   </button>
                 ))}
               </div>
 
-              <div className="flex gap-3">
-                <Button variant="outline" className="flex-1" onClick={() => setStep('grade')}>Back</Button>
+              <div className="flex gap-4">
+                <Button variant="outline" size="xl" className="flex-1 rounded-2xl h-14 bg-background/50 backdrop-blur-md border-white/10 hover:bg-background/80 transition-colors" onClick={() => setStep('grade')}>Back</Button>
                 <Button
                   variant="glow"
-                  className="flex-1 gap-2"
+                  size="xl"
+                  className="flex-[2] gap-3 h-14 rounded-2xl text-lg shadow-xl shadow-primary/20 group"
                   disabled={selectedSubjects.length === 0}
                   onClick={() => setStep('goal')}
                 >
-                  Continue <ArrowRight className="w-4 h-4" />
+                  Continue <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                 </Button>
               </div>
             </motion.div>
@@ -311,27 +323,29 @@ export default function OnboardingPage() {
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.25 }}
             >
-              <div className="text-center mb-10">
-                <h1 className="text-3xl font-display font-bold mb-3">
+              <div className="text-center mb-12">
+                <h1 className="text-4xl md:text-5xl font-display font-black tracking-tight mb-4 text-foreground drop-shadow-sm">
                   Set your daily goal
                 </h1>
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground text-lg max-w-md mx-auto leading-relaxed">
                   Consistency beats intensity. Pick a target you can maintain.
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 gap-4 mb-8">
+              <div className="grid grid-cols-2 gap-4 mb-10">
                 {dailyGoals.map((goal) => (
                   <button
                     key={goal.minutes}
                     onClick={() => setDailyGoal(goal.minutes)}
                     className={cn(
-                      'p-6 rounded-xl border text-center transition-all',
+                      'p-6 rounded-[2rem] border text-center transition-all duration-300 relative overflow-hidden group',
                       dailyGoal === goal.minutes
-                        ? `border-primary bg-primary/10 shadow-md ${goal.border}`
-                        : 'border-border bg-card hover:border-primary/40',
+                        ? `border-primary/50 bg-gradient-to-br from-primary/10 to-transparent shadow-lg shadow-primary/20 -translate-y-1 ${goal.border}`
+                        : 'border-white/5 bg-card/30 hover:border-primary/30 hover:bg-card/60 hover:-translate-y-1 hover:shadow-xl',
                     )}
                   >
+                    {/* Glass sheen */}
+                    <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                     <span className="text-3xl block mb-2">{goal.icon}</span>
                     <p className="font-bold text-base">{goal.label}</p>
                     <p className={cn('text-sm font-medium', dailyGoal === goal.minutes ? goal.color : 'text-muted-foreground')}>
@@ -341,28 +355,30 @@ export default function OnboardingPage() {
                 ))}
               </div>
 
-              <div className="flex gap-3">
+              <div className="flex gap-4">
                 <Button
                   variant="outline"
-                  className="flex-1"
+                  size="xl"
+                  className="flex-1 rounded-2xl h-14 bg-background/50 backdrop-blur-md border-white/10 hover:bg-background/80 transition-colors"
                   onClick={() => setStep(role === 'STUDENT' ? 'subjects' : 'role')}
                 >
                   Back
                 </Button>
                 <Button
                   variant="glow"
-                  className="flex-1 gap-2"
+                  size="xl"
+                  className="flex-[2] gap-3 h-14 rounded-2xl text-lg shadow-xl shadow-primary/20 group"
                   onClick={handleComplete}
                   disabled={isLoading}
                 >
                   {isLoading ? (
                     <>
-                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                       Setting up...
                     </>
                   ) : (
                     <>
-                      <Flame className="w-4 h-4" />
+                      <Flame className="w-5 h-5 transition-transform group-hover:scale-110" />
                       {role === 'STUDENT' ? 'Start Learning!' : 'Enter Dashboard!'}
                     </>
                   )}
@@ -381,17 +397,19 @@ export default function OnboardingPage() {
               className="text-center py-8"
             >
               <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.1, type: 'spring', stiffness: 300 }}
-                className="text-7xl mb-6 inline-block"
+                className="w-72 h-72 mx-auto -mt-20 -mb-4 relative z-0 pointer-events-none drop-shadow-2xl"
               >
-                🎉
+                <LottieAnimation animationPath="/lottie/Confetti.json" loop={false} />
               </motion.div>
 
-              <h1 className="text-3xl font-display font-bold mb-3">You&apos;re all set!</h1>
-              <p className="text-muted-foreground mb-8">
-                Your {role === 'STUDENT' ? 'learning' : 'teaching'} journey begins now.
+              <h1 className="text-4xl md:text-5xl font-display font-black tracking-tight mb-4 text-foreground">
+                Congratulations!
+              </h1>
+              <p className="text-muted-foreground text-lg mb-10 max-w-md mx-auto leading-relaxed">
+                You're officially set up. Your {role === 'STUDENT' ? 'learning' : 'teaching'} journey begins right now.
               </p>
 
               <div className="flex items-center justify-center gap-3 flex-wrap mb-8">
@@ -406,7 +424,7 @@ export default function OnboardingPage() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 + i * 0.08 }}
-                    className={cn('flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium', color)}
+                    className={cn('flex items-center gap-2 px-5 py-2.5 rounded-full border text-sm font-semibold shadow-sm backdrop-blur-sm', color)}
                   >
                     <Icon className="w-4 h-4" />
                     {label}
@@ -421,17 +439,17 @@ export default function OnboardingPage() {
                 transition={{ delay: 0.6 }}
               >
                 <Button
-                  size="lg"
+                  size="xl"
                   variant="glow"
-                  className="w-full gap-2 mb-4"
+                  className="w-full gap-3 h-14 rounded-2xl text-lg shadow-xl shadow-primary/20 mb-4"
                   onClick={() => {
                     window.location.href = role === 'STUDENT' ? '/student/dashboard' : '/teacher/dashboard';
                   }}
                 >
-                  {role === 'STUDENT' ? 'Go to Dashboard' : 'Enter Teacher Dashboard'}
-                  <ChevronRight className="w-4 h-4" />
+                  {role === 'STUDENT' ? 'Enter Dashboard' : 'Enter Teacher Dashboard'}
+                  <ChevronRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                 </Button>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-sm text-muted-foreground animate-pulse">
                   Auto-redirecting in a few seconds...
                 </p>
               </motion.div>

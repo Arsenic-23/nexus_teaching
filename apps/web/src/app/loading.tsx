@@ -1,30 +1,16 @@
-import { Zap } from 'lucide-react';
+import { LottieAnimation } from '@/components/ui/lottie-animation';
 
 export default function Loading() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-page gap-6">
-      {/* Animated logo */}
-      <div className="relative">
-        <div className="w-16 h-16 rounded-2xl bg-gradient-brand flex items-center justify-center animate-pulse">
-          <Zap className="w-8 h-8 text-primary-foreground" />
-        </div>
-        <div className="absolute inset-0 rounded-2xl bg-gradient-brand blur-xl opacity-40 animate-ping" />
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-page gap-4">
+      {/* Animated Lottie loader */}
+      <div className="w-48 h-48 opacity-90 drop-shadow-xl">
+        <LottieAnimation animationPath="/lottie/Sandy Loading.json" loop={true} />
       </div>
 
-      <div className="text-center space-y-2">
-        <p className="text-xl font-display font-bold">Nexus</p>
-        <p className="text-sm text-muted-foreground animate-pulse">Loading your learning journey...</p>
-      </div>
-
-      {/* Progress dots */}
-      <div className="flex items-center gap-2">
-        {[0, 1, 2].map((i) => (
-          <div
-            key={i}
-            className="w-2 h-2 rounded-full bg-primary animate-bounce"
-            style={{ animationDelay: `${i * 0.15}s` }}
-          />
-        ))}
+      <div className="text-center space-y-2 -mt-4">
+        <p className="text-2xl font-display font-black tracking-tight text-foreground">Nexus</p>
+        <p className="text-sm font-medium text-muted-foreground animate-pulse tracking-wide uppercase">Preparing your dashboard...</p>
       </div>
     </div>
   );

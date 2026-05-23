@@ -6,6 +6,8 @@ import { Progress } from '@/components/ui/progress';
 import { MasteryRing } from '@/components/gamification/mastery-ring';
 import { LevelIndicator } from '@/components/gamification/level-indicator';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
+import { LottieAnimation } from '@/components/ui/lottie-animation';
 
 const mockProfile = {
  name: 'Alex Johnson',
@@ -46,8 +48,11 @@ export default function ProfilePage() {
  {/* Profile header */}
  <Card className="border-border bg-card shadow-sm rounded-xl overflow-hidden group">
  {/* Banner */}
- <div className="h-32 bg-secondary/50 border-b border-border relative overflow-hidden">
- <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent opacity-50" />
+ <div className="h-32 bg-gradient-brand relative overflow-hidden flex items-center justify-center">
+ <div className="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent opacity-50 z-10" />
+ <div className="absolute inset-0 opacity-80 z-0 scale-150 pointer-events-none">
+ <LottieAnimation animationPath="/lottie/Confetti.json" loop={true} />
+ </div>
  </div>
  <CardContent className="pt-0 relative">
  <div className="flex flex-col sm:flex-row sm:items-end gap-6 -mt-16 mb-6">
@@ -137,8 +142,11 @@ export default function ProfilePage() {
  </Card>
 
  {/* Recent achievements */}
- <Card className="border-border bg-card rounded-xl shadow-sm overflow-hidden">
- <CardHeader className="pb-4 border-b border-border">
+ <Card className="border-border bg-card rounded-xl shadow-sm overflow-hidden relative">
+ <div className="absolute top-0 right-0 w-32 h-32 opacity-50 md:opacity-80 pointer-events-none translate-x-1/4 -translate-y-1/4">
+ <LottieAnimation animationPath="/lottie/Trophy.json" />
+ </div>
+ <CardHeader className="pb-4 border-b border-border relative z-10">
  <CardTitle className="text-sm font-semibold text-muted-foreground uppercase tracking-widest flex items-center justify-between">
  <span className="flex items-center gap-2 text-foreground">
  <Award className="w-4 h-4" />

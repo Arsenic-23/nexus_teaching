@@ -23,6 +23,8 @@
     "db:studio": "pnpm --filter @nexus/database studio"
   },
   "devDependencies": {
+    "@swc/cli": "^0.8.1",
+    "@swc/core": "^1.15.33",
     "@types/node": "^22.10.0",
     "prettier": "^3.4.0",
     "turbo": "^2.3.0",
