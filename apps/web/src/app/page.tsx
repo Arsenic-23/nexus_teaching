@@ -538,16 +538,44 @@ function FeaturesGrid() {
           {features.slice(1).map((feature, i) => (
             <motion.article
               key={feature.title}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.4, delay: i * 0.06 }}
-              className="landing-card group bg-card/40 backdrop-blur-md border-border/50 hover:bg-card/80 hover:shadow-xl hover:shadow-primary/5 hover:border-primary/20"
+              transition={{ duration: 0.4, delay: i * 0.08, type: "spring", stiffness: 100, damping: 20 }}
+              className="relative rounded-2xl bg-card transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-primary/5 group p-[1px] overflow-hidden h-full"
             >
-              <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
-                <feature.icon className="w-6 h-6 text-primary group-hover:text-primary-foreground transition-colors" />
+              {/* Default static border */}
+              <div className="absolute inset-0 rounded-2xl border border-border transition-opacity duration-300 group-hover:opacity-0" />
+              
+              {/* The animated spinning gradient border */}
+              <div 
+                className="absolute inset-[-100%] animate-[spin_3s_linear_infinite] opacity-0 group-hover:opacity-100 transition-opacity duration-500" 
+                style={{ backgroundImage: 'conic-gradient(from 90deg at 50% 50%, transparent 70%, hsl(var(--primary)))' }}
+              />
+              
+              {/* Inner card container */}
+              <div className="relative z-10 h-full w-full rounded-[15px] bg-card overflow-hidden">
+                {/* Background Image Layer */}
+                <div className="absolute inset-0 z-0 pointer-events-none">
+                  <div 
+                    className="absolute inset-0 opacity-100 transition-transform duration-700 group-hover:scale-105"
+                    style={{
+                      backgroundImage: "url('/assets/cards_small.jpeg')",
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-white/70 dark:bg-black/80 transition-colors duration-500 group-hover:bg-white/50 dark:group-hover:bg-black/60" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-white/95 via-transparent to-white/60 dark:from-black/95 dark:via-transparent dark:to-black/60" />
+                </div>
+                
+                <div className="relative z-10 p-6 sm:p-8 flex flex-col h-full">
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 text-primary flex items-center justify-center mb-6 transition-transform duration-300 group-hover:scale-110">
+                    <feature.icon className="w-6 h-6" />
+                  </div>
+                  <h3 className="font-bold text-xl mb-3 text-foreground">{feature.title}</h3>
+                  <p className="text-base font-medium text-muted-foreground leading-relaxed">{feature.description}</p>
+                </div>
               </div>
-              <h3 className="font-bold text-xl mb-3 text-foreground">{feature.title}</h3>
-              <p className="text-base font-medium text-muted-foreground leading-relaxed">{feature.description}</p>
             </motion.article>
           ))}
         </div>
@@ -570,35 +598,79 @@ function TeacherPreview() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      whileInView={{ opacity: 1, x: 0 }}
+      initial={{ opacity: 0, y: 30, scale: 0.95 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true }}
-      className="landing-card bg-card/60 backdrop-blur-xl border-border/60 shadow-2xl shadow-primary/5"
+      transition={{ delay: 0.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      whileHover={{ y: -4 }}
+      className="rounded-3xl border border-border/50 shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] shadow-primary/10 overflow-hidden w-full flex flex-col group hover:shadow-primary/20 transition-shadow duration-500 relative bg-card/40"
     >
-      <div className="flex items-center justify-between mb-6">
-        <p className="font-medium">Advanced Math — Grade 11</p>
-        <span className="text-xs px-2.5 py-1 rounded-full bg-muted text-muted-foreground">22 active</span>
+      {/* Background Image (Same as Landing Page) */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <img 
+          src="/landing/learning_dashboard.jpeg" 
+          alt="Product Dashboard Background" 
+          className="w-full h-full object-cover object-top" 
+        />
+        <div className="absolute inset-0 bg-white/40 dark:bg-black/60" />
       </div>
-      <div className="space-y-3">
-        {students.map((s) => (
-          <div key={s.name} className="flex items-center gap-4 p-4 rounded-xl border border-border/40 bg-background/40 hover:bg-background/80 transition-colors shadow-sm">
-            <div className="w-10 h-10 rounded-xl bg-card border border-border flex items-center justify-center text-sm font-bold shadow-sm">
-              {s.name.split(' ')[0][0]}
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center justify-between mb-1.5">
-                <p className="text-sm font-medium truncate">{s.name}</p>
-                <span className="text-xs text-muted-foreground">{s.mastery}%</span>
+
+      {/* macOS Title Bar */}
+      <div className="relative z-10 flex items-center px-4 py-3.5 border-b border-border/30 bg-white/60 dark:bg-black/40 backdrop-blur-xl">
+        <div className="flex gap-1.5 shrink-0">
+          <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F57] shadow-sm" />
+          <div className="w-2.5 h-2.5 rounded-full bg-[#FDBC40] shadow-sm" />
+          <div className="w-2.5 h-2.5 rounded-full bg-[#33C748] shadow-sm" />
+        </div>
+        <div className="flex-1 flex justify-center text-[10px] font-bold tracking-widest text-foreground/60 uppercase">
+          nexus.learn/teachers
+        </div>
+        <div className="w-10" /> {/* Spacer for centering */}
+      </div>
+      
+      {/* Content area */}
+      <div className="relative z-10 p-6 md:p-8">
+        <div className="flex items-center justify-between mb-8 bg-background/80 dark:bg-background/70 backdrop-blur-md px-5 py-3 rounded-2xl border border-border/40 shadow-sm">
+          <p className="font-bold text-lg">Advanced Math — Grade 11</p>
+          <span className="text-xs px-2.5 py-1 rounded-full bg-success/15 text-success border border-success/30 font-bold uppercase tracking-wider">
+            22 active
+          </span>
+        </div>
+        <div className="space-y-3">
+          {students.map((s, index) => (
+            <motion.div
+              initial={{ opacity: 0, x: -10 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              whileHover={{ scale: 1.02 }}
+              transition={{ delay: 0.4 + index * 0.1, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              key={s.name}
+              className={cn(
+                'flex items-center gap-4 p-4 rounded-2xl border transition-colors duration-300 backdrop-blur-xl shadow-lg',
+                s.atRisk ? 'border-destructive/30 bg-white/90 dark:bg-black/80 hover:border-destructive/50' : 'border-border/40 bg-white/80 dark:bg-black/70 hover:bg-white/95 dark:hover:bg-black/90 hover:border-primary/30',
+              )}
+            >
+              <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold shadow-sm", s.atRisk ? "bg-destructive/15 text-destructive" : "bg-muted/50 border border-border/50 text-foreground")}>
+                {s.name[0]}
               </div>
-              <div className="h-1.5 rounded-full bg-muted overflow-hidden">
-                <div
-                  className={cn('h-full rounded-full', s.atRisk ? 'bg-muted-foreground' : 'bg-primary')}
-                  style={{ width: `${s.mastery}%` }}
-                />
+              <div className="flex-1 min-w-0">
+                <div className="flex justify-between mb-2">
+                  <p className="text-sm font-semibold">{s.name}</p>
+                  <span className={cn("text-xs font-bold", s.atRisk ? "text-destructive" : "text-muted-foreground")}>{s.mastery}%</span>
+                </div>
+                <div className="h-1.5 rounded-full bg-black/5 dark:bg-white/10 overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    whileInView={{ width: `${s.mastery}%` }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.6 + index * 0.1, duration: 1, ease: "easeOut" }}
+                    className={cn('h-full rounded-full', s.atRisk ? 'bg-destructive' : 'bg-primary')}
+                  />
+                </div>
               </div>
-            </div>
-          </div>
-        ))}
+            </motion.div>
+          ))}
+        </div>
       </div>
     </motion.div>
   );

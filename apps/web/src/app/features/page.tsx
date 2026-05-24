@@ -69,17 +69,50 @@ export default function FeaturesPage() {
                 key={feature.title}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.07 }}
-                className="landing-card"
+                transition={{ delay: i * 0.07, type: "spring", stiffness: 100, damping: 20 }}
+                className="relative rounded-2xl bg-card transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-primary/5 group p-[1px] overflow-hidden"
               >
-                <div className="w-11 h-11 rounded-xl bg-muted border border-border flex items-center justify-center mb-5">
-                  <feature.icon className="w-5 h-5" />
+                {/* Default static border */}
+                <div className="absolute inset-0 rounded-2xl border border-border transition-opacity duration-300 group-hover:opacity-0" />
+                
+                {/* The animated spinning gradient border */}
+                <div 
+                  className="absolute inset-[-100%] animate-[spin_3s_linear_infinite] opacity-0 group-hover:opacity-100 transition-opacity duration-500" 
+                  style={{ backgroundImage: 'conic-gradient(from 90deg at 50% 50%, transparent 70%, hsl(var(--primary)))' }}
+                />
+                
+                {/* Inner card container */}
+                <div className="relative z-10 h-full w-full rounded-[15px] bg-card overflow-hidden flex flex-col">
+                  {/* Top accent gradient line */}
+                  <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/60 to-transparent z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                  {/* Background Image Layer */}
+                  <div className="absolute inset-0 z-0 pointer-events-none">
+                    <div 
+                      className="absolute inset-0 opacity-100 transition-transform duration-700 group-hover:scale-105"
+                      style={{
+                        backgroundImage: "url('/assets/cards_small.jpeg')",
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-white/70 dark:bg-black/80 transition-colors duration-500 group-hover:bg-white/50 dark:group-hover:bg-black/60" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-white/95 via-transparent to-white/60 dark:from-black/95 dark:via-transparent dark:to-black/60" />
+                  </div>
+
+                  <div className="relative z-10 p-6 sm:p-8 flex flex-col h-full">
+                    <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 text-primary flex items-center justify-center mb-6 transition-transform duration-300">
+                      <feature.icon className="w-6 h-6" />
+                    </div>
+                    <h3 className="font-semibold text-lg mb-2">{feature.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-grow">{feature.description}</p>
+                    <div className="mt-auto">
+                      <span className="inline-block text-xs font-medium px-3 py-1.5 rounded-full bg-background/80 backdrop-blur border border-border text-foreground/80 shadow-sm transition-colors duration-300 group-hover:border-primary/30 group-hover:text-primary">
+                        {feature.tag}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-                <h3 className="font-semibold text-lg mb-2">{feature.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-4">{feature.description}</p>
-                <span className="inline-block text-xs font-medium px-2.5 py-1 rounded-full bg-muted text-muted-foreground">
-                  {feature.tag}
-                </span>
               </motion.article>
             ))}
           </div>
@@ -89,8 +122,14 @@ export default function FeaturesPage() {
         </div>
       </section>
 
-      <section className="landing-section bg-muted/25 border-t border-border">
-        <div className="landing-container">
+      <section className="landing-section bg-muted/25 border-t border-border relative overflow-hidden">
+        {/* Subtle dot grid */}
+        <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.04] pointer-events-none" style={{
+          backgroundImage: 'radial-gradient(circle, hsl(var(--foreground)) 1px, transparent 1px)',
+          backgroundSize: '32px 32px',
+        }} />
+        
+        <div className="landing-container relative z-10">
           <SectionHeader
             label="Why Nexus"
             title="Learning that respects your intelligence"
@@ -107,11 +146,39 @@ export default function FeaturesPage() {
                 initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
-                className="rounded-xl border border-border bg-card p-6"
+                transition={{ delay: i * 0.08, type: "spring", stiffness: 100, damping: 20 }}
+                className="relative rounded-2xl bg-card transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-primary/5 group p-[1px] overflow-hidden"
               >
-                <h4 className="font-semibold mb-2">{item.title}</h4>
-                <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                {/* Default static border */}
+                <div className="absolute inset-0 rounded-2xl border border-border transition-opacity duration-300 group-hover:opacity-0" />
+                
+                {/* The animated spinning gradient border */}
+                <div 
+                  className="absolute inset-[-100%] animate-[spin_3s_linear_infinite] opacity-0 group-hover:opacity-100 transition-opacity duration-500" 
+                  style={{ backgroundImage: 'conic-gradient(from 90deg at 50% 50%, transparent 70%, hsl(var(--primary)))' }}
+                />
+                
+                {/* Inner card container */}
+                <div className="relative z-10 h-full w-full rounded-[15px] bg-card overflow-hidden">
+                  {/* Background Image Layer */}
+                  <div className="absolute inset-0 z-0 pointer-events-none">
+                    <div 
+                      className="absolute inset-0 opacity-100 transition-transform duration-700 group-hover:scale-105"
+                      style={{
+                        backgroundImage: "url('/assets/cards_small.jpeg')",
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-white/70 dark:bg-black/80 transition-colors duration-500 group-hover:bg-white/50 dark:group-hover:bg-black/60" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-white/95 via-transparent to-white/60 dark:from-black/95 dark:via-transparent dark:to-black/60" />
+                  </div>
+                  
+                  <div className="relative z-10 p-6 sm:p-8">
+                    <h4 className="font-semibold text-lg mb-3">{item.title}</h4>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
