@@ -1,6 +1,6 @@
 // ==================== PLATFORM CONSTANTS ====================
 
-export const APP_NAME = 'Nexus Learning';
+export const APP_NAME = 'Nexsori Learning';
 export const APP_DESCRIPTION = 'Next-generation gamified mastery-based learning platform';
 
 // ==================== XP CONSTANTS ====================

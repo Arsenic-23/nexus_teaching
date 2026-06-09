@@ -1,5 +1,5 @@
 import apiClient from './client';
-import type { ApiResponse } from '@nexus/shared';
+import type { ApiResponse } from '@nexsori/shared';
 
 // ==================== Auth ====================
 export const authApi = {

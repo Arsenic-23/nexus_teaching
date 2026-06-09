@@ -32,8 +32,8 @@ async function bootstrap() {
   // Swagger API Documentation
   if (process.env.NODE_ENV !== 'production') {
     const config = new DocumentBuilder()
-      .setTitle('Nexus Learning API')
-      .setDescription('API for the Nexus Learning Platform')
+      .setTitle('Nexsori Learning API')
+      .setDescription('API for the Nexsori Learning Platform')
       .setVersion('1.0')
       .addBearerAuth()
       .build();
@@ -43,7 +43,7 @@ async function bootstrap() {
 
   const port = process.env.PORT || 4000;
   await app.listen(port);
-  console.log(`🚀 Nexus API running on http://localhost:${port}`);
+  console.log(`🚀 Nexsori API running on http://localhost:${port}`);
   console.log(`📚 Swagger docs: http://localhost:${port}/docs`);
 }
 

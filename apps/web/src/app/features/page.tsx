@@ -131,7 +131,7 @@ export default function FeaturesPage() {
         
         <div className="landing-container relative z-10">
           <SectionHeader
-            label="Why Nexus"
+            label="Why Nexsori"
             title="Learning that respects your intelligence"
             description="No endless videos. No passive consumption. Just structured progress toward real competence."
           />

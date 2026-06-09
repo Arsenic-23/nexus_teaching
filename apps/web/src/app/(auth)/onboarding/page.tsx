@@ -108,7 +108,7 @@ export default function OnboardingPage() {
           <div className="w-10 h-10 rounded-xl bg-gradient-brand flex items-center justify-center shadow-lg shadow-primary/25 group-hover:scale-105 group-hover:rotate-12 transition-all duration-500">
             <Orbit className="w-6 h-6 text-white group-hover:animate-spin-slow" />
           </div>
-          <span className="font-display text-2xl font-bold">Nexus Learning</span>
+          <span className="font-display text-2xl font-bold">Nexsori Learning</span>
         </motion.div>
 
         {/* Progress bar */}
@@ -141,7 +141,7 @@ export default function OnboardingPage() {
             >
               <div className="text-center mb-12">
                 <h1 className="text-4xl md:text-5xl font-display font-black tracking-tight mb-4 text-foreground drop-shadow-sm">
-                  Welcome to Nexus! 👋
+                  Welcome to Nexsori! 👋
                 </h1>
                 <p className="text-muted-foreground text-lg max-w-md mx-auto leading-relaxed">
                   Tell us who you are so we can perfectly tailor your experience.

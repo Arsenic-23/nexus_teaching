@@ -9,7 +9,7 @@ export default function Loading() {
       </div>
 
       <div className="text-center space-y-2 -mt-4">
-        <p className="text-2xl font-display font-black tracking-tight text-foreground">Nexus</p>
+        <p className="text-2xl font-display font-black tracking-tight text-foreground">Nexsori</p>
         <p className="text-sm font-medium text-muted-foreground animate-pulse tracking-wide uppercase">Preparing your dashboard...</p>
       </div>
     </div>

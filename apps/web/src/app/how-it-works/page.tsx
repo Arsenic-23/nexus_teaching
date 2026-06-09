@@ -326,8 +326,9 @@ export default function HowItWorksPage() {
                     <motion.div
                       initial={{ opacity: 0, y: 40, scale: 0.85 }}
                       whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                      viewport={{ once: false, margin: '-15%' }}
-                      transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+                      animate={i === 0 ? { opacity: 1, y: 0, scale: 1 } : undefined}
+                      viewport={{ once: true, margin: i === 0 ? '50px' : '-50px' }}
+                      transition={{ type: 'spring', stiffness: 100, damping: i === 0 ? 15 : 20, delay: i === 0 ? 0.2 : 0 }}
                       className={`landing-card group relative overflow-hidden flex-1 w-full max-w-xl ${
                         isEven ? 'md:text-left' : 'md:text-right'
                       }`}

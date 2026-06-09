@@ -2,7 +2,7 @@
 
 ## Platform Identity
 
-**Codename:** Nexus Learning Platform  
+**Codename:** Nexsori Learning Platform  
 **Category:** Next-Generation Gamified Mastery-Based Learning System  
 **Philosophy:** Learn → Practice → Explain → Apply → Master → Rank Up
 

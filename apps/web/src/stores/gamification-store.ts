@@ -74,7 +74,7 @@ export const useGamificationStore = create<GamificationState & GamificationActio
         })),
     }),
     {
-      name: 'nexus-gamification',
+      name: 'nexsori-gamification',
       partialize: (state) => ({
         xp: state.xp,
         streak: state.streak,

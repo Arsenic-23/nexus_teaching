@@ -2,7 +2,7 @@
 
 ## API Conventions
 
-- Base URL: `https://api.nexuslearning.com/v1`
+- Base URL: `https://api.nexsorilearning.com/v1`
 - Authentication: Bearer token (Clerk JWT)
 - Response format: JSON
 - Pagination: cursor-based for lists
@@ -332,7 +332,7 @@ interface ApiError {
 
 ### Connection
 ```
-ws://api.nexuslearning.com/ws?token=<jwt>
+ws://api.nexsorilearning.com/ws?token=<jwt>
 ```
 
 ### Server → Client Events

@@ -1,5 +1,5 @@
 {
-  "name": "@nexus/api",
+  "name": "@nexsori/api",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -21,8 +21,8 @@
     "@nestjs/throttler": "^6.3.0",
     "@nestjs/websockets": "^10.4.0",
     "@nestjs/bull": "^10.2.0",
-    "@nexus/database": "workspace:*",
-    "@nexus/shared": "workspace:*",
+    "@nexsori/database": "workspace:*",
+    "@nexsori/shared": "workspace:*",
     "bull": "^4.16.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",

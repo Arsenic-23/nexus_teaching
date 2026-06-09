@@ -19,8 +19,8 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Nexus Learning',
-    template: '%s | Nexus Learning',
+    default: 'Nexsori Learning',
+    template: '%s | Nexsori Learning',
   },
   description:
     'Next-generation gamified mastery-based learning platform. Learn, practice, master, and rank up.',

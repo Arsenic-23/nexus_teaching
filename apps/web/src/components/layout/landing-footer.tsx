@@ -67,7 +67,7 @@ export function LandingFooter() {
                 <div className="w-8 h-8 rounded-lg bg-gradient-brand flex items-center justify-center group-hover:scale-105 group-hover:rotate-12 transition-all duration-500 shadow-lg shadow-primary/20">
                   <Orbit className="w-4 h-4 text-primary-foreground group-hover:animate-spin-slow" />
                 </div>
-                <span className="font-display font-semibold">Nexus Learning</span>
+                <span className="font-display font-semibold">Nexsori Learning</span>
               </Link>
               <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
                 A mastery-based learning platform built for students and educators who care about real understanding.
@@ -95,7 +95,7 @@ export function LandingFooter() {
           </div>
 
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 border-t border-border text-sm text-muted-foreground">
-            <p>© {new Date().getFullYear()} Nexus Learning. All rights reserved.</p>
+            <p>© {new Date().getFullYear()} Nexsori Learning. All rights reserved.</p>
             <p className="text-xs">Built for mastery, not memorization.</p>
           </div>
         </div>

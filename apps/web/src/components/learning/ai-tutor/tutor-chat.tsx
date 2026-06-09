@@ -139,7 +139,7 @@ export function TutorChat({
             <Bot className="w-4 h-4 text-white" />
           </div>
           <div>
-            <p className="font-semibold text-sm">Nexus AI Tutor</p>
+            <p className="font-semibold text-sm">Nexsori AI Tutor</p>
             <div className="flex items-center gap-1">
               <div className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
               <span className="text-xs text-muted-foreground">Online</span>

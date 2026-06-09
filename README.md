@@ -1,4 +1,4 @@
-# Nexus Learning Platform
+# Nexsori Learning Platform
 
 > Next-generation gamified mastery-based learning system
 

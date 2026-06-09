@@ -154,7 +154,7 @@ export default function HomePage() {
               </div>
               <div className="flex-1 max-w-sm mx-auto h-7 rounded-md bg-black/[0.04] border border-black/[0.06] flex items-center justify-center gap-1.5">
                 <svg className="w-2.5 h-2.5 text-slate-400" fill="currentColor" viewBox="0 0 16 16"><path d="M8 1a4 4 0 0 0-4 4v3a1 1 0 0 0-1 1v4a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a1 1 0 0 0-1-1V5a4 4 0 0 0-4-4zm3 7V5a3 3 0 1 0-6 0v3h6z"/></svg>
-                <span className="text-[11px] text-slate-500 font-medium tracking-wide">nexus.learn/dashboard</span>
+                <span className="text-[11px] text-slate-500 font-medium tracking-wide">nexsori.learn/dashboard</span>
               </div>
               <div className="shrink-0 ml-6">
                 <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15m0-3-3-3m0 0-3 3m3-3v9"/></svg>
@@ -357,7 +357,7 @@ export default function HomePage() {
         </div>
         <div className="landing-container relative z-10">
           <SectionHeader
-            label="The Nexus method"
+            label="The Nexsori method"
             title="Every step builds on the last"
             description="A deliberate learning loop — not passive video watching."
           />
@@ -623,7 +623,7 @@ function TeacherPreview() {
           <div className="w-2.5 h-2.5 rounded-full bg-[#33C748] shadow-sm" />
         </div>
         <div className="flex-1 flex justify-center text-[10px] font-bold tracking-widest text-foreground/60 uppercase">
-          nexus.learn/teachers
+          nexsori.learn/teachers
         </div>
         <div className="w-10" /> {/* Spacer for centering */}
       </div>

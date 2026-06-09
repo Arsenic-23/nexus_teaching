@@ -88,7 +88,7 @@ export default function ForTeachersPage() {
                 <div className="w-2.5 h-2.5 rounded-full bg-[#33C748] shadow-sm" />
               </div>
               <div className="flex-1 flex justify-center text-[10px] font-bold tracking-widest text-foreground/60 uppercase">
-                nexus.learn/teachers
+                nexsori.learn/teachers
               </div>
               <div className="w-10" /> {/* Spacer for centering */}
             </div>

@@ -2,7 +2,7 @@
   "name": "teaching-platform",
   "private": true,
   "version": "0.1.0",
-  "description": "Nexus Learning Platform — Next-generation gamified mastery-based learning system",
+  "description": "Nexsori Learning Platform — Next-generation gamified mastery-based learning system",
   "packageManager": "pnpm@9.15.0",
   "engines": {
     "node": ">=20.0.0",
@@ -17,11 +17,11 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
     "type-check": "turbo type-check",
     "clean": "turbo clean && rm -rf node_modules",
-    "db:generate": "pnpm --filter @nexus/database generate",
-    "db:migrate": "pnpm --filter @nexus/database migrate:dev",
-    "db:push": "pnpm --filter @nexus/database push",
-    "db:seed": "pnpm --filter @nexus/database seed",
-    "db:studio": "pnpm --filter @nexus/database studio"
+    "db:generate": "pnpm --filter @nexsori/database generate",
+    "db:migrate": "pnpm --filter @nexsori/database migrate:dev",
+    "db:push": "pnpm --filter @nexsori/database push",
+    "db:seed": "pnpm --filter @nexsori/database seed",
+    "db:studio": "pnpm --filter @nexsori/database studio"
   },
   "devDependencies": {
     "@swc/cli": "^0.8.1",

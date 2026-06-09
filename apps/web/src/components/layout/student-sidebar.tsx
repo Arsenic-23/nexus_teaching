@@ -59,7 +59,7 @@ export function StudentSidebar() {
         </div>
         {!collapsed && (
           <div>
-            <span className="font-display text-lg font-bold">Nexus</span>
+            <span className="font-display text-lg font-bold">Nexsori</span>
             <span className="text-xs text-muted-foreground ml-1.5 font-medium">Student</span>
           </div>
         )}

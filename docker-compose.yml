@@ -3,25 +3,25 @@ version: '3.8'
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: nexus-postgres
+    container_name: nexsori-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: nexus
-      POSTGRES_PASSWORD: nexus_dev_password
-      POSTGRES_DB: nexus_learning
+      POSTGRES_USER: nexsori
+      POSTGRES_PASSWORD: nexsori_dev_password
+      POSTGRES_DB: nexsori_learning
     ports:
       - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U nexus']
+      test: ['CMD-SHELL', 'pg_isready -U nexsori']
       interval: 5s
       timeout: 5s
       retries: 5
 
   redis:
     image: redis:7-alpine
-    container_name: nexus-redis
+    container_name: nexsori-redis
     restart: unless-stopped
     ports:
       - '6379:6379'
@@ -35,10 +35,10 @@ services:
 
   meilisearch:
     image: getmeili/meilisearch:v1.11
-    container_name: nexus-meilisearch
+    container_name: nexsori-meilisearch
     restart: unless-stopped
     environment:
-      MEILI_MASTER_KEY: nexus_search_dev_key
+      MEILI_MASTER_KEY: nexsori_search_dev_key
       MEILI_ENV: development
     ports:
       - '7700:7700'
